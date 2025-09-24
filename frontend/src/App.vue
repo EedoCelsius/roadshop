@@ -61,11 +61,11 @@ const onLocaleChange = (event: Event) => {
               <span>{{ i18nStore.t('hero.badge') }}</span>
             </div>
             <label
-              class="flex items-center gap-3 rounded-full border border-roadshop-primary/10 bg-white/70 px-4 py-2 text-xs font-semibold text-roadshop-primary shadow-sm backdrop-blur"
+              class="relative flex cursor-pointer items-center gap-3 rounded-full border border-roadshop-primary/10 bg-white/70 px-4 py-2 text-xs font-semibold text-roadshop-primary shadow-sm backdrop-blur"
             >
               <span class="tracking-[0.2em] text-roadshop-accent">{{ i18nStore.t('language.label') }}</span>
               <select
-                class="min-w-[8rem] appearance-none bg-transparent text-sm font-medium text-roadshop-primary focus:outline-none"
+                class="min-w-[8rem] appearance-none cursor-pointer bg-transparent pr-8 text-sm font-medium text-roadshop-primary focus:outline-none"
                 :value="locale"
                 @change="onLocaleChange"
               >
@@ -73,6 +73,9 @@ const onLocaleChange = (event: Event) => {
                   {{ formatLocaleLabel(option) }}
                 </option>
               </select>
+              <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+                <span class="block h-0 w-0 border-x-[5px] border-x-transparent border-t-[6px] border-t-roadshop-primary"></span>
+              </span>
             </label>
           </div>
         </div>
