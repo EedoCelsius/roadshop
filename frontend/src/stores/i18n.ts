@@ -75,8 +75,9 @@ const messages: Record<Locale, Messages> = {
       paypal: {
         description: 'Soon you will be able to complete your purchase with the PayPal account you already trust.',
       },
-      'visa-mastercard': {
-        description: 'Worldwide card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
+      'visa-mastercard-unionpay': {
+        description:
+          'Visa, Mastercard, and UnionPay card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       },
     },
   },
@@ -139,8 +140,8 @@ const messages: Record<Locale, Messages> = {
       paypal: {
         description: '글로벌 고객이 익숙한 PayPal 계정을 통해 손쉽게 결제할 수 있도록 준비하고 있어요.',
       },
-      'visa-mastercard': {
-        description: '전 세계 어디서나 사용할 수 있는 카드 결제를 곧 제공할게요.',
+      'visa-mastercard-unionpay': {
+        description: 'Visa, Mastercard, UnionPay 등 전 세계 카드 결제를 곧 제공할게요.',
       },
     },
   },
@@ -203,8 +204,8 @@ const messages: Record<Locale, Messages> = {
       paypal: {
         description: '普段使いのPayPalアカウントで決済できるよう近日対応予定です。',
       },
-      'visa-mastercard': {
-        description: '世界中で利用できるカード決済を追加し、どこでも慣れ親しんだチェックアウトを提供します。',
+      'visa-mastercard-unionpay': {
+        description: 'Visa・Mastercard・UnionPayなどの世界的なカード決済に近日対応します。',
       },
     },
   },
@@ -267,8 +268,8 @@ const messages: Record<Locale, Messages> = {
       paypal: {
         description: '你很快就能用熟悉的 PayPal 账户轻松完成购买。',
       },
-      'visa-mastercard': {
-        description: '全球银行卡支付已在规划中，让你在任何地方都能享受熟悉的结账体验。',
+      'visa-mastercard-unionpay': {
+        description: '我们即将上线 Visa、Mastercard、UnionPay 等全球银行卡支付，让你随时享受熟悉的结账体验。',
       },
     },
   },
