@@ -14,6 +14,8 @@ type Messages = {
   [key: string]: string | Messages
 }
 
+const LOCALE_STORAGE_KEY = 'roadshop:locale'
+
 const messages: Record<Locale, Messages> = {
   en: {
     hero: {
@@ -275,12 +277,45 @@ const messages: Record<Locale, Messages> = {
   },
 }
 
+const isSupportedLocale = (value: string): value is Locale =>
+  LOCALES.some((locale) => locale.code === value)
+
+const readStoredLocale = (): Locale | undefined => {
+  if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+    return undefined
+  }
+
+  try {
+    const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY)
+    return stored && isSupportedLocale(stored) ? stored : undefined
+  } catch (error) {
+    return undefined
+  }
+}
+
+const persistLocale = (value: Locale) => {
+  if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+    return
+  }
+
+  try {
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, value)
+  } catch (error) {
+    // Ignore storage errors (e.g., quota exceeded, privacy mode)
+  }
+}
+
 const matchLocale = (language: string): Locale | undefined => {
   const normalized = language.toLowerCase()
   return LOCALES.find((locale) => normalized.startsWith(locale.code))?.code
 }
 
 const resolveInitialLocale = (): Locale => {
+  const stored = readStoredLocale()
+  if (stored) {
+    return stored
+  }
+
   if (typeof navigator === 'undefined') {
     return 'en'
   }
@@ -324,8 +359,9 @@ export const useI18nStore = defineStore('i18n', () => {
   )
 
   const setLocale = (next: Locale) => {
-    if (LOCALES.some((entry) => entry.code === next)) {
+    if (isSupportedLocale(next)) {
       locale.value = next
+      persistLocale(next)
     }
   }
 
