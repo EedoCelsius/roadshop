@@ -19,34 +19,34 @@ const LOCALE_STORAGE_KEY = 'roadshop:locale'
 const messages: Record<Locale, Messages> = {
   en: {
     hero: {
-      kicker: 'Road Shop Pay',
-      title: 'Pay your way with one QR code',
-      badge: 'Live payment support',
+      kicker: 'Stitchmon Roadshop',
+      title: 'Pay for your Stitchmon order your way',
+      badge: 'Official online checkout',
       description:
-        "Scan the QR code at any street vendor and Road Shop Pay guides you to the fastest checkout. KakaoPay already covers KRW purchases, and we're rolling out more options for visitors from around the world.",
+        "Use this Stitchmon Roadshop online payment page to complete your order. KakaoPay is ready for KRW purchases today, and we're bringing in more global-friendly options so every Stitchmon fan can check out smoothly.",
     },
     highlights: {
       instant: {
-        title: 'Instant checkout',
-        description: 'Scan the QR and jump straight into KakaoPay for a fast KRW payment.',
+        title: 'Instant confirmation',
+        description: 'Finish your Stitchmon Roadshop order in seconds with KakaoPay for KRW payments.',
       },
       guidance: {
-        title: 'Tailored guidance',
-        description: 'We recommend payment methods that fit your language and currency.',
+        title: 'Clear guidance',
+        description: 'We walk you through each available payment method step by step for Stitchmon orders.',
       },
       coverage: {
-        title: 'Global coverage',
-        description: 'International wallets and cards are coming so every traveler can pay with ease.',
+        title: 'Global-friendly roadmap',
+        description: 'International wallets and cards are on the way so Stitchmon customers abroad can pay with ease.',
       },
     },
     sections: {
       krw: {
         title: 'KRW payments',
-        description: 'Immediate options for domestic shoppers.',
+        description: 'Immediate options for Stitchmon Roadshop orders in Korean Won.',
       },
       global: {
         title: 'Global payments',
-        description: 'Expanding choices for international visitors.',
+        description: 'Expanding choices for Stitchmon fans around the world.',
       },
     },
     status: {
@@ -57,7 +57,7 @@ const messages: Record<Locale, Messages> = {
       preparing: 'We are working hard to launch this option soon.',
     },
     footer: {
-      message: '© {year} Road Shop Pay. Empowering street vendors to welcome every traveler.',
+      message: '© {year} Stitchmon Roadshop. The official online payment center for your orders.',
     },
     language: {
       label: 'Language',
@@ -85,34 +85,34 @@ const messages: Record<Locale, Messages> = {
   },
   ko: {
     hero: {
-      kicker: 'Road Shop Pay',
-      title: 'QR 하나로 원하는 방식으로 결제하세요',
-      badge: '현장 결제 지원 중',
+      kicker: '스티치몬 로드샵',
+      title: '스티치몬 주문을 원하는 방식으로 결제하세요',
+      badge: '공식 온라인 결제',
       description:
-        '길거리 상점에서 QR 코드를 스캔하면 Road Shop Pay가 가장 빠르고 편한 결제 수단을 안내해 드려요. 국내에서는 카카오페이를 바로 이용할 수 있고, 해외 이용자를 위한 다양한 결제 수단도 순차적으로 제공할 예정이에요.',
+        '이 페이지는 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오페이로 원화 결제를 지원하며, 해외 고객을 위한 다양한 결제 수단도 순차적으로 제공할 예정이에요.',
     },
     highlights: {
       instant: {
-        title: '바로 결제',
-        description: 'QR 스캔 후 카카오페이 앱으로 이동해 즉시 결제할 수 있어요.',
+        title: '즉시 확인',
+        description: '카카오페이로 스티치몬 로드샵 주문을 몇 초 만에 결제하고 확인할 수 있어요.',
       },
       guidance: {
-        title: '실시간 안내',
-        description: '고객 언어와 통화에 맞는 결제 수단을 자동으로 추천해요.',
+        title: '친절한 안내',
+        description: '각 결제 수단별 이용 방법을 차근차근 안내해 드려요.',
       },
       coverage: {
-        title: '글로벌 커버리지',
-        description: '해외 전자지갑과 카드 결제를 연동해 누구나 쉽게 결제할 수 있도록 준비하고 있어요.',
+        title: '글로벌 준비',
+        description: '해외 전자지갑과 카드 결제를 연동해 전 세계 스티치몬 팬이 쉽게 결제할 수 있도록 준비하고 있어요.',
       },
     },
     sections: {
       krw: {
         title: 'KRW 결제',
-        description: '국내 고객을 위한 즉시 결제 수단이에요.',
+        description: '스티치몬 로드샵 원화 주문을 위한 즉시 결제 수단이에요.',
       },
       global: {
         title: 'GLOBAL 결제',
-        description: '해외 고객을 위한 결제 옵션을 확장하고 있어요.',
+        description: '해외 스티치몬 고객을 위한 결제 옵션을 확장하고 있어요.',
       },
     },
     status: {
@@ -123,7 +123,7 @@ const messages: Record<Locale, Messages> = {
       preparing: '곧 만나보실 수 있도록 열심히 준비하고 있어요.',
     },
     footer: {
-      message: '© {year} Road Shop Pay. 길거리 상점을 위한 최고의 결제 파트너가 될게요.',
+      message: '© {year} 스티치몬 로드샵. 공식 온라인 결제 센터입니다.',
     },
     language: {
       label: '언어',
@@ -149,34 +149,34 @@ const messages: Record<Locale, Messages> = {
   },
   ja: {
     hero: {
-      kicker: 'Road Shop Pay',
-      title: 'QRコードひとつでお好みの支払いを',
-      badge: '店頭サポート中',
+      kicker: 'スティッチモン ロードショップ',
+      title: 'スティッチモンのご注文をお好みの方法で決済',
+      badge: '公式オンライン決済',
       description:
-        '屋台やストリートショップでQRコードを読み取ると、Road Shop Payが最適な決済方法を案内します。KRW決済はすでにKakaoPayに対応しており、海外からのお客様向けの手段も順次追加予定です。',
+        'ここはスティッチモン ロードショップの公式オンライン決済ページです。現在はKRW決済にKakaoPayをご利用いただけ、海外のファン向けの手段も順次追加予定です。',
     },
     highlights: {
       instant: {
-        title: '即時チェックアウト',
-        description: 'QRを読み取ればKakaoPayで素早くウォン決済できます。',
+        title: '即時確認',
+        description: 'KakaoPayでスティッチモンのご注文を数秒で決済し、その場で確認できます。',
       },
       guidance: {
-        title: '最適な案内',
-        description: 'お客様の言語と通貨に合わせた決済方法をおすすめします。',
+        title: 'わかりやすい案内',
+        description: '利用可能な各決済方法をステップごとにご案内します。',
       },
       coverage: {
-        title: 'グローバル対応',
-        description: '海外電子ウォレットやカード決済を順次追加し、誰でも簡単に支払えるようにします。',
+        title: 'グローバル展開',
+        description: '海外電子ウォレットやカード決済を順次追加し、世界のスティッチモンファンが安心して決済できるようにします。',
       },
     },
     sections: {
       krw: {
         title: 'KRW 決済',
-        description: '国内のお客様向けの即時決済です。',
+        description: 'スティッチモン ロードショップのKRWご注文向け即時決済です。',
       },
       global: {
         title: 'グローバル決済',
-        description: '海外からのお客様向けのオプションを拡充しています。',
+        description: '海外のスティッチモンファン向けのオプションを拡充しています。',
       },
     },
     status: {
@@ -187,7 +187,7 @@ const messages: Record<Locale, Messages> = {
       preparing: 'まもなくご利用いただけるよう準備を進めています。',
     },
     footer: {
-      message: '© {year} Road Shop Pay. すべての旅行者を迎えられるよう街の店舗を支援します。',
+      message: '© {year} スティッチモン ロードショップ。公式オンライン決済センターです。',
     },
     language: {
       label: '言語',
@@ -213,34 +213,34 @@ const messages: Record<Locale, Messages> = {
   },
   zh: {
     hero: {
-      kicker: 'Road Shop Pay',
-      title: '一个二维码随心支付',
-      badge: '现场支付支持中',
+      kicker: 'Stitchmon 路店',
+      title: '用你喜欢的方式支付 Stitchmon 订单',
+      badge: '官方在线结账',
       description:
-        '在街头商店扫描二维码，Road Shop Pay 会为你指引最快速、最合适的结账方式。国内的 KakaoPay 已能立即使用，我们也在为来自世界各地的访客上线更多支付选项。',
+        '这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 KakaoPay 完成韩元订单，我们也在为全球的 Stitchmon 粉丝上线更多友好的支付选项。',
     },
     highlights: {
       instant: {
-        title: '即时结账',
-        description: '扫描二维码后即可跳转到 KakaoPay，迅速完成韩元支付。',
+        title: '即时确认',
+        description: '通过 KakaoPay 几秒内完成 Stitchmon 路店订单并立即确认。',
       },
       guidance: {
-        title: '贴心指引',
-        description: '我们会根据你的语言与货币推荐最合适的支付方式。',
+        title: '清晰指引',
+        description: '为 Stitchmon 订单的每种支付方式提供逐步说明。',
       },
       coverage: {
-        title: '全球覆盖',
-        description: '国际电子钱包和银行卡即将上线，让每位旅客都能轻松付款。',
+        title: '全球规划',
+        description: '我们正引入国际电子钱包和银行卡，让全球 Stitchmon 粉丝都能轻松付款。',
       },
     },
     sections: {
       krw: {
         title: '韩元支付',
-        description: '为本地顾客提供的即时支付选项。',
+        description: '适用于 Stitchmon 路店韩元订单的即时支付选项。',
       },
       global: {
         title: '全球支付',
-        description: '为海外访客持续扩展的支付选择。',
+        description: '不断扩展，满足全球 Stitchmon 粉丝的支付需求。',
       },
     },
     status: {
@@ -251,7 +251,7 @@ const messages: Record<Locale, Messages> = {
       preparing: '我们正在全力准备，敬请期待。',
     },
     footer: {
-      message: '© {year} Road Shop Pay. 让街头商贩都能欢迎每一位旅客。',
+      message: '© {year} Stitchmon 路店。官方在线支付中心。',
     },
     language: {
       label: '语言',
