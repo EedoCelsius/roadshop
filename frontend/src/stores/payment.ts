@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import alipayIcon from '@imgs/alipay.svg'
 import kakaopayIcon from '@imgs/kakaopay.svg'
 import mastercardIcon from '@imgs/mastercard.svg'
+import naverpayIcon from '@imgs/naverpay.svg'
 import paypalIcon from '@imgs/paypal.svg'
 import unionpayIcon from '@imgs/unionpay.svg'
 import visaIcon from '@imgs/visacard.svg'
@@ -45,6 +46,9 @@ export const usePaymentStore = defineStore('payment', () => {
       currency: 'KRW',
       provider: 'Naver Financial',
       status: 'coming-soon',
+      icons: [
+        { src: naverpayIcon, alt: 'Naver Pay logo' },
+      ],
     },
     {
       id: 'alipay-plus',
