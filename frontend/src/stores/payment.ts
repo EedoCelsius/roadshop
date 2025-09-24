@@ -60,7 +60,6 @@ export const usePaymentStore = defineStore('payment', () => {
       status: 'coming-soon',
       icons: [
         { src: alipayIcon, alt: 'Alipay+ logo' },
-        { src: unionpayIcon, alt: 'UnionPay logo' },
       ],
     },
     {
@@ -75,8 +74,8 @@ export const usePaymentStore = defineStore('payment', () => {
       ],
     },
     {
-      id: 'visa-mastercard',
-      name: 'Visa / Mastercard',
+      id: 'visa-mastercard-unionpay',
+      name: 'Visa / Mastercard / UnionPay',
       description: 'Worldwide card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       currency: 'GLOBAL',
       provider: 'Global Networks',
@@ -84,6 +83,7 @@ export const usePaymentStore = defineStore('payment', () => {
       icons: [
         { src: visaIcon, alt: 'Visa logo' },
         { src: mastercardIcon, alt: 'Mastercard logo' },
+        { src: unionpayIcon, alt: 'UnionPay logo' },
       ],
     },
   ])
