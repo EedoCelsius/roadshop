@@ -9,7 +9,7 @@ import paypalIcon from '@imgs/paypal.svg'
 import unionpayIcon from '@imgs/unionpay.svg'
 import visaIcon from '@imgs/visacard.svg'
 
-type PaymentMethod = {
+export type PaymentMethod = {
   id: string
   name: string
   description: string
@@ -23,6 +23,8 @@ type PaymentMethod = {
     alt: string
   }>
 }
+
+export type PaymentCurrency = PaymentMethod['currency']
 
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
@@ -51,15 +53,15 @@ export const usePaymentStore = defineStore('payment', () => {
       ],
     },
     {
-      id: 'alipay-plus',
-      name: 'Alipay+',
+      id: 'alipay',
+      name: 'Alipay',
       description:
-        'We plan to connect major global e-wallets through Alipay+ so travellers can pay with the wallet they already use.',
+        'We plan to connect major global e-wallets through Alipay so travellers can pay with the wallet they already use.',
       currency: 'GLOBAL',
       provider: 'Ant Group',
       status: 'coming-soon',
       icons: [
-        { src: alipayIcon, alt: 'Alipay+ logo' },
+        { src: alipayIcon, alt: 'Alipay logo' },
       ],
     },
     {
@@ -74,8 +76,8 @@ export const usePaymentStore = defineStore('payment', () => {
       ],
     },
     {
-      id: 'visa-mastercard-unionpay',
-      name: 'Visa / Mastercard / UnionPay',
+      id: 'credit-card',
+      name: 'Credit Card',
       description: 'Worldwide card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       currency: 'GLOBAL',
       provider: 'Global Networks',
@@ -88,12 +90,21 @@ export const usePaymentStore = defineStore('payment', () => {
     },
   ])
 
-  const krwMethods = computed(() => methods.value.filter((method) => method.currency === 'KRW'))
-  const globalMethods = computed(() => methods.value.filter((method) => method.currency === 'GLOBAL'))
+  const methodsByCurrency = computed(() => {
+    const grouped: Record<PaymentCurrency, PaymentMethod[]> = {
+      KRW: [],
+      GLOBAL: [],
+    }
+
+    methods.value.forEach((method) => {
+      grouped[method.currency].push(method)
+    })
+
+    return grouped
+  })
 
   return {
     methods,
-    krwMethods,
-    globalMethods,
+    methodsByCurrency,
   }
 })

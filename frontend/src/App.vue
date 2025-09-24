@@ -2,32 +2,44 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import PaymentOptionCard from './components/PaymentOptionCard.vue'
+import { getPaymentLayoutConfig } from './config/paymentLayout'
 import { usePaymentStore } from './stores/payment'
 import { type Locale, useI18nStore } from './stores/i18n'
 
 const paymentStore = usePaymentStore()
-const { krwMethods, globalMethods } = storeToRefs(paymentStore)
+const { methodsByCurrency } = storeToRefs(paymentStore)
 
 const i18nStore = useI18nStore()
 const { locale, availableLocales } = storeToRefs(i18nStore)
 
-const localizedKrwMethods = computed(() =>
-  krwMethods.value.map((method) => ({
-    ...method,
-    description: i18nStore.t(`payment.${method.id}.description`, method.description),
-    cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
-    provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
-  })),
-)
+const localizedSections = computed(() => {
+  const layoutConfig = getPaymentLayoutConfig(locale.value)
 
-const localizedGlobalMethods = computed(() =>
-  globalMethods.value.map((method) => ({
-    ...method,
-    description: i18nStore.t(`payment.${method.id}.description`, method.description),
-    cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
-    provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
-  })),
-)
+  return layoutConfig.sectionOrder.map((currency) => {
+    const methods = [...methodsByCurrency.value[currency]]
+    const orderedIds = layoutConfig.methodOrder?.[currency]
+
+    if (orderedIds) {
+      const fallbackIndex = Number.MAX_SAFE_INTEGER
+      methods.sort((a, b) => {
+        const aIndex = orderedIds.indexOf(a.id)
+        const bIndex = orderedIds.indexOf(b.id)
+
+        return (aIndex === -1 ? fallbackIndex : aIndex) - (bIndex === -1 ? fallbackIndex : bIndex)
+      })
+    }
+
+    return {
+      currency,
+      methods: methods.map((method) => ({
+        ...method,
+        description: i18nStore.t(`payment.${method.id}.description`, method.description),
+        cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
+        provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
+      })),
+    }
+  })
+})
 
 const currentYear = new Date().getFullYear().toString()
 
@@ -97,34 +109,22 @@ const onLocaleChange = (event: Event) => {
     </header>
 
     <main class="mx-auto mt-16 w-full max-w-5xl flex-1 px-6 pb-24">
-      <section class="flex flex-col gap-6">
+      <section
+        v-for="(section, index) in localizedSections"
+        :key="section.currency"
+        :class="['flex flex-col gap-6', index > 0 ? 'mt-16' : '']"
+      >
         <div class="flex flex-col gap-2">
-          <h2 class="text-2xl font-semibold text-roadshop-primary">{{ i18nStore.t('sections.krw.title') }}</h2>
-          <p class="text-sm text-slate-500">{{ i18nStore.t('sections.krw.description') }}</p>
+          <h2 class="text-2xl font-semibold text-roadshop-primary">
+            {{ i18nStore.t(`sections.${section.currency.toLowerCase()}.title`) }}
+          </h2>
+          <p class="text-sm text-slate-500">
+            {{ i18nStore.t(`sections.${section.currency.toLowerCase()}.description`) }}
+          </p>
         </div>
         <div class="grid gap-6 md:grid-cols-2">
           <PaymentOptionCard
-            v-for="method in localizedKrwMethods"
-            :key="method.id"
-            :name="method.name"
-            :description="method.description"
-            :provider="method.provider"
-            :status="method.status"
-            :cta="method.cta"
-            :url="method.url"
-            :icons="method.icons"
-          />
-        </div>
-      </section>
-
-      <section class="mt-16 flex flex-col gap-6">
-        <div class="flex flex-col gap-2">
-          <h2 class="text-2xl font-semibold text-roadshop-primary">{{ i18nStore.t('sections.global.title') }}</h2>
-          <p class="text-sm text-slate-500">{{ i18nStore.t('sections.global.description') }}</p>
-        </div>
-        <div class="grid gap-6 md:grid-cols-2">
-          <PaymentOptionCard
-            v-for="method in localizedGlobalMethods"
+            v-for="method in section.methods"
             :key="method.id"
             :name="method.name"
             :description="method.description"
