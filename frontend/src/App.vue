@@ -1,0 +1,145 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import PaymentOptionCard from './components/PaymentOptionCard.vue'
+import { usePaymentStore } from './stores/payment'
+import { type Locale, useI18nStore } from './stores/i18n'
+
+const paymentStore = usePaymentStore()
+const { krwMethods, globalMethods } = storeToRefs(paymentStore)
+
+const i18nStore = useI18nStore()
+const { locale, availableLocales } = storeToRefs(i18nStore)
+
+const localizedKrwMethods = computed(() =>
+  krwMethods.value.map((method) => ({
+    ...method,
+    description: i18nStore.t(`payment.${method.id}.description`, method.description),
+    cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
+    provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
+  })),
+)
+
+const localizedGlobalMethods = computed(() =>
+  globalMethods.value.map((method) => ({
+    ...method,
+    description: i18nStore.t(`payment.${method.id}.description`, method.description),
+    cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
+    provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
+  })),
+)
+
+const currentYear = new Date().getFullYear().toString()
+
+const footerCopy = computed(() => i18nStore.t('footer.message').replace('{year}', currentYear))
+
+const formatLocaleLabel = (option: { label: string; nativeLabel: string }) =>
+  option.label === option.nativeLabel ? option.label : `${option.label} · ${option.nativeLabel}`
+
+const onLocaleChange = (event: Event) => {
+  const target = event.target as HTMLSelectElement
+  i18nStore.setLocale(target.value as Locale)
+}
+</script>
+
+<template>
+  <div class="flex min-h-screen flex-col bg-gradient-to-b from-white via-roadshop-highlight to-white">
+    <header class="mx-auto w-full max-w-5xl px-6 pt-16">
+      <div class="flex flex-col gap-8 rounded-3xl bg-white/80 p-10 shadow-lg backdrop-blur">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-roadshop-accent">
+              {{ i18nStore.t('hero.kicker') }}
+            </p>
+            <h1 class="mt-3 text-4xl font-bold text-roadshop-primary md:text-5xl">
+              {{ i18nStore.t('hero.title') }}
+            </h1>
+          </div>
+          <div class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+            <div class="flex items-center gap-3 rounded-full bg-roadshop-primary px-4 py-2 text-sm text-white shadow">
+              <span class="inline-block h-2 w-2 rounded-full bg-emerald-400"></span>
+              <span>{{ i18nStore.t('hero.badge') }}</span>
+            </div>
+            <label
+              class="flex items-center gap-3 rounded-full border border-roadshop-primary/10 bg-white/70 px-4 py-2 text-xs font-semibold text-roadshop-primary shadow-sm backdrop-blur"
+            >
+              <span class="tracking-[0.2em] text-roadshop-accent">{{ i18nStore.t('language.label') }}</span>
+              <select
+                class="min-w-[8rem] appearance-none bg-transparent text-sm font-medium text-roadshop-primary focus:outline-none"
+                :value="locale"
+                @change="onLocaleChange"
+              >
+                <option v-for="option in availableLocales" :key="option.code" :value="option.code">
+                  {{ formatLocaleLabel(option) }}
+                </option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <p class="max-w-3xl text-lg leading-relaxed text-slate-600">
+          {{ i18nStore.t('hero.description') }}
+        </p>
+        <div class="grid gap-4 text-sm text-slate-500 md:grid-cols-3">
+          <div class="rounded-2xl bg-roadshop-highlight/80 p-4">
+            <p class="font-semibold text-roadshop-primary">{{ i18nStore.t('highlights.instant.title') }}</p>
+            <p>{{ i18nStore.t('highlights.instant.description') }}</p>
+          </div>
+          <div class="rounded-2xl bg-roadshop-highlight/80 p-4">
+            <p class="font-semibold text-roadshop-primary">{{ i18nStore.t('highlights.guidance.title') }}</p>
+            <p>{{ i18nStore.t('highlights.guidance.description') }}</p>
+          </div>
+          <div class="rounded-2xl bg-roadshop-highlight/80 p-4">
+            <p class="font-semibold text-roadshop-primary">{{ i18nStore.t('highlights.coverage.title') }}</p>
+            <p>{{ i18nStore.t('highlights.coverage.description') }}</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto mt-16 w-full max-w-5xl flex-1 px-6 pb-24">
+      <section class="flex flex-col gap-6">
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-semibold text-roadshop-primary">{{ i18nStore.t('sections.krw.title') }}</h2>
+          <p class="text-sm text-slate-500">{{ i18nStore.t('sections.krw.description') }}</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2">
+          <PaymentOptionCard
+            v-for="method in localizedKrwMethods"
+            :key="method.id"
+            :name="method.name"
+            :description="method.description"
+            :provider="method.provider"
+            :status="method.status"
+            :cta="method.cta"
+            :url="method.url"
+            :icons="method.icons"
+          />
+        </div>
+      </section>
+
+      <section class="mt-16 flex flex-col gap-6">
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-semibold text-roadshop-primary">{{ i18nStore.t('sections.global.title') }}</h2>
+          <p class="text-sm text-slate-500">{{ i18nStore.t('sections.global.description') }}</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2">
+          <PaymentOptionCard
+            v-for="method in localizedGlobalMethods"
+            :key="method.id"
+            :name="method.name"
+            :description="method.description"
+            :provider="method.provider"
+            :status="method.status"
+            :cta="method.cta"
+            :url="method.url"
+            :icons="method.icons"
+          />
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white/90 py-6 text-center text-xs text-slate-500">
+      {{ footerCopy }}
+    </footer>
+  </div>
+</template>
