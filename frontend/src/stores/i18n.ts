@@ -68,14 +68,14 @@ const messages: Record<Locale, Messages> = {
       'naverpay-qr': {
         description: 'We are preparing Naver Pay so you can pay with your points on the spot.',
       },
-      'alipay-plus': {
+      alipay: {
         description:
-          'We plan to connect major global e-wallets through Alipay+ so travellers can pay with the wallet they already use.',
+          'We plan to connect major global e-wallets through Alipay so travellers can pay with the wallet they already use.',
       },
       paypal: {
         description: 'Soon you will be able to complete your purchase with the PayPal account you already trust.',
       },
-      'visa-mastercard-unionpay': {
+      'credit-card': {
         description:
           'Visa, Mastercard, and UnionPay card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       },
@@ -134,13 +134,13 @@ const messages: Record<Locale, Messages> = {
       'naverpay-qr': {
         description: '현장에서도 네이버페이 포인트로 간편하게 결제할 수 있도록 준비 중이에요.',
       },
-      'alipay-plus': {
+      alipay: {
         description: '하나의 지갑으로 글로벌 주요 전자지갑을 연결해 결제를 지원할 계획이에요.',
       },
       paypal: {
         description: '글로벌 고객이 익숙한 PayPal 계정을 통해 손쉽게 결제할 수 있도록 준비하고 있어요.',
       },
-      'visa-mastercard-unionpay': {
+      'credit-card': {
         description: 'Visa, Mastercard, UnionPay 등 전 세계 카드 결제를 곧 제공할게요.',
       },
     },
@@ -198,13 +198,13 @@ const messages: Record<Locale, Messages> = {
       'naverpay-qr': {
         description: 'Naver Payでもその場でポイント決済できるよう準備中です。',
       },
-      'alipay-plus': {
-        description: 'Alipay+を通じて主要な海外電子ウォレットを連携し、いつものウォレットで支払えるようにします。',
+      alipay: {
+        description: 'Alipayを通じて主要な海外電子ウォレットを連携し、いつものウォレットで支払えるようにします。',
       },
       paypal: {
         description: '普段使いのPayPalアカウントで決済できるよう近日対応予定です。',
       },
-      'visa-mastercard-unionpay': {
+      'credit-card': {
         description: 'Visa・Mastercard・UnionPayなどの世界的なカード決済に近日対応します。',
       },
     },
@@ -262,13 +262,13 @@ const messages: Record<Locale, Messages> = {
       'naverpay-qr': {
         description: '我们正在筹备 Naver Pay，让你当场即可使用积分付款。',
       },
-      'alipay-plus': {
-        description: '我们计划通过 Alipay+ 接入主要的全球电子钱包，让旅客可以用熟悉的钱包付款。',
+      alipay: {
+        description: '我们计划通过 Alipay 接入主要的全球电子钱包，让旅客可以用熟悉的钱包付款。',
       },
       paypal: {
         description: '你很快就能用熟悉的 PayPal 账户轻松完成购买。',
       },
-      'visa-mastercard-unionpay': {
+      'credit-card': {
         description: '我们即将上线 Visa、Mastercard、UnionPay 等全球银行卡支付，让你随时享受熟悉的结账体验。',
       },
     },
