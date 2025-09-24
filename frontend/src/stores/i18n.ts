@@ -5,6 +5,7 @@ export const LOCALES = [
   { code: 'en', label: 'English', nativeLabel: 'English' },
   { code: 'ko', label: 'Korean', nativeLabel: '한국어' },
   { code: 'ja', label: 'Japanese', nativeLabel: '日本語' },
+  { code: 'zh', label: 'Chinese', nativeLabel: '中文' },
 ] as const
 
 export type Locale = (typeof LOCALES)[number]['code']
@@ -204,6 +205,70 @@ const messages: Record<Locale, Messages> = {
       },
       'visa-mastercard': {
         description: '世界中で利用できるカード決済を追加し、どこでも慣れ親しんだチェックアウトを提供します。',
+      },
+    },
+  },
+  zh: {
+    hero: {
+      kicker: 'Road Shop Pay',
+      title: '一个二维码随心支付',
+      badge: '现场支付支持中',
+      description:
+        '在街头商店扫描二维码，Road Shop Pay 会为你指引最快速、最合适的结账方式。国内的 KakaoPay 已能立即使用，我们也在为来自世界各地的访客上线更多支付选项。',
+    },
+    highlights: {
+      instant: {
+        title: '即时结账',
+        description: '扫描二维码后即可跳转到 KakaoPay，迅速完成韩元支付。',
+      },
+      guidance: {
+        title: '贴心指引',
+        description: '我们会根据你的语言与货币推荐最合适的支付方式。',
+      },
+      coverage: {
+        title: '全球覆盖',
+        description: '国际电子钱包和银行卡即将上线，让每位旅客都能轻松付款。',
+      },
+    },
+    sections: {
+      krw: {
+        title: '韩元支付',
+        description: '为本地顾客提供的即时支付选项。',
+      },
+      global: {
+        title: '全球支付',
+        description: '为海外访客持续扩展的支付选择。',
+      },
+    },
+    status: {
+      available: '立即可用',
+      comingSoon: '即将推出',
+    },
+    card: {
+      preparing: '我们正在全力准备，敬请期待。',
+    },
+    footer: {
+      message: '© {year} Road Shop Pay. 让街头商贩都能欢迎每一位旅客。',
+    },
+    language: {
+      label: '语言',
+    },
+    payment: {
+      'kakaopay-qr': {
+        description: '使用 KakaoTalk 扫描二维码，数秒内完成结账。',
+        cta: '打开 KakaoPay',
+      },
+      'naverpay-qr': {
+        description: '我们正在筹备 Naver Pay，让你当场即可使用积分付款。',
+      },
+      'alipay-plus': {
+        description: '我们计划通过 Alipay+ 接入主要的全球电子钱包，让旅客可以用熟悉的钱包付款。',
+      },
+      paypal: {
+        description: '你很快就能用熟悉的 PayPal 账户轻松完成购买。',
+      },
+      'visa-mastercard': {
+        description: '全球银行卡支付已在规划中，让你在任何地方都能享受熟悉的结账体验。',
       },
     },
   },
