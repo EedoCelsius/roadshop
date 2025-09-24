@@ -26,7 +26,7 @@ const LOCALE_CONFIGS: Partial<Record<Locale, PaymentLayoutConfig>> = {
   zh: {
     sectionOrder: ['GLOBAL', 'KRW'],
     methodOrder: {
-      GLOBAL: ['alipay'],
+      GLOBAL: ['alipay', 'credit-card', 'paypal'],
     },
   },
 }
