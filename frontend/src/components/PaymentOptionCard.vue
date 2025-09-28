@@ -63,7 +63,7 @@ watch(
     if (icons && icons.length > 1) {
       rotationTimer = setInterval(() => {
         activeIconIndex.value = (activeIconIndex.value + 1) % icons.length
-      }, 3000)
+      }, 2500)
     }
   },
   { immediate: true }
