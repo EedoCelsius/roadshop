@@ -16,7 +16,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@imgs': fileURLToPath(new URL('../imgs', import.meta.url)),
+      '@icons': fileURLToPath(new URL('./src/assets/icons', import.meta.url)),
     },
   },
 })
