@@ -302,7 +302,7 @@ const messages: Record<Locale, Messages> = {
         description: '我们正在筹备 Naver Pay，让你当场即可使用积分付款。',
       },
       alipay: {
-        name: '支付宝 (Alipay)',
+        name: '支付宝',
         description: '我们计划通过 Alipay 接入主要的全球电子钱包，让旅客可以用熟悉的钱包付款。',
       },
       paypal: {
