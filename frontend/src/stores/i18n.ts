@@ -98,19 +98,7 @@ const messages: Record<Locale, Messages> = {
       description: 'Select the currency you want to use with {method}.',
       cancel: 'Cancel',
     },
-    transferPopup: {
-      title: 'Bank transfer details',
-      description: 'Send {amountWithCurrency} to one of the accounts below.',
-      copyAll: 'Copy whole details',
-      copyNumber: 'Copy only account number',
-      copied: 'Copied!',
-      close: 'Close',
-    },
     payment: {
-      transfer: {
-        name: 'Bank Transfer',
-        description: 'Pay the KRW amount by bank transfer.',
-      },
       'kakao': {
         name: 'Kakao Transfer',
         description: 'Scan the QR code with KakaoTalk and finish checkout in seconds.',
@@ -220,19 +208,7 @@ const messages: Record<Locale, Messages> = {
       description: '{method}로 사용할 통화를 선택해 주세요.',
       cancel: '닫기',
     },
-    transferPopup: {
-      title: '계좌이체 정보',
-      description: '{amountWithCurrency}을 아래 계좌 중 하나로 이체해 주세요.',
-      copyAll: '전체 정보 복사',
-      copyNumber: '계좌번호만 복사',
-      copied: '복사 완료!',
-      close: '닫기',
-    },
     payment: {
-      transfer: {
-        name: '계좌이체',
-        description: '원화 결제 금액을 계좌이체로 결제하세요.',
-      },
       'kakao': {
         name: '카카오송금',
         description: '카카오톡으로 QR을 스캔하고 빠르게 결제하세요.',
@@ -342,19 +318,7 @@ const messages: Record<Locale, Messages> = {
       description: '{method}で利用する通貨を選んでください。',
       cancel: '閉じる',
     },
-    transferPopup: {
-      title: '口座振込のご案内',
-      description: '下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。',
-      copyAll: 'すべての情報をコピー',
-      copyNumber: '口座番号のみコピー',
-      copied: 'コピーしました！',
-      close: '閉じる',
-    },
     payment: {
-      transfer: {
-        name: '口座振込',
-        description: 'KRWの金額は口座振込でお支払いください。',
-      },
       'kakao': {
         name: 'Kakao送金',
         description: 'QRコードをKakaoTalkで読み取り、数秒で決済を完了できます。',
@@ -460,19 +424,7 @@ const messages: Record<Locale, Messages> = {
       description: '请选择使用 {method} 时的付款货币。',
       cancel: '关闭',
     },
-    transferPopup: {
-      title: '银行转账信息',
-      description: '请向下方任意账户转账 {amountWithCurrency}。',
-      copyAll: '复制全部信息',
-      copyNumber: '仅复制账号',
-      copied: '已复制！',
-      close: '关闭',
-    },
     payment: {
-      transfer: {
-        name: '银行转账',
-        description: '请通过银行转账支付韩元金额。',
-      },
       'kakao': {
         name: 'Kakao 汇款',
         description: '使用 KakaoTalk 扫描二维码，数秒内完成结账。',
