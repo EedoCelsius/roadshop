@@ -5,7 +5,12 @@ import info from '../config/info.json'
 import { useI18nStore } from './i18n'
 import { usePaymentStore, type PaymentMethod } from './payment'
 
-type PopupType = 'not-mobile' | 'not-installed'
+type PopupStateType = 'not-mobile' | 'not-installed'
+
+type PopupState = {
+  type: PopupStateType
+  provider: DeepLinkProvider
+}
 
 type PaymentInfo = {
   toss?: {
@@ -92,46 +97,40 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
   const { isCurrencySelectorOpen, selectedCurrency, selectedMethod } = storeToRefs(paymentStore)
   const i18nStore = useI18nStore()
 
-  const popupType = ref<PopupType | null>(null)
+  const popupState = ref<PopupState | null>(null)
 
-  const isPopupVisible = computed(() => popupType.value !== null)
+  const isPopupVisible = computed(() => popupState.value !== null)
 
   const popupContent = computed(() => {
-    if (!popupType.value) {
+    if (!popupState.value) {
       return null
     }
 
-    if (popupType.value === 'not-mobile') {
-      return {
-        title: i18nStore.t('popups.deepLink.notMobile.title'),
-        message: i18nStore.t('popups.deepLink.notMobile.message'),
-        confirmLabel: i18nStore.t('popups.deepLink.notMobile.confirm'),
-      }
-    }
+    const { type, provider } = popupState.value
 
     return {
-      title: i18nStore.t('popups.deepLink.notInstalled.title'),
-      message: i18nStore.t('popups.deepLink.notInstalled.message'),
-      confirmLabel: i18nStore.t('popups.deepLink.notInstalled.confirm'),
+      title: i18nStore.t(`popups.deepLink.${type}.title`),
+      message: i18nStore.t(`popups.deepLink.${type}.providers.${provider}.message`),
+      confirmLabel: i18nStore.t(`popups.deepLink.${type}.confirm`),
     }
   })
 
   const closePopup = () => {
-    popupType.value = null
+    popupState.value = null
   }
 
-  const showPopup = (type: PopupType) => {
-    popupType.value = type
+  const showPopup = (type: PopupStateType, provider: DeepLinkProvider) => {
+    popupState.value = { type, provider }
   }
 
-  const attemptDeepLinkLaunch = (url: string | null) => {
+  const attemptDeepLinkLaunch = (provider: DeepLinkProvider, url: string | null) => {
     if (!url) {
-      showPopup('not-installed')
+      showPopup('not-installed', provider)
       return
     }
 
-    if (!isMobileDevice() || typeof window === 'undefined' || typeof document === 'undefined') {
-      showPopup('not-mobile')
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      showPopup('not-mobile', provider)
       return
     }
 
@@ -160,7 +159,11 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
     const fallbackTimer = window.setTimeout(() => {
       cleanup()
       if (!didLaunch) {
-        showPopup('not-installed')
+        if (isMobileDevice()) {
+          showPopup('not-installed', provider)
+        } else {
+          showPopup('not-mobile', provider)
+        }
       }
     }, 1500)
 
@@ -184,7 +187,8 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
     }
 
     if (method.deepLinkProvider) {
-      attemptDeepLinkLaunch(resolveDeepLink(method.deepLinkProvider))
+      const provider = method.deepLinkProvider
+      attemptDeepLinkLaunch(provider, resolveDeepLink(provider))
       return
     }
 
@@ -206,7 +210,8 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
     }
 
     if (method.deepLinkProvider) {
-      attemptDeepLinkLaunch(resolveDeepLink(method.deepLinkProvider))
+      const provider = method.deepLinkProvider
+      attemptDeepLinkLaunch(provider, resolveDeepLink(provider))
       return
     }
 
