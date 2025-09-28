@@ -1,6 +1,9 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
+import bankList from '../config/bankList.json'
+import info from '../config/info.json'
+
 import alipayIcon from '@imgs/alipay.svg'
 import kakaotalkIcon from '@imgs/kakaotalk.svg'
 import tossIcon from '@imgs/toss.png'
@@ -31,6 +34,47 @@ export type PaymentMethod = {
 
 export type PaymentCurrency = PaymentMethod['currency']
 
+type BankListEntry = { code: string; name: string }
+
+const banks = (bankList as { banks?: BankListEntry[] }).banks ?? []
+
+const tossInfoRaw = (info as {
+  toss?: {
+    amount?: { krw?: number }
+    account?: Record<string, string>
+  }
+}).toss
+
+const tossInfo = {
+  amount: { krw: tossInfoRaw?.amount?.krw ?? 0 },
+  account: tossInfoRaw?.account ?? {},
+}
+
+const createTossDeepLink = (bankName: string, accountNo: string, amount: number) => {
+  const params = new URLSearchParams({
+    amount: amount.toString(),
+    bank: bankName,
+    accountNo,
+  })
+
+  return `supertoss://send?${params.toString()}`
+}
+
+const resolveTossDeepLink = () => {
+  const [bankName, accountNo] = Object.entries(tossInfo.account ?? {})[0] ?? []
+
+  if (!bankName || !accountNo) {
+    return null
+  }
+
+  const normalizedBankName =
+    banks.find((bank) => bank.name === bankName)?.name ?? bankName
+
+  return createTossDeepLink(normalizedBankName, accountNo.toString(), tossInfo.amount.krw)
+}
+
+const tossDeepLink = resolveTossDeepLink() ?? 'https://toss.me/'
+
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
     {
@@ -42,7 +86,7 @@ export const usePaymentStore = defineStore('payment', () => {
       provider: 'Viva Republica',
       status: 'available',
       cta: 'Open Toss',
-      url: 'https://toss.me/',
+      url: tossDeepLink,
       icons: [
         { src: tossIcon, alt: 'Toss logo' },
       ],
