@@ -50,14 +50,8 @@ const openUrlInNewTab = (url: string | null) => {
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
-const toHexAmount = (value: number) => Math.round(value).toString(16).toUpperCase()
-
 const createTossDeepLink = () => {
   const toss = paymentInfo.toss
-  if (!toss?.amount?.krw || !toss.bankName || !toss.accountNo) {
-    return null
-  }
-
   const params = new URLSearchParams({
     amount: toss.amount.krw.toString(),
     bank: toss.bankName,
@@ -69,14 +63,10 @@ const createTossDeepLink = () => {
 
 const createKakaoDeepLink = () => {
   const kakao = paymentInfo.kakao
-  const amount = kakao?.amount?.krw
-  const personalCode = kakao?.personalCode
+  const amount = kakao.amount.krw
+  const personalCode = kakao.personalCode
 
-  if (!amount || !personalCode) {
-    return null
-  }
-
-  const hexAmount = toHexAmount(amount * 8)
+  const hexAmount = Math.round(amount * 8).toString(16).toUpperCase()
 
   return `kakaotalk://kakaopay/money/to/qr?qr_code=281006011${personalCode}${hexAmount}0000`
 }
