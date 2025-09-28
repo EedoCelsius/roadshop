@@ -13,7 +13,6 @@ import amexIcon from '@icons/methods/amex.svg'
 import unionpayIcon from '@icons/methods/unionpay.svg'
 import visaIcon from '@icons/methods/visacard.svg'
 import jcbIcon from '@icons/methods/jcb.svg'
-import transferIcon from '@icons/methods/transfer.svg'
 
 type DeepLinkProvider = 'toss' | 'kakao'
 
@@ -42,18 +41,6 @@ const banks = (firmList as { banks?: FirmListEntry[] }).banks ?? []
 
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
-    {
-      id: 'transfer',
-      name: 'Bank Transfer',
-      description: 'Transfer the payment amount directly to the Stitchmon account.',
-      currency: 'KRW',
-      supportedCurrencies: ['KRW'],
-      provider: 'Stitchmon Roadshop',
-      status: 'available',
-      icons: [
-        { src: transferIcon, alt: 'Bank transfer icon' },
-      ],
-    },
     {
       id: 'toss',
       name: 'Toss Transfer',

@@ -5,7 +5,6 @@ import PaymentOptionCard from './components/PaymentOptionCard.vue'
 import CurrencySelectorDialog from './components/CurrencySelectorDialog.vue'
 import ActionPopup from './components/ActionPopup.vue'
 import LoadingOverlay from './components/LoadingOverlay.vue'
-import TransferAccountsPopup from './components/TransferAccountsPopup.vue'
 import { getPaymentLayoutConfig } from './config/paymentLayout'
 import { usePaymentStore } from './stores/payment'
 import { usePaymentActionsStore } from './stores/paymentActions'
@@ -17,8 +16,7 @@ const paymentActionsStore = usePaymentActionsStore()
 const { methodsByCurrency, selectedMethodId, selectedMethod, selectedCurrency, isCurrencySelectorOpen } =
   storeToRefs(paymentStore)
 
-const { isPopupVisible, popupContent, isDeepLinkChecking, isTransferPopupVisible, transferAccounts, transferAmount } =
-  storeToRefs(paymentActionsStore)
+const { isPopupVisible, popupContent, isDeepLinkChecking } = storeToRefs(paymentActionsStore)
 
 const { closeCurrencySelector } = paymentStore
 
@@ -83,10 +81,6 @@ const onCloseCurrencySelector = () => {
 
 const onPopupConfirm = () => {
   paymentActionsStore.closePopup()
-}
-
-const onCloseTransferPopup = () => {
-  paymentActionsStore.closeTransferPopup()
 }
 </script>
 
@@ -197,12 +191,6 @@ const onCloseTransferPopup = () => {
       :message="popupContent.message"
       :confirm-label="popupContent.confirmLabel"
       @confirm="onPopupConfirm"
-    />
-    <TransferAccountsPopup
-      :visible="isTransferPopupVisible"
-      :accounts="transferAccounts"
-      :amount="transferAmount"
-      @close="onCloseTransferPopup"
     />
     <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
   </div>
