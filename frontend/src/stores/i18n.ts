@@ -66,16 +66,27 @@ const messages: Record<Locale, Messages> = {
     },
     popups: {
       deepLink: {
-        notMobile: {
-          title: 'Open on your mobile device',
-          message:
-            'This payment link works in the KakaoTalk or Toss app on mobile. Continue on your phone to keep going.',
-          confirm: 'Got it',
+        titles: {
+          notMobile: 'Open on your mobile device',
+          notInstalled: 'App not installed',
         },
-        notInstalled: {
-          title: 'App not installed',
-          message: 'We could not open the payment app. Please check that KakaoTalk or Toss is installed and try again.',
-          confirm: 'OK',
+        confirms: {
+          notMobile: 'Got it',
+          notInstalled: 'OK',
+        },
+        providers: {
+          kakao: {
+            notMobile:
+              'The Kakao Transfer link opens only in the KakaoTalk app on mobile. Please continue on your phone.',
+            notInstalled:
+              "We couldn't open KakaoTalk. Make sure the KakaoTalk app is installed and try again.",
+          },
+          toss: {
+            notMobile:
+              'The Toss Transfer link opens only in the Toss app on mobile. Please continue on your phone.',
+            notInstalled:
+              "We couldn't open the Toss app. Make sure Toss is installed and try again.",
+          },
         },
       },
     },
@@ -164,16 +175,24 @@ const messages: Record<Locale, Messages> = {
     },
     popups: {
       deepLink: {
-        notMobile: {
-          title: '모바일에서만 이용할 수 있어요',
-          message:
-            '이 결제 링크는 모바일 카카오톡 또는 토스 앱에서만 열 수 있어요. 휴대폰에서 다시 시도해 주세요.',
-          confirm: '확인',
+        titles: {
+          notMobile: '모바일에서만 이용할 수 있어요',
+          notInstalled: '앱이 설치되어 있지 않아요',
         },
-        notInstalled: {
-          title: '앱이 설치되어 있지 않아요',
-          message: '결제 앱을 열 수 없었어요. 카카오톡 또는 토스 앱 설치 여부를 확인하고 다시 시도해 주세요.',
-          confirm: '확인',
+        confirms: {
+          notMobile: '확인',
+          notInstalled: '확인',
+        },
+        providers: {
+          kakao: {
+            notMobile: '카카오송금 링크는 모바일 카카오톡 앱에서만 열 수 있어요. 휴대폰에서 다시 시도해 주세요.',
+            notInstalled:
+              '카카오톡 앱을 열 수 없었어요. 카카오톡 설치 여부를 확인한 뒤 다시 시도해 주세요.',
+          },
+          toss: {
+            notMobile: '토스송금 링크는 모바일 토스 앱에서만 열 수 있어요. 휴대폰에서 다시 시도해 주세요.',
+            notInstalled: '토스 앱을 열 수 없었어요. 토스 앱 설치 여부를 확인한 뒤 다시 시도해 주세요.',
+          },
         },
       },
     },
@@ -260,16 +279,27 @@ const messages: Record<Locale, Messages> = {
     },
     popups: {
       deepLink: {
-        notMobile: {
-          title: 'モバイル専用です',
-          message:
-            'この決済リンクはモバイルのKakaoTalkまたはTossアプリでのみ開けます。スマートフォンでお試しください。',
-          confirm: '了解',
+        titles: {
+          notMobile: 'モバイル専用です',
+          notInstalled: 'アプリが見つかりません',
         },
-        notInstalled: {
-          title: 'アプリが見つかりません',
-          message: '決済アプリを開けませんでした。KakaoTalkまたはTossアプリがインストールされているか確認して再試行してください。',
-          confirm: 'OK',
+        confirms: {
+          notMobile: '了解',
+          notInstalled: 'OK',
+        },
+        providers: {
+          kakao: {
+            notMobile:
+              'Kakao送金リンクはモバイル版KakaoTalkアプリでのみ開けます。スマートフォンで再度お試しください。',
+            notInstalled:
+              'KakaoTalkアプリを開けませんでした。インストール状況を確認してからもう一度お試しください。',
+          },
+          toss: {
+            notMobile:
+              'Toss送金リンクはモバイル版Tossアプリでのみ開けます。スマートフォンで再度お試しください。',
+            notInstalled:
+              'Tossアプリを開けませんでした。インストール状況を確認してからもう一度お試しください。',
+          },
         },
       },
     },
@@ -356,15 +386,23 @@ const messages: Record<Locale, Messages> = {
     },
     popups: {
       deepLink: {
-        notMobile: {
-          title: '仅限移动设备使用',
-          message: '此付款链接只能在手机上的 KakaoTalk 或 Toss 应用中打开。请在手机上继续操作。',
-          confirm: '知道了',
+        titles: {
+          notMobile: '仅限移动设备使用',
+          notInstalled: '未检测到应用',
         },
-        notInstalled: {
-          title: '未检测到应用',
-          message: '无法打开付款应用。请确认已安装 KakaoTalk 或 Toss 应用后再试一次。',
-          confirm: '好的',
+        confirms: {
+          notMobile: '知道了',
+          notInstalled: '好的',
+        },
+        providers: {
+          kakao: {
+            notMobile: 'Kakao 汇款链接只能在手机上的 KakaoTalk 应用中打开。请在手机上重试。',
+            notInstalled: '无法打开 KakaoTalk。请确认已安装 KakaoTalk 后再试一次。',
+          },
+          toss: {
+            notMobile: 'Toss 转账链接只能在手机上的 Toss 应用中打开。请在手机上重试。',
+            notInstalled: '无法打开 Toss 应用。请确认已安装 Toss 后再试一次。',
+          },
         },
       },
     },
