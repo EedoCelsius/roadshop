@@ -1,6 +1,9 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
+import bankList from '../config/bankList.json'
+import info from '../config/info.json'
+
 import alipayIcon from '@imgs/alipay.svg'
 import kakaotalkIcon from '@imgs/kakaotalk.svg'
 import tossIcon from '@imgs/toss.png'
@@ -31,6 +34,20 @@ export type PaymentMethod = {
 
 export type PaymentCurrency = PaymentMethod['currency']
 
+type BankListEntry = { code: string; name: string }
+
+const banks = (bankList as { banks?: BankListEntry[] }).banks ?? []
+
+const resolveTossDeepLink = () => {
+  const params = new URLSearchParams({
+    amount: info.toss.amount.krw,
+    bank: info.toss.bankName,
+    accountNo: info.toss.accountNo,
+  })
+
+  return `supertoss://send?${params.toString()}`
+}
+
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
     {
@@ -42,7 +59,7 @@ export const usePaymentStore = defineStore('payment', () => {
       provider: 'Viva Republica',
       status: 'available',
       cta: 'Open Toss',
-      url: 'https://toss.me/',
+      url: resolveTossDeepLink(),
       icons: [
         { src: tossIcon, alt: 'Toss logo' },
       ],
