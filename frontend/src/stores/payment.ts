@@ -6,6 +6,7 @@ import kakaopayIcon from '@imgs/kakaopay.svg'
 import mastercardIcon from '@imgs/mastercard.svg'
 import naverpayIcon from '@imgs/naverpay.svg'
 import paypalIcon from '@imgs/paypal.svg'
+import amexIcon from '@imgs/amex.svg'
 import unionpayIcon from '@imgs/unionpay.svg'
 import visaIcon from '@imgs/visacard.svg'
 
@@ -86,6 +87,7 @@ export const usePaymentStore = defineStore('payment', () => {
         { src: visaIcon, alt: 'Visa logo' },
         { src: mastercardIcon, alt: 'Mastercard logo' },
         { src: unionpayIcon, alt: 'UnionPay logo' },
+        { src: amexIcon, alt: 'American Express logo' },
       ],
     },
   ])
