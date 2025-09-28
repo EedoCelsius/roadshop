@@ -32,19 +32,6 @@ export type PaymentCurrency = PaymentMethod['currency']
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
     {
-      id: 'kakaopay-qr',
-      name: 'Kakao Transfer',
-      description: 'Scan the QR code with KakaoTalk and finish checkout in seconds.',
-      currency: 'KRW',
-      provider: 'KakaoBank Corp.',
-      status: 'available',
-      cta: 'Open Kakao Transfer',
-      url: 'https://qr.kakaopay.com/',
-      icons: [
-        { src: kakaotalkIcon, alt: 'KakaoTalk logo' },
-      ],
-    },
-    {
       id: 'toss-transfer',
       name: 'Toss Transfer',
       description: 'Send your payment instantly with Toss for immediate confirmation.',
@@ -55,6 +42,19 @@ export const usePaymentStore = defineStore('payment', () => {
       url: 'https://toss.me/',
       icons: [
         { src: tossIcon, alt: 'Toss logo' },
+      ],
+    },
+    {
+      id: 'kakaopay-qr',
+      name: 'Kakao Transfer',
+      description: 'Scan the QR code with KakaoTalk and finish checkout in seconds.',
+      currency: 'KRW',
+      provider: 'KakaoBank Corp.',
+      status: 'available',
+      cta: 'Open Kakao Transfer',
+      url: 'https://qr.kakaopay.com/',
+      icons: [
+        { src: kakaotalkIcon, alt: 'KakaoTalk logo' },
       ],
     },
     {
