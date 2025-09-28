@@ -87,6 +87,8 @@ const resolveDeepLink = (provider: DeepLinkProvider) => {
       return createTossDeepLink()
     case 'kakao':
       return createKakaoDeepLink()
+    default:
+      throw new Error(`Unknown provider: ${provider}`);
   }
 }
 
