@@ -135,59 +135,36 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
 
   const attemptDeepLinkLaunch = (provider: DeepLinkProvider) => {
     const url = resolveDeepLink(provider)
-
-    if (!url) {
-      showPopup('not-installed', provider)
-      return
-    }
-
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      showPopup('not-mobile', provider)
-      return
-    }
-
-    if (!isMobileDevice() && popupState.value?.type !== 'not-mobile') {
+    
+    if (!isMobileDevice()) {
       showPopup('not-mobile', provider)
     }
 
     let didLaunch = false
-
     isDeepLinkChecking.value = true
-
-    const cleanup = () => {
-      window.removeEventListener('blur', handleBlur)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      if (fallbackTimer) {
-        clearTimeout(fallbackTimer)
-      }
-      isDeepLinkChecking.value = false
-    }
 
     const handleBlur = () => {
       didLaunch = true
-      cleanup()
     }
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
         didLaunch = true
-        cleanup()
       }
     }
 
-    const fallbackTimer = window.setTimeout(() => {
-      cleanup()
-      if (!didLaunch) {
-        if (isMobileDevice()) {
-          showPopup('not-installed', provider)
-        } else if (popupState.value?.type !== 'not-mobile') {
-          showPopup('not-mobile', provider)
-        }
-      }
-    }, 1500)
-
     window.addEventListener('blur', handleBlur)
     document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    window.setTimeout(() => {
+      window.removeEventListener('blur', handleBlur)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      isDeepLinkChecking.value = false
+      
+      if (!didLaunch && isMobileDevice()) {
+        showPopup('not-installed', provider)
+      }
+    }, 1500)
 
     window.location.href = url
   }
