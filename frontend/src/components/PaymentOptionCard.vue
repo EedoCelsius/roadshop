@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useI18nStore } from '../stores/i18n'
 
@@ -32,6 +32,46 @@ const statusMeta = computed(() => ({
 }))
 
 const preparingCopy = computed(() => i18nStore.t('card.preparing'))
+
+const activeIconIndex = ref(0)
+
+const activeIcon = computed(() => {
+  if (!props.icons?.length) {
+    return null
+  }
+
+  const normalizedIndex = activeIconIndex.value % props.icons.length
+
+  return props.icons[normalizedIndex]
+})
+
+let rotationTimer: ReturnType<typeof setInterval> | undefined
+
+const stopRotation = () => {
+  if (rotationTimer) {
+    clearInterval(rotationTimer)
+    rotationTimer = undefined
+  }
+}
+
+watch(
+  () => props.icons,
+  (icons) => {
+    activeIconIndex.value = 0
+    stopRotation()
+
+    if (icons && icons.length > 1) {
+      rotationTimer = setInterval(() => {
+        activeIconIndex.value = (activeIconIndex.value + 1) % icons.length
+      }, 4000)
+    }
+  },
+  { immediate: true }
+)
+
+onBeforeUnmount(() => {
+  stopRotation()
+})
 </script>
 
 <template>
@@ -39,35 +79,30 @@ const preparingCopy = computed(() => i18nStore.t('card.preparing'))
     class="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg"
   >
     <div class="flex items-start justify-between gap-4">
-      <div class="flex-1">
-        <h3 class="text-xl font-semibold text-roadshop-primary">
-          {{ props.name }}
-        </h3>
-        <p class="text-sm text-slate-500">{{ props.provider }}</p>
+      <div class="flex flex-1 items-start gap-4">
+        <div v-if="activeIcon" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner">
+          <Transition name="icon-fade" mode="out-in">
+            <img
+              :key="activeIcon.src"
+              :src="activeIcon.src"
+              :alt="activeIcon.alt"
+              class="h-6 w-6"
+              loading="lazy"
+            >
+          </Transition>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-roadshop-primary">
+            {{ props.name }}
+          </h3>
+          <p class="text-sm text-slate-500">{{ props.provider }}</p>
+        </div>
       </div>
       <span
         class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
         :class="statusMeta[props.status].classes"
       >
         {{ statusMeta[props.status].label }}
-      </span>
-    </div>
-
-    <div
-      v-if="props.icons?.length"
-      class="mt-3 flex items-center gap-2 overflow-x-auto"
-    >
-      <span
-        v-for="icon in props.icons"
-        :key="icon.src"
-        class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner"
-      >
-        <img
-          :src="icon.src"
-          :alt="icon.alt"
-          class="h-5 w-5"
-          loading="lazy"
-        >
       </span>
     </div>
 
@@ -91,3 +126,16 @@ const preparingCopy = computed(() => i18nStore.t('card.preparing'))
     </template>
   </article>
 </template>
+
+<style scoped>
+.icon-fade-enter-active,
+.icon-fade-leave-active {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.icon-fade-enter-from,
+.icon-fade-leave-to {
+  opacity: 0;
+  transform: translateY(4px);
+}
+</style>
