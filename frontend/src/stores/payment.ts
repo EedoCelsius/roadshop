@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 import alipayIcon from '@imgs/alipay.svg'
 import kakaopayIcon from '@imgs/kakaopay.svg'
+import amexIcon from '@imgs/amex.svg'
 import mastercardIcon from '@imgs/mastercard.svg'
 import naverpayIcon from '@imgs/naverpay.svg'
 import paypalIcon from '@imgs/paypal.svg'
@@ -85,6 +86,7 @@ export const usePaymentStore = defineStore('payment', () => {
       icons: [
         { src: visaIcon, alt: 'Visa logo' },
         { src: mastercardIcon, alt: 'Mastercard logo' },
+        { src: amexIcon, alt: 'American Express logo' },
         { src: unionpayIcon, alt: 'UnionPay logo' },
       ],
     },
