@@ -33,6 +33,7 @@ const localizedSections = computed(() => {
       currency,
       methods: methods.map((method) => ({
         ...method,
+        name: i18nStore.t(`payment.${method.id}.name`, method.name),
         description: i18nStore.t(`payment.${method.id}.description`, method.description),
         cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
         provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
