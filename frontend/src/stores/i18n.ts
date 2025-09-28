@@ -71,7 +71,7 @@ const messages: Record<Locale, Messages> = {
       deepLink: {
         titles: {
           notMobile: 'Open on your mobile device',
-          notInstalled: 'App not installed',
+          notInstalled: 'Having trouble opening the app?',
         },
         confirms: {
           notMobile: 'Got it',
@@ -82,13 +82,13 @@ const messages: Record<Locale, Messages> = {
             notMobile:
               'The Kakao Transfer link opens only in the KakaoTalk app on mobile. Please continue on your phone.',
             notInstalled:
-              "We couldn't open KakaoTalk. Make sure the KakaoTalk app is installed and try again.",
+              "If KakaoTalk didn't open, please make sure it's installed and try again.",
           },
           toss: {
             notMobile:
               'The Toss Transfer link opens only in the Toss app on mobile. Please continue on your phone.',
             notInstalled:
-              "We couldn't open the Toss app. Make sure Toss is installed and try again.",
+              "If Toss didn't open, please make sure it's installed and try again.",
           },
         },
       },
@@ -183,7 +183,7 @@ const messages: Record<Locale, Messages> = {
       deepLink: {
         titles: {
           notMobile: '모바일에서만 이용할 수 있어요',
-          notInstalled: '앱이 설치되어 있지 않아요',
+          notInstalled: '앱이 실행되지 않았나요?',
         },
         confirms: {
           notMobile: '확인',
@@ -193,11 +193,12 @@ const messages: Record<Locale, Messages> = {
           kakao: {
             notMobile: '카카오송금 링크는 모바일 카카오톡 앱에서만 열 수 있어요. 휴대폰에서 다시 시도해 주세요.',
             notInstalled:
-              '카카오톡 앱을 열 수 없었어요. 카카오톡 설치 여부를 확인한 뒤 다시 시도해 주세요.',
+              '카카오톡 앱으로 이동하지 않았다면 카카오톡 설치 여부를 확인한 후 다시 시도해 주세요.',
           },
           toss: {
             notMobile: '토스송금 링크는 모바일 토스 앱에서만 열 수 있어요. 휴대폰에서 다시 시도해 주세요.',
-            notInstalled: '토스 앱을 열 수 없었어요. 토스 앱 설치 여부를 확인한 뒤 다시 시도해 주세요.',
+            notInstalled:
+              '토스 앱으로 이동하지 않았다면 토스 앱 설치 여부를 확인한 후 다시 시도해 주세요.',
           },
         },
       },
@@ -290,7 +291,7 @@ const messages: Record<Locale, Messages> = {
       deepLink: {
         titles: {
           notMobile: 'モバイル専用です',
-          notInstalled: 'アプリが見つかりません',
+          notInstalled: 'アプリが起動しませんか？',
         },
         confirms: {
           notMobile: '了解',
@@ -301,13 +302,13 @@ const messages: Record<Locale, Messages> = {
             notMobile:
               'Kakao送金リンクはモバイル版KakaoTalkアプリでのみ開けます。スマートフォンで再度お試しください。',
             notInstalled:
-              'KakaoTalkアプリを開けませんでした。インストール状況を確認してからもう一度お試しください。',
+              'KakaoTalkに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。',
           },
           toss: {
             notMobile:
               'Toss送金リンクはモバイル版Tossアプリでのみ開けます。スマートフォンで再度お試しください。',
             notInstalled:
-              'Tossアプリを開けませんでした。インストール状況を確認してからもう一度お試しください。',
+              'Tossに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。',
           },
         },
       },
@@ -400,7 +401,7 @@ const messages: Record<Locale, Messages> = {
       deepLink: {
         titles: {
           notMobile: '仅限移动设备使用',
-          notInstalled: '未检测到应用',
+          notInstalled: '应用没有打开吗？',
         },
         confirms: {
           notMobile: '知道了',
@@ -409,11 +410,11 @@ const messages: Record<Locale, Messages> = {
         providers: {
           kakao: {
             notMobile: 'Kakao 汇款链接只能在手机上的 KakaoTalk 应用中打开。请在手机上重试。',
-            notInstalled: '无法打开 KakaoTalk。请确认已安装 KakaoTalk 后再试一次。',
+            notInstalled: '如果没有跳转到 KakaoTalk，请确认已安装 KakaoTalk 后再试一次。',
           },
           toss: {
             notMobile: 'Toss 转账链接只能在手机上的 Toss 应用中打开。请在手机上重试。',
-            notInstalled: '无法打开 Toss 应用。请确认已安装 Toss 后再试一次。',
+            notInstalled: '如果没有跳转到 Toss，请确认已安装 Toss 后再试一次。',
           },
         },
       },
