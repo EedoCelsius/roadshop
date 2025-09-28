@@ -9,14 +9,11 @@ interface Props {
   supportedCurrencies: string[]
   provider: string
   status: 'available' | 'coming-soon'
-  cta?: string
-  url?: string
   icons?: Array<{
     src: string
     alt: string
   }>
   isSelected?: boolean
-  selectedCurrency?: string | null
 }
 
 const props = defineProps<Props>()
@@ -39,11 +36,6 @@ const statusMeta = computed(() => ({
 }))
 
 const preparingCopy = computed(() => i18nStore.t('card.preparing'))
-const selectedCurrencyCopy = computed(() =>
-  props.selectedCurrency
-    ? i18nStore.t('card.selectedCurrency').replace('{currency}', props.selectedCurrency)
-    : null,
-)
 const selectCurrencyPrompt = computed(() => i18nStore.t('card.selectCurrencyPrompt'))
 
 const activeIconIndex = ref(0)
@@ -134,30 +126,13 @@ onBeforeUnmount(() => {
       </span>
     </div>
 
-    <p
-      v-if="props.isSelected && selectedCurrencyCopy"
-      class="text-xs font-semibold text-roadshop-accent"
-    >
-      {{ selectedCurrencyCopy }}
-    </p>
-
     <p class="flex-1 text-sm leading-relaxed text-slate-600">
       {{ props.description }}
     </p>
 
     <template v-if="props.status === 'available'">
-      <a
-        v-if="props.cta && props.url"
-        :href="props.url"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center justify-center gap-2 rounded-full bg-roadshop-accent px-4 py-2 text-sm font-semibold text-white shadow-inner transition hover:bg-emerald-500"
-      >
-        {{ props.cta }}
-        <span aria-hidden="true">→</span>
-      </a>
       <p
-        v-else-if="props.isSelected && props.supportedCurrencies.length > 1"
+        v-if="props.isSelected && props.supportedCurrencies.length > 1"
         class="text-xs text-roadshop-accent"
       >
         {{ selectCurrencyPrompt }}
