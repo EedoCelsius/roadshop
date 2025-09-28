@@ -79,7 +79,7 @@ const messages: Record<Locale, Messages> = {
       },
       'credit-card': {
         description:
-          'Visa, Mastercard, and UnionPay card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
+          'Visa, Mastercard, UnionPay, and Amex card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       },
     },
   },
@@ -143,7 +143,7 @@ const messages: Record<Locale, Messages> = {
         description: '글로벌 고객이 익숙한 PayPal 계정을 통해 손쉽게 결제할 수 있도록 준비하고 있어요.',
       },
       'credit-card': {
-        description: 'Visa, Mastercard, UnionPay 등 전 세계 카드 결제를 곧 제공할게요.',
+        description: 'Visa, Mastercard, UnionPay, Amex 등 전 세계 카드 결제를 곧 제공할게요.',
       },
     },
   },
@@ -207,7 +207,7 @@ const messages: Record<Locale, Messages> = {
         description: '普段使いのPayPalアカウントで決済できるよう近日対応予定です。',
       },
       'credit-card': {
-        description: 'Visa・Mastercard・UnionPayなどの世界的なカード決済に近日対応します。',
+        description: 'Visa・Mastercard・UnionPay・Amexなどの世界的なカード決済に近日対応します。',
       },
     },
   },
@@ -271,7 +271,7 @@ const messages: Record<Locale, Messages> = {
         description: '你很快就能用熟悉的 PayPal 账户轻松完成购买。',
       },
       'credit-card': {
-        description: '我们即将上线 Visa、Mastercard、UnionPay 等全球银行卡支付，让你随时享受熟悉的结账体验。',
+        description: '我们即将上线 Visa、Mastercard、UnionPay、Amex 等全球银行卡支付，让你随时享受熟悉的结账体验。',
       },
     },
   },
