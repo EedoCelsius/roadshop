@@ -23,7 +23,6 @@ export type PaymentMethod = {
   supportedCurrencies: string[]
   provider: string
   status: 'available' | 'coming-soon'
-  cta?: string
   url?: string
   urlsByCurrency?: Record<string, string>
   icons?: Array<{
@@ -58,7 +57,6 @@ export const usePaymentStore = defineStore('payment', () => {
       supportedCurrencies: ['KRW'],
       provider: 'Viva Republica',
       status: 'available',
-      cta: 'Open Toss',
       url: resolveTossDeepLink(),
       icons: [
         { src: tossIcon, alt: 'Toss logo' },
@@ -72,7 +70,6 @@ export const usePaymentStore = defineStore('payment', () => {
       supportedCurrencies: ['KRW'],
       provider: 'KakaoBank Corp.',
       status: 'available',
-      cta: 'Open Kakao Transfer',
       url: 'https://qr.kakaopay.com/',
       icons: [
         { src: kakaotalkIcon, alt: 'KakaoTalk logo' },
