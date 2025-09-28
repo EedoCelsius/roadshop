@@ -32,7 +32,7 @@ export type PaymentCurrency = PaymentMethod['currency']
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
     {
-      id: 'toss-transfer',
+      id: 'toss',
       name: 'Toss Transfer',
       description: 'Send your payment instantly with Toss for immediate confirmation.',
       currency: 'KRW',
@@ -45,7 +45,7 @@ export const usePaymentStore = defineStore('payment', () => {
       ],
     },
     {
-      id: 'kakaopay-qr',
+      id: 'kakao',
       name: 'Kakao Transfer',
       description: 'Scan the QR code with KakaoTalk and finish checkout in seconds.',
       currency: 'KRW',
@@ -58,7 +58,7 @@ export const usePaymentStore = defineStore('payment', () => {
       ],
     },
     {
-      id: 'naverpay-qr',
+      id: 'naver',
       name: 'Naver Pay',
       description: 'We are preparing Naver Pay so you can pay with your points on the spot.',
       currency: 'KRW',
@@ -92,7 +92,7 @@ export const usePaymentStore = defineStore('payment', () => {
       ],
     },
     {
-      id: 'credit-card',
+      id: 'card',
       name: 'Credit Card',
       description: 'Worldwide card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       currency: 'GLOBAL',
