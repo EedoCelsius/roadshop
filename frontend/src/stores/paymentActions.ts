@@ -13,18 +13,18 @@ type PopupState = {
 }
 
 type PaymentInfo = {
-  toss?: {
-    amount?: {
-      krw?: number
+  toss: {
+    amount: {
+      krw: number
     }
-    bankName?: string
-    accountNo?: string
+    bankName: string
+    accountNo: string
   }
-  kakao?: {
-    amount?: {
-      krw?: number
+  kakao: {
+    amount: {
+      krw: number
     }
-    personalCode?: string
+    personalCode: string
   }
 }
 
