@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import bankList from '../config/bankList.json'
+import firmList from '../config/firmList.json'
 
 import alipayIcon from '@icons/methods/alipay.svg'
 import kakaotalkIcon from '@icons/methods/kakaotalk.svg'
@@ -35,9 +35,9 @@ export type PaymentMethod = {
 
 export type PaymentCurrency = PaymentMethod['currency']
 
-type BankListEntry = { code: string; name: string }
+type FirmListEntry = { code: string; name: string }
 
-const banks = (bankList as { banks?: BankListEntry[] }).banks ?? []
+const banks = (firmList as { banks?: FirmListEntry[] }).banks ?? []
 
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
