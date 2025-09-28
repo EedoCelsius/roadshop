@@ -7,7 +7,7 @@
 
     "paths": {
       "@/*": ["./src/*"],
-      "@imgs/*": ["../imgs/*"]
+      "@icons/*": ["./src/assets/icons/*"]
     }
   }
 }
