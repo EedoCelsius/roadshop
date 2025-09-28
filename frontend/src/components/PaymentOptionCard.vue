@@ -6,6 +6,7 @@ import { useI18nStore } from '../stores/i18n'
 interface Props {
   name: string
   description: string
+  supportedCurrencies: string[]
   provider: string
   status: 'available' | 'coming-soon'
   cta?: string
@@ -14,9 +15,14 @@ interface Props {
     src: string
     alt: string
   }>
+  isSelected?: boolean
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  select: []
+}>()
 
 const i18nStore = useI18nStore()
 
@@ -76,7 +82,13 @@ onBeforeUnmount(() => {
 
 <template>
   <article
-    class="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg"
+    class="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg focus:outline-none cursor-pointer"
+    :class="props.isSelected ? 'ring-2 ring-roadshop-accent' : ''"
+    role="button"
+    tabindex="0"
+    @click="emit('select')"
+    @keydown.enter.prevent="emit('select')"
+    @keydown.space.prevent="emit('select')"
   >
     <div class="flex items-start justify-between gap-4">
       <div class="flex flex-1 items-start gap-4">
@@ -102,6 +114,16 @@ onBeforeUnmount(() => {
         :class="statusMeta[props.status].classes"
       >
         {{ statusMeta[props.status].label }}
+      </span>
+    </div>
+
+    <div v-if="props.supportedCurrencies.length" class="flex flex-wrap gap-2 text-xs text-roadshop-primary">
+      <span
+        v-for="currency in props.supportedCurrencies"
+        :key="currency"
+        class="inline-flex items-center gap-1 rounded-full border border-roadshop-primary/20 bg-roadshop-highlight/60 px-3 py-1 font-semibold"
+      >
+        {{ currency }}
       </span>
     </div>
 

@@ -17,6 +17,7 @@ export type PaymentMethod = {
   name: string
   description: string
   currency: 'KRW' | 'GLOBAL'
+  supportedCurrencies: string[]
   provider: string
   status: 'available' | 'coming-soon'
   cta?: string
@@ -36,6 +37,7 @@ export const usePaymentStore = defineStore('payment', () => {
       name: 'Toss Transfer',
       description: 'Send your payment instantly with Toss for immediate confirmation.',
       currency: 'KRW',
+      supportedCurrencies: ['KRW'],
       provider: 'Viva Republica',
       status: 'available',
       cta: 'Open Toss',
@@ -49,6 +51,7 @@ export const usePaymentStore = defineStore('payment', () => {
       name: 'Kakao Transfer',
       description: 'Scan the QR code with KakaoTalk and finish checkout in seconds.',
       currency: 'KRW',
+      supportedCurrencies: ['KRW'],
       provider: 'KakaoBank Corp.',
       status: 'available',
       cta: 'Open Kakao Transfer',
@@ -62,6 +65,7 @@ export const usePaymentStore = defineStore('payment', () => {
       name: 'Naver Pay',
       description: 'We are preparing Naver Pay so you can pay with your points on the spot.',
       currency: 'KRW',
+      supportedCurrencies: ['KRW'],
       provider: 'Naver Financial',
       status: 'coming-soon',
       icons: [
@@ -74,6 +78,7 @@ export const usePaymentStore = defineStore('payment', () => {
       description:
         'We plan to connect major global e-wallets through Alipay so travellers can pay with the wallet they already use.',
       currency: 'GLOBAL',
+      supportedCurrencies: ['CNY', 'HKD', 'USD'],
       provider: 'Ant Group',
       status: 'coming-soon',
       icons: [
@@ -85,6 +90,7 @@ export const usePaymentStore = defineStore('payment', () => {
       name: 'PayPal',
       description: 'Soon you will be able to complete your purchase with the PayPal account you already trust.',
       currency: 'GLOBAL',
+      supportedCurrencies: ['USD', 'EUR', 'GBP'],
       provider: 'PayPal Holdings',
       status: 'coming-soon',
       icons: [
@@ -96,6 +102,7 @@ export const usePaymentStore = defineStore('payment', () => {
       name: 'Credit Card',
       description: 'Worldwide card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       currency: 'GLOBAL',
+      supportedCurrencies: ['USD', 'EUR', 'JPY', 'KRW'],
       provider: 'Global Networks',
       status: 'coming-soon',
       icons: [
@@ -121,8 +128,57 @@ export const usePaymentStore = defineStore('payment', () => {
     return grouped
   })
 
+  const selectedMethodId = ref<string | null>(null)
+  const selectedCurrency = ref<string | null>(null)
+  const isCurrencySelectorOpen = ref(false)
+
+  const selectedMethod = computed(() =>
+    selectedMethodId.value ? methods.value.find((method) => method.id === selectedMethodId.value) ?? null : null
+  )
+
+  const selectMethod = (methodId: string) => {
+    const method = methods.value.find((item) => item.id === methodId)
+
+    if (!method) {
+      return
+    }
+
+    selectedMethodId.value = methodId
+
+    if (method.supportedCurrencies.length <= 1) {
+      selectedCurrency.value = method.supportedCurrencies[0] ?? null
+      isCurrencySelectorOpen.value = false
+      return
+    }
+
+    selectedCurrency.value = null
+    isCurrencySelectorOpen.value = true
+  }
+
+  const chooseCurrency = (currency: string) => {
+    const method = selectedMethod.value
+
+    if (!method || !method.supportedCurrencies.includes(currency)) {
+      return
+    }
+
+    selectedCurrency.value = currency
+    isCurrencySelectorOpen.value = false
+  }
+
+  const closeCurrencySelector = () => {
+    isCurrencySelectorOpen.value = false
+  }
+
   return {
     methods,
     methodsByCurrency,
+    selectedMethodId,
+    selectedMethod,
+    selectedCurrency,
+    isCurrencySelectorOpen,
+    selectMethod,
+    chooseCurrency,
+    closeCurrencySelector,
   }
 })

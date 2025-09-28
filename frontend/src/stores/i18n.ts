@@ -62,6 +62,11 @@ const messages: Record<Locale, Messages> = {
     language: {
       label: 'Language',
     },
+    currencySelector: {
+      title: 'Choose a currency',
+      description: 'Select the currency you want to use with {method}.',
+      cancel: 'Cancel',
+    },
     payment: {
       'kakao': {
         name: 'Kakao Transfer',
@@ -138,6 +143,11 @@ const messages: Record<Locale, Messages> = {
     language: {
       label: '언어',
     },
+    currencySelector: {
+      title: '통화를 선택하세요',
+      description: '{method}로 사용할 통화를 선택해 주세요.',
+      cancel: '닫기',
+    },
     payment: {
       'kakao': {
         name: '카카오송금',
@@ -211,6 +221,11 @@ const messages: Record<Locale, Messages> = {
     },
     language: {
       label: '言語',
+    },
+    currencySelector: {
+      title: '通貨を選択',
+      description: '{method}で利用する通貨を選んでください。',
+      cancel: '閉じる',
     },
     payment: {
       'kakao': {
@@ -286,6 +301,11 @@ const messages: Record<Locale, Messages> = {
     language: {
       label: '语言',
     },
+    currencySelector: {
+      title: '选择货币',
+      description: '请选择使用 {method} 时的付款货币。',
+      cancel: '关闭',
+    },
     payment: {
       'kakao': {
         name: 'Kakao 汇款',
@@ -328,7 +348,7 @@ const readStoredLocale = (): Locale | undefined => {
   try {
     const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY)
     return stored && isSupportedLocale(stored) ? stored : undefined
-  } catch (error) {
+  } catch {
     return undefined
   }
 }
@@ -340,7 +360,7 @@ const persistLocale = (value: Locale) => {
 
   try {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, value)
-  } catch (error) {
+  } catch {
     // Ignore storage errors (e.g., quota exceeded, privacy mode)
   }
 }
