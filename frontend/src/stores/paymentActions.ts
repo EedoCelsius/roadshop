@@ -87,8 +87,6 @@ const resolveDeepLink = (provider: DeepLinkProvider) => {
       return createTossDeepLink()
     case 'kakao':
       return createKakaoDeepLink()
-    default:
-      return null
   }
 }
 
