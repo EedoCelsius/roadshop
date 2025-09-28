@@ -64,6 +64,9 @@ const messages: Record<Locale, Messages> = {
     language: {
       label: 'Language',
     },
+    loading: {
+      deepLink: 'Opening the app to continue your payment…',
+    },
     popups: {
       deepLink: {
         titles: {
@@ -173,6 +176,9 @@ const messages: Record<Locale, Messages> = {
     language: {
       label: '언어',
     },
+    loading: {
+      deepLink: '결제 앱을 여는 중이에요…',
+    },
     popups: {
       deepLink: {
         titles: {
@@ -276,6 +282,9 @@ const messages: Record<Locale, Messages> = {
     },
     language: {
       label: '言語',
+    },
+    loading: {
+      deepLink: 'お支払いアプリを開いています…',
     },
     popups: {
       deepLink: {
@@ -383,6 +392,9 @@ const messages: Record<Locale, Messages> = {
     },
     language: {
       label: '语言',
+    },
+    loading: {
+      deepLink: '正在打开支付应用程序…',
     },
     popups: {
       deepLink: {

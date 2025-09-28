@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import PaymentOptionCard from './components/PaymentOptionCard.vue'
 import CurrencySelectorDialog from './components/CurrencySelectorDialog.vue'
 import ActionPopup from './components/ActionPopup.vue'
+import LoadingOverlay from './components/LoadingOverlay.vue'
 import { getPaymentLayoutConfig } from './config/paymentLayout'
 import { usePaymentStore } from './stores/payment'
 import { usePaymentActionsStore } from './stores/paymentActions'
@@ -15,7 +16,7 @@ const paymentActionsStore = usePaymentActionsStore()
 const { methodsByCurrency, selectedMethodId, selectedMethod, selectedCurrency, isCurrencySelectorOpen } =
   storeToRefs(paymentStore)
 
-const { isPopupVisible, popupContent } = storeToRefs(paymentActionsStore)
+const { isPopupVisible, popupContent, isDeepLinkChecking } = storeToRefs(paymentActionsStore)
 
 const { closeCurrencySelector } = paymentStore
 
@@ -191,5 +192,6 @@ const onPopupConfirm = () => {
       :confirm-label="popupContent.confirmLabel"
       @confirm="onPopupConfirm"
     />
+    <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
   </div>
 </template>
