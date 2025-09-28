@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .icon-fade-enter-active,
 .icon-fade-leave-active {
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.1s ease, transform 0.1s ease;
 }
 
 .icon-fade-enter-from,
