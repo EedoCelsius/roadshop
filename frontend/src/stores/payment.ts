@@ -22,6 +22,7 @@ export type PaymentMethod = {
   status: 'available' | 'coming-soon'
   cta?: string
   url?: string
+  urlsByCurrency?: Record<string, string>
   icons?: Array<{
     src: string
     alt: string
@@ -81,6 +82,11 @@ export const usePaymentStore = defineStore('payment', () => {
       supportedCurrencies: ['CNY', 'HKD', 'USD'],
       provider: 'Ant Group',
       status: 'coming-soon',
+      urlsByCurrency: {
+        CNY: 'https://global.alipay.com/cny',
+        HKD: 'https://global.alipay.com/hkd',
+        USD: 'https://global.alipay.com/usd',
+      },
       icons: [
         { src: alipayIcon, alt: 'Alipay logo' },
       ],
@@ -93,6 +99,11 @@ export const usePaymentStore = defineStore('payment', () => {
       supportedCurrencies: ['USD', 'EUR', 'GBP'],
       provider: 'PayPal Holdings',
       status: 'coming-soon',
+      urlsByCurrency: {
+        USD: 'https://paypal.com/checkout?currency=USD',
+        EUR: 'https://paypal.com/checkout?currency=EUR',
+        GBP: 'https://paypal.com/checkout?currency=GBP',
+      },
       icons: [
         { src: paypalIcon, alt: 'PayPal logo' },
       ],
@@ -105,6 +116,12 @@ export const usePaymentStore = defineStore('payment', () => {
       supportedCurrencies: ['USD', 'EUR', 'JPY', 'KRW'],
       provider: 'Global Networks',
       status: 'coming-soon',
+      urlsByCurrency: {
+        USD: 'https://payments.example.com/card/usd',
+        EUR: 'https://payments.example.com/card/eur',
+        JPY: 'https://payments.example.com/card/jpy',
+        KRW: 'https://payments.example.com/card/krw',
+      },
       icons: [
         { src: visaIcon, alt: 'Visa logo' },
         { src: mastercardIcon, alt: 'Mastercard logo' },
@@ -170,6 +187,20 @@ export const usePaymentStore = defineStore('payment', () => {
     isCurrencySelectorOpen.value = false
   }
 
+  const getUrlForMethod = (methodId: string, currency?: string | null) => {
+    const method = methods.value.find((item) => item.id === methodId)
+
+    if (!method) {
+      return null
+    }
+
+    if (currency && method.urlsByCurrency?.[currency]) {
+      return method.urlsByCurrency[currency]
+    }
+
+    return method.url ?? null
+  }
+
   return {
     methods,
     methodsByCurrency,
@@ -180,5 +211,6 @@ export const usePaymentStore = defineStore('payment', () => {
     selectMethod,
     chooseCurrency,
     closeCurrencySelector,
+    getUrlForMethod,
   }
 })

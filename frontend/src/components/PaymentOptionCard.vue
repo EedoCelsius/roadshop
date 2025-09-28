@@ -16,6 +16,7 @@ interface Props {
     alt: string
   }>
   isSelected?: boolean
+  selectedCurrency?: string | null
 }
 
 const props = defineProps<Props>()
@@ -38,6 +39,12 @@ const statusMeta = computed(() => ({
 }))
 
 const preparingCopy = computed(() => i18nStore.t('card.preparing'))
+const selectedCurrencyCopy = computed(() =>
+  props.selectedCurrency
+    ? i18nStore.t('card.selectedCurrency').replace('{currency}', props.selectedCurrency)
+    : null,
+)
+const selectCurrencyPrompt = computed(() => i18nStore.t('card.selectCurrencyPrompt'))
 
 const activeIconIndex = ref(0)
 
@@ -127,12 +134,20 @@ onBeforeUnmount(() => {
       </span>
     </div>
 
+    <p
+      v-if="props.isSelected && selectedCurrencyCopy"
+      class="text-xs font-semibold text-roadshop-accent"
+    >
+      {{ selectedCurrencyCopy }}
+    </p>
+
     <p class="flex-1 text-sm leading-relaxed text-slate-600">
       {{ props.description }}
     </p>
 
-    <template v-if="props.status === 'available' && props.cta">
+    <template v-if="props.status === 'available'">
       <a
+        v-if="props.cta && props.url"
         :href="props.url"
         target="_blank"
         rel="noopener noreferrer"
@@ -141,6 +156,12 @@ onBeforeUnmount(() => {
         {{ props.cta }}
         <span aria-hidden="true">→</span>
       </a>
+      <p
+        v-else-if="props.isSelected && props.supportedCurrencies.length > 1"
+        class="text-xs text-roadshop-accent"
+      >
+        {{ selectCurrencyPrompt }}
+      </p>
     </template>
     <template v-else>
       <p class="text-xs text-slate-400">{{ preparingCopy }}</p>

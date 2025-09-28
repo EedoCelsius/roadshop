@@ -8,9 +8,10 @@ import { usePaymentStore } from './stores/payment'
 import { type Locale, useI18nStore } from './stores/i18n'
 
 const paymentStore = usePaymentStore()
-const { methodsByCurrency, selectedMethodId, selectedMethod, isCurrencySelectorOpen } = storeToRefs(paymentStore)
+const { methodsByCurrency, selectedMethodId, selectedMethod, selectedCurrency, isCurrencySelectorOpen } =
+  storeToRefs(paymentStore)
 
-const { selectMethod, chooseCurrency, closeCurrencySelector } = paymentStore
+const { selectMethod, chooseCurrency, closeCurrencySelector, getUrlForMethod } = paymentStore
 
 const i18nStore = useI18nStore()
 const { locale, availableLocales } = storeToRefs(i18nStore)
@@ -34,13 +35,21 @@ const localizedSections = computed(() => {
 
     return {
       currency,
-      methods: methods.map((method) => ({
-        ...method,
-        name: i18nStore.t(`payment.${method.id}.name`, method.name),
-        description: i18nStore.t(`payment.${method.id}.description`, method.description),
-        cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
-        provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
-      })),
+      methods: methods.map((method) => {
+        const isSelected = method.id === selectedMethodId.value
+        const resolvedUrl =
+          getUrlForMethod(method.id, isSelected ? selectedCurrency.value ?? undefined : undefined) ?? undefined
+
+        return {
+          ...method,
+          name: i18nStore.t(`payment.${method.id}.name`, method.name),
+          description: i18nStore.t(`payment.${method.id}.description`, method.description),
+          cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
+          provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
+          url: resolvedUrl,
+          selectedCurrency: isSelected ? selectedCurrency.value : null,
+        }
+      }),
     }
   })
 })
@@ -154,6 +163,7 @@ const onCloseCurrencySelector = () => {
             :url="method.url"
             :icons="method.icons"
             :is-selected="method.id === selectedMethodId"
+            :selected-currency="method.selectedCurrency"
             @select="onSelectMethod(method.id)"
           />
         </div>

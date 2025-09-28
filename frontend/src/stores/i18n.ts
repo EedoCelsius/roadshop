@@ -55,6 +55,8 @@ const messages: Record<Locale, Messages> = {
     },
     card: {
       preparing: 'We are working hard to launch this option soon.',
+      selectedCurrency: 'Selected currency: {currency}',
+      selectCurrencyPrompt: 'Choose a currency to continue.',
     },
     footer: {
       message: '© {year} Stitchmon Roadshop. The official online payment center for your orders.',
@@ -136,6 +138,8 @@ const messages: Record<Locale, Messages> = {
     },
     card: {
       preparing: '곧 만나보실 수 있도록 열심히 준비하고 있어요.',
+      selectedCurrency: '선택한 통화: {currency}',
+      selectCurrencyPrompt: '진행하려면 통화를 선택해 주세요.',
     },
     footer: {
       message: '© {year} 스티치몬 로드샵. 공식 온라인 결제 센터입니다.',
@@ -215,6 +219,8 @@ const messages: Record<Locale, Messages> = {
     },
     card: {
       preparing: 'まもなくご利用いただけるよう準備を進めています。',
+      selectedCurrency: '選択した通貨: {currency}',
+      selectCurrencyPrompt: '続行するには通貨を選択してください。',
     },
     footer: {
       message: '© {year} スティッチモン ロードショップ。公式オンライン決済センターです。',
@@ -294,6 +300,8 @@ const messages: Record<Locale, Messages> = {
     },
     card: {
       preparing: '我们正在全力准备，敬请期待。',
+      selectedCurrency: '已选择的货币：{currency}',
+      selectCurrencyPrompt: '请选择货币以继续。',
     },
     footer: {
       message: '© {year} Stitchmon 路店。官方在线支付中心。',
