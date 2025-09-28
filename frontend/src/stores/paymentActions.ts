@@ -56,6 +56,7 @@ const createTossDeepLink = () => {
     amount: toss.amount.krw.toString(),
     bank: toss.bankName,
     accountNo: toss.accountNo,
+    origin: "qr"
   })
 
   return `supertoss://send?${params.toString()}`
