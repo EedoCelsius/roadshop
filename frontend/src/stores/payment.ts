@@ -2,10 +2,10 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import alipayIcon from '@imgs/alipay.svg'
-import kakaopayIcon from '@imgs/kakaopay.svg'
+import kakaotalkIcon from '@imgs/kakaotalk.svg'
 import tossIcon from '@imgs/toss.png'
 import mastercardIcon from '@imgs/mastercard.svg'
-import naverpayIcon from '@imgs/naverpay.svg'
+import naverIcon from '@imgs/naver.svg'
 import paypalIcon from '@imgs/paypal.svg'
 import amexIcon from '@imgs/amex.svg'
 import unionpayIcon from '@imgs/unionpay.svg'
@@ -41,7 +41,7 @@ export const usePaymentStore = defineStore('payment', () => {
       cta: 'Open Kakao Transfer',
       url: 'https://qr.kakaopay.com/',
       icons: [
-        { src: kakaopayIcon, alt: 'Kakao Transfer logo' },
+        { src: kakaotalkIcon, alt: 'KakaoTalk logo' },
       ],
     },
     {
@@ -65,7 +65,7 @@ export const usePaymentStore = defineStore('payment', () => {
       provider: 'Naver Financial',
       status: 'coming-soon',
       icons: [
-        { src: naverpayIcon, alt: 'Naver Pay logo' },
+        { src: naverIcon, alt: 'Naver logo' },
       ],
     },
     {
