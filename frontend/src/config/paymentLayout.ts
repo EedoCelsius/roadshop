@@ -9,7 +9,7 @@ export type PaymentLayoutConfig = {
 const DEFAULT_CONFIG: PaymentLayoutConfig = {
   sectionOrder: ['GLOBAL', 'KRW'],
   methodOrder: {
-    GLOBAL: ['credit-card', 'alipay', 'paypal'],
+    GLOBAL: ['card', 'alipay', 'paypal'],
   },
 }
 
@@ -20,13 +20,13 @@ const LOCALE_CONFIGS: Partial<Record<Locale, PaymentLayoutConfig>> = {
   en: {
     sectionOrder: ['GLOBAL', 'KRW'],
     methodOrder: {
-      GLOBAL: ['credit-card', 'paypal', 'alipay'],
+      GLOBAL: ['card', 'paypal', 'alipay'],
     },
   },
   zh: {
     sectionOrder: ['GLOBAL', 'KRW'],
     methodOrder: {
-      GLOBAL: ['alipay', 'credit-card', 'paypal'],
+      GLOBAL: ['alipay', 'card', 'paypal'],
     },
   },
 }
