@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, reactive, watch } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/stores/i18n'
+import TooltipBubble from './TooltipBubble.vue'
 
 interface TransferAccount {
   bank: string
@@ -70,7 +71,9 @@ const descriptionHtml = computed(() =>
 )
 const copyAllLabel = computed(() => i18nStore.t('transferPopup.copyAll'))
 const copyNumberLabel = computed(() => i18nStore.t('transferPopup.copyNumber'))
+const copyTooltipLabel = computed(() => i18nStore.t('transferPopup.copyTooltip'))
 const copiedLabel = computed(() => i18nStore.t('transferPopup.copied'))
+const copiedNumberLabel = computed(() => i18nStore.t('transferPopup.copiedNumber'))
 const closeLabel = computed(() => i18nStore.t('transferPopup.close'))
 
 const getIconForBank = (bank: string) => firmIconMap[bank] ?? null
@@ -79,6 +82,40 @@ type CopyStatus = 'all' | 'number' | null
 
 const copyStates = reactive<Record<string, CopyStatus>>({})
 const copyTimers = new Map<string, number>()
+const hoveredControl = ref<string | null>(null)
+
+const controlKey = (accountNumber: string, action: Exclude<CopyStatus, null>) => `${accountNumber}:${action}`
+
+const setHoveredControl = (accountNumber: string, action: Exclude<CopyStatus, null>, value: boolean) => {
+  const key = controlKey(accountNumber, action)
+
+  if (value) {
+    hoveredControl.value = key
+    return
+  }
+
+  if (hoveredControl.value === key) {
+    hoveredControl.value = null
+  }
+}
+
+const isCopied = (accountNumber: string, action: Exclude<CopyStatus, null>) => copyStates[accountNumber] === action
+
+const isTooltipVisible = (accountNumber: string, action: Exclude<CopyStatus, null>) => {
+  const key = controlKey(accountNumber, action)
+  return hoveredControl.value === key || isCopied(accountNumber, action)
+}
+
+const getTooltipVariant = (accountNumber: string, action: Exclude<CopyStatus, null>) =>
+  isCopied(accountNumber, action) ? 'success' : 'default'
+
+const getTooltipMessage = (accountNumber: string, action: Exclude<CopyStatus, null>) => {
+  if (isCopied(accountNumber, action)) {
+    return action === 'all' ? copiedLabel.value : copiedNumberLabel.value
+  }
+
+  return action === 'all' ? copyTooltipLabel.value : copyNumberLabel.value
+}
 
 const resetCopyStates = () => {
   Object.keys(copyStates).forEach((key) => {
@@ -90,6 +127,7 @@ const resetCopyStates = () => {
     })
   }
   copyTimers.clear()
+  hoveredControl.value = null
 }
 
 const scheduleReset = (key: string) => {
@@ -200,14 +238,6 @@ onBeforeUnmount(() => {
                   v-html="descriptionHtml"
                 ></p>
               </div>
-              <button
-                type="button"
-                class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:bg-slate-100"
-                @click="onClose"
-              >
-                <span class="sr-only">{{ closeLabel }}</span>
-                <span aria-hidden="true" class="text-lg">×</span>
-              </button>
             </header>
             <ul class="mt-6 space-y-4">
               <li
@@ -224,31 +254,110 @@ onBeforeUnmount(() => {
                   </div>
                   <div>
                     <p class="text-base font-semibold text-roadshop-primary">{{ account.bank }}</p>
-                    <p class="text-sm font-mono text-slate-700">{{ account.number }}</p>
-                    <p class="text-xs text-slate-500">{{ account.holder }}</p>
+                    <div class="relative mt-1">
+                      <button
+                        type="button"
+                        class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary underline underline-offset-4 transition hover:text-roadshop-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-roadshop-primary"
+                        @click="handleCopyNumber(account)"
+                        @mouseenter="setHoveredControl(account.number, 'number', true)"
+                        @mouseleave="setHoveredControl(account.number, 'number', false)"
+                        @focus="setHoveredControl(account.number, 'number', true)"
+                        @blur="setHoveredControl(account.number, 'number', false)"
+                      >
+                        <span>{{ account.number }}</span>
+                        <span class="flex h-4 w-4 items-center justify-center transition group-hover:text-roadshop-primary">
+                          <svg
+                            v-if="isCopied(account.number, 'number')"
+                            class="h-4 w-4 text-emerald-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            aria-hidden="true"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          <svg
+                            v-else
+                            class="h-4 w-4 text-roadshop-primary"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            aria-hidden="true"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M16 17h2a2 2 0 002-2V7a2 2 0 00-2-2h-6l-4 4v6a2 2 0 002 2h2"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M8 17a2 2 0 01-2-2V9"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                      <TooltipBubble
+                        :visible="isTooltipVisible(account.number, 'number')"
+                        :message="getTooltipMessage(account.number, 'number')"
+                        :variant="getTooltipVariant(account.number, 'number')"
+                      />
+                    </div>
+                    <p class="mt-1 text-xs text-slate-500">{{ account.holder }}</p>
                   </div>
                 </div>
-                <div class="flex flex-col items-start gap-1 text-sm font-semibold text-roadshop-primary sm:items-end">
-                  <button
-                    type="button"
-                    class="text-roadshop-primary underline decoration-roadshop-primary decoration-2 underline-offset-4 transition hover:text-roadshop-primary/90"
-                    @click="handleCopyAll(account)"
-                  >
-                    {{ copyAllLabel }}
-                  </button>
-                  <button
-                    type="button"
-                    class="text-roadshop-primary underline decoration-roadshop-primary decoration-2 underline-offset-4 transition hover:text-roadshop-primary/90"
-                    @click="handleCopyNumber(account)"
-                  >
-                    {{ copyNumberLabel }}
-                  </button>
-                  <p
-                    v-if="copyStates[account.number]"
-                    class="text-xs font-medium text-emerald-600"
-                  >
-                    {{ copiedLabel }}
-                  </p>
+                <div class="flex items-start justify-start sm:items-end sm:justify-end">
+                  <div class="relative">
+                    <button
+                      type="button"
+                      class="flex h-11 w-11 items-center justify-center rounded-md border border-roadshop-primary text-roadshop-primary transition hover:bg-roadshop-primary hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-roadshop-primary"
+                      @click="handleCopyAll(account)"
+                      @mouseenter="setHoveredControl(account.number, 'all', true)"
+                      @mouseleave="setHoveredControl(account.number, 'all', false)"
+                      @focus="setHoveredControl(account.number, 'all', true)"
+                      @blur="setHoveredControl(account.number, 'all', false)"
+                    >
+                      <span class="sr-only">{{ copyAllLabel }}</span>
+                      <svg
+                        v-if="isCopied(account.number, 'all')"
+                        class="h-5 w-5 text-emerald-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <svg
+                        v-else
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M8 16h8a2 2 0 002-2V6a2 2 0 00-2-2h-5l-5 5v5a2 2 0 002 2z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15 20H7a2 2 0 01-2-2v-6"
+                        />
+                      </svg>
+                    </button>
+                    <TooltipBubble
+                      :visible="isTooltipVisible(account.number, 'all')"
+                      :message="getTooltipMessage(account.number, 'all')"
+                      :variant="getTooltipVariant(account.number, 'all')"
+                    />
+                  </div>
                 </div>
               </li>
             </ul>
