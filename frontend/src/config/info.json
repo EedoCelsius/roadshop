@@ -11,5 +11,22 @@
       "krw": 10000
     },
     "personalCode": "000024398434938"
+  },
+  "transfer": {
+    "amount": {
+      "krw": 10000
+    },
+    "account": [
+      {
+        "bank": "KB국민은행",
+        "number": "93800300352361",
+        "holder": "강일준"
+      },
+      {
+        "bank": "우리은행",
+        "number": "1002658182698",
+        "holder": "강일준"
+      }
+    ]
   }
 }

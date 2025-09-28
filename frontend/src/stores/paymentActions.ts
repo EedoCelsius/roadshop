@@ -26,6 +26,16 @@ type PaymentInfo = {
     }
     personalCode: string
   }
+  transfer: {
+    amount: {
+      krw: number
+    }
+    account: Array<{
+      bank: string
+      number: string
+      holder: string
+    }>
+  }
 }
 
 type DeepLinkProvider = Exclude<PaymentMethod['deepLinkProvider'], undefined>
@@ -91,6 +101,10 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
 
   const popupState = ref<PopupState | null>(null)
   const isDeepLinkChecking = ref(false)
+  const isTransferPopupVisible = ref(false)
+
+  const transferAmount = computed(() => paymentInfo.transfer.amount.krw)
+  const transferAccounts = computed(() => paymentInfo.transfer.account)
 
   const isPopupVisible = computed(() => popupState.value !== null)
 
@@ -123,6 +137,14 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
 
   const showPopup = (type: PopupType, provider: DeepLinkProvider) => {
     popupState.value = { type, provider }
+  }
+
+  const openTransferPopup = () => {
+    isTransferPopupVisible.value = true
+  }
+
+  const closeTransferPopup = () => {
+    isTransferPopupVisible.value = false
   }
 
   const attemptDeepLinkLaunch = (provider: DeepLinkProvider) => {
@@ -174,6 +196,11 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
       return
     }
 
+    if (method.id === 'transfer') {
+      openTransferPopup()
+      return
+    }
+
     if (method.deepLinkProvider) {
       attemptDeepLinkLaunch(method.deepLinkProvider)
       return
@@ -196,6 +223,11 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
       return
     }
 
+    if (method.id === 'transfer') {
+      openTransferPopup()
+      return
+    }
+
     if (method.deepLinkProvider) {
       attemptDeepLinkLaunch(method.deepLinkProvider)
       return
@@ -209,7 +241,11 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
     isPopupVisible,
     popupContent,
     isDeepLinkChecking,
+    isTransferPopupVisible,
+    transferAmount,
+    transferAccounts,
     closePopup,
+    closeTransferPopup,
     handleMethodSelection,
     handleCurrencySelection,
   }
