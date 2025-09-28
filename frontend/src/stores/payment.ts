@@ -40,7 +40,7 @@ const banks = (bankList as { banks?: BankListEntry[] }).banks ?? []
 
 const resolveTossDeepLink = () => {
   const params = new URLSearchParams({
-    amount: info.toss.amount.krw,
+    amount: info.toss.amount.krw.toString(),
     bank: info.toss.bankName,
     accountNo: info.toss.accountNo,
   })
