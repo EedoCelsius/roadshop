@@ -162,49 +162,7 @@ export const usePaymentStore = defineStore('payment', () => {
     return grouped
   })
 
-  const selectedMethodId = ref<string | null>(null)
-  const selectedCurrency = ref<string | null>(null)
-  const isCurrencySelectorOpen = ref(false)
-
-  const selectedMethod = computed(() =>
-    selectedMethodId.value ? methods.value.find((method) => method.id === selectedMethodId.value) ?? null : null
-  )
-
-  const selectMethod = (methodId: string) => {
-    const method = methods.value.find((item) => item.id === methodId)
-
-    if (!method) {
-      return
-    }
-
-    selectedMethodId.value = methodId
-
-    if (method.supportedCurrencies.length <= 1) {
-      selectedCurrency.value = method.supportedCurrencies[0] ?? null
-      isCurrencySelectorOpen.value = false
-      return
-    }
-
-    selectedCurrency.value = null
-    isCurrencySelectorOpen.value = true
-  }
-
-  const chooseCurrency = (currency: string) => {
-    const method = selectedMethod.value
-
-    if (!method || !method.supportedCurrencies.includes(currency)) {
-      return
-    }
-
-    selectedCurrency.value = currency
-    isCurrencySelectorOpen.value = false
-  }
-
-  const closeCurrencySelector = () => {
-    isCurrencySelectorOpen.value = false
-  }
-
-  const getUrlForMethod = (methodId: string, currency?: string | null) => {
+  const getUrlForMethod = (methodId: string, currency?: string | null): string | null => {
     const method = methods.value.find((item) => item.id === methodId)
 
     if (!method) {
@@ -216,6 +174,53 @@ export const usePaymentStore = defineStore('payment', () => {
     }
 
     return method.url ?? null
+  }
+
+  const selectedMethodId = ref<string | null>(null)
+  const selectedCurrency = ref<string | null>(null)
+  const isCurrencySelectorOpen = ref(false)
+
+  const selectedMethod = computed(() =>
+    selectedMethodId.value ? methods.value.find((method) => method.id === selectedMethodId.value) ?? null : null
+  )
+
+  const selectMethod = (methodId: string): string | null => {
+    const method = methods.value.find((item) => item.id === methodId)
+
+    if (!method) {
+      return null
+    }
+
+    selectedMethodId.value = methodId
+
+    if (method.supportedCurrencies.length <= 1) {
+      const currency = method.supportedCurrencies[0] ?? null
+      selectedCurrency.value = currency
+      isCurrencySelectorOpen.value = false
+      return getUrlForMethod(methodId, currency)
+    }
+
+    selectedCurrency.value = null
+    isCurrencySelectorOpen.value = true
+
+    return null
+  }
+
+  const chooseCurrency = (currency: string): string | null => {
+    const method = selectedMethod.value
+
+    if (!method || !method.supportedCurrencies.includes(currency)) {
+      return null
+    }
+
+    selectedCurrency.value = currency
+    isCurrencySelectorOpen.value = false
+
+    return getUrlForMethod(method.id, currency)
+  }
+
+  const closeCurrencySelector = () => {
+    isCurrencySelectorOpen.value = false
   }
 
   return {

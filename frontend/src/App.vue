@@ -11,7 +11,7 @@ const paymentStore = usePaymentStore()
 const { methodsByCurrency, selectedMethodId, selectedMethod, selectedCurrency, isCurrencySelectorOpen } =
   storeToRefs(paymentStore)
 
-const { selectMethod, chooseCurrency, closeCurrencySelector, getUrlForMethod } = paymentStore
+const { selectMethod, chooseCurrency, closeCurrencySelector } = paymentStore
 
 const i18nStore = useI18nStore()
 const { locale, availableLocales } = storeToRefs(i18nStore)
@@ -37,17 +37,11 @@ const localizedSections = computed(() => {
       currency,
       methods: methods.map((method) => {
         const isSelected = method.id === selectedMethodId.value
-        const resolvedUrl =
-          getUrlForMethod(method.id, isSelected ? selectedCurrency.value ?? undefined : undefined) ?? undefined
-
         return {
           ...method,
           name: i18nStore.t(`payment.${method.id}.name`, method.name),
           description: i18nStore.t(`payment.${method.id}.description`, method.description),
-          cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
           provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
-          url: resolvedUrl,
-          selectedCurrency: isSelected ? selectedCurrency.value : null,
         }
       }),
     }
@@ -66,12 +60,22 @@ const onLocaleChange = (event: Event) => {
   i18nStore.setLocale(target.value as Locale)
 }
 
+const openUrlInNewTab = (url: string | null) => {
+  if (!url || typeof window === 'undefined') {
+    return
+  }
+
+  window.open(url, '_blank', 'noopener,noreferrer')
+}
+
 const onSelectMethod = (methodId: string) => {
-  selectMethod(methodId)
+  const url = selectMethod(methodId)
+  openUrlInNewTab(url)
 }
 
 const onCurrencySelect = (currency: string) => {
-  chooseCurrency(currency)
+  const url = chooseCurrency(currency)
+  openUrlInNewTab(url)
 }
 
 const onCloseCurrencySelector = () => {
@@ -159,11 +163,8 @@ const onCloseCurrencySelector = () => {
             :supported-currencies="method.supportedCurrencies"
             :provider="method.provider"
             :status="method.status"
-            :cta="method.cta"
-            :url="method.url"
             :icons="method.icons"
             :is-selected="method.id === selectedMethodId"
-            :selected-currency="method.selectedCurrency"
             @select="onSelectMethod(method.id)"
           />
         </div>
