@@ -44,29 +44,30 @@ const preparingCopy = computed(() => i18nStore.t('card.preparing'))
           {{ props.name }}
         </h3>
         <p class="text-sm text-slate-500">{{ props.provider }}</p>
-        <div
-          v-if="props.icons?.length"
-          class="mt-3 flex flex-wrap items-center gap-2"
-        >
-          <span
-            v-for="icon in props.icons"
-            :key="icon.src"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 shadow-inner"
-          >
-            <img
-              :src="icon.src"
-              :alt="icon.alt"
-              class="h-5 w-5"
-              loading="lazy"
-            >
-          </span>
-        </div>
       </div>
       <span
         class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
         :class="statusMeta[props.status].classes"
       >
         {{ statusMeta[props.status].label }}
+      </span>
+    </div>
+
+    <div
+      v-if="props.icons?.length"
+      class="mt-3 flex items-center gap-2 overflow-x-auto"
+    >
+      <span
+        v-for="icon in props.icons"
+        :key="icon.src"
+        class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner"
+      >
+        <img
+          :src="icon.src"
+          :alt="icon.alt"
+          class="h-5 w-5"
+          loading="lazy"
+        >
       </span>
     </div>
 
