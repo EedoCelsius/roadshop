@@ -2,12 +2,16 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import PaymentOptionCard from './components/PaymentOptionCard.vue'
+import CurrencySelectorDialog from './components/CurrencySelectorDialog.vue'
 import { getPaymentLayoutConfig } from './config/paymentLayout'
 import { usePaymentStore } from './stores/payment'
 import { type Locale, useI18nStore } from './stores/i18n'
 
 const paymentStore = usePaymentStore()
-const { methodsByCurrency } = storeToRefs(paymentStore)
+const { methodsByCurrency, selectedMethodId, selectedMethod, selectedCurrency, isCurrencySelectorOpen } =
+  storeToRefs(paymentStore)
+
+const { selectMethod, chooseCurrency, closeCurrencySelector, getUrlForMethod } = paymentStore
 
 const i18nStore = useI18nStore()
 const { locale, availableLocales } = storeToRefs(i18nStore)
@@ -31,13 +35,21 @@ const localizedSections = computed(() => {
 
     return {
       currency,
-      methods: methods.map((method) => ({
-        ...method,
-        name: i18nStore.t(`payment.${method.id}.name`, method.name),
-        description: i18nStore.t(`payment.${method.id}.description`, method.description),
-        cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
-        provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
-      })),
+      methods: methods.map((method) => {
+        const isSelected = method.id === selectedMethodId.value
+        const resolvedUrl =
+          getUrlForMethod(method.id, isSelected ? selectedCurrency.value ?? undefined : undefined) ?? undefined
+
+        return {
+          ...method,
+          name: i18nStore.t(`payment.${method.id}.name`, method.name),
+          description: i18nStore.t(`payment.${method.id}.description`, method.description),
+          cta: method.cta ? i18nStore.t(`payment.${method.id}.cta`, method.cta) : undefined,
+          provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
+          url: resolvedUrl,
+          selectedCurrency: isSelected ? selectedCurrency.value : null,
+        }
+      }),
     }
   })
 })
@@ -52,6 +64,18 @@ const formatLocaleLabel = (option: { label: string; nativeLabel: string }) =>
 const onLocaleChange = (event: Event) => {
   const target = event.target as HTMLSelectElement
   i18nStore.setLocale(target.value as Locale)
+}
+
+const onSelectMethod = (methodId: string) => {
+  selectMethod(methodId)
+}
+
+const onCurrencySelect = (currency: string) => {
+  chooseCurrency(currency)
+}
+
+const onCloseCurrencySelector = () => {
+  closeCurrencySelector()
 }
 </script>
 
@@ -132,11 +156,15 @@ const onLocaleChange = (event: Event) => {
             :key="method.id"
             :name="method.name"
             :description="method.description"
+            :supported-currencies="method.supportedCurrencies"
             :provider="method.provider"
             :status="method.status"
             :cta="method.cta"
             :url="method.url"
             :icons="method.icons"
+            :is-selected="method.id === selectedMethodId"
+            :selected-currency="method.selectedCurrency"
+            @select="onSelectMethod(method.id)"
           />
         </div>
       </section>
@@ -145,5 +173,14 @@ const onLocaleChange = (event: Event) => {
     <footer class="border-t border-slate-200 bg-white/90 py-6 text-center text-xs text-slate-500">
       {{ footerCopy }}
     </footer>
+
+    <CurrencySelectorDialog
+      v-if="selectedMethod"
+      :visible="isCurrencySelectorOpen"
+      :method-name="selectedMethod.name"
+      :currencies="selectedMethod.supportedCurrencies"
+      @select="onCurrencySelect"
+      @close="onCloseCurrencySelector"
+    />
   </div>
 </template>
