@@ -23,12 +23,12 @@ const messages: Record<Locale, Messages> = {
       title: 'Pay for your Stitchmon order your way',
       badge: 'Official online checkout',
       description:
-        "Use this Stitchmon Roadshop online payment page to complete your order. KakaoPay is ready for KRW purchases today, and we're bringing in more global-friendly options so every Stitchmon fan can check out smoothly.",
+        "Use this Stitchmon Roadshop online payment page to complete your order. Kakao Transfer is ready for KRW purchases today, and we're bringing in more global-friendly options so every Stitchmon fan can check out smoothly.",
     },
     highlights: {
       instant: {
         title: 'Instant confirmation',
-        description: 'Finish your Stitchmon Roadshop order in seconds with KakaoPay for KRW payments.',
+        description: 'Finish your Stitchmon Roadshop order in seconds with Kakao Transfer for KRW payments.',
       },
       guidance: {
         title: 'Clear guidance',
@@ -65,7 +65,11 @@ const messages: Record<Locale, Messages> = {
     payment: {
       'kakaopay-qr': {
         description: 'Scan the QR code with KakaoTalk and finish checkout in seconds.',
-        cta: 'Open KakaoPay',
+        cta: 'Open Kakao Transfer',
+      },
+      'toss-transfer': {
+        description: 'Send your payment instantly with Toss and see the confirmation immediately.',
+        cta: 'Open Toss',
       },
       'naverpay-qr': {
         description: 'We are preparing Naver Pay so you can pay with your points on the spot.',
@@ -79,7 +83,7 @@ const messages: Record<Locale, Messages> = {
       },
       'credit-card': {
         description:
-          'Visa, Mastercard, UnionPay, and Amex card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
+          'Visa, Mastercard, UnionPay, Amex, and JCB card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       },
     },
   },
@@ -89,12 +93,12 @@ const messages: Record<Locale, Messages> = {
       title: '스티치몬 주문을 원하는 방식으로 결제하세요',
       badge: '공식 온라인 결제',
       description:
-        '이 페이지는 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오페이로 원화 결제를 지원하며, 해외 고객을 위한 다양한 결제 수단도 순차적으로 제공할 예정이에요.',
+        '이 페이지는 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오송금으로 원화 결제를 지원하며, 해외 고객을 위한 다양한 결제 수단도 순차적으로 제공할 예정이에요.',
     },
     highlights: {
       instant: {
         title: '즉시 확인',
-        description: '카카오페이로 스티치몬 로드샵 주문을 몇 초 만에 결제하고 확인할 수 있어요.',
+        description: '카카오송금으로 스티치몬 로드샵 주문을 몇 초 만에 결제하고 확인할 수 있어요.',
       },
       guidance: {
         title: '친절한 안내',
@@ -131,7 +135,11 @@ const messages: Record<Locale, Messages> = {
     payment: {
       'kakaopay-qr': {
         description: '카카오톡으로 QR을 스캔하고 빠르게 결제하세요.',
-        cta: '카카오페이 열기',
+        cta: '카카오송금 열기',
+      },
+      'toss-transfer': {
+        description: '토스송금으로 바로 결제하고 즉시 확인하세요.',
+        cta: '토스송금 열기',
       },
       'naverpay-qr': {
         description: '현장에서도 네이버페이 포인트로 간편하게 결제할 수 있도록 준비 중이에요.',
@@ -143,7 +151,7 @@ const messages: Record<Locale, Messages> = {
         description: '글로벌 고객이 익숙한 PayPal 계정을 통해 손쉽게 결제할 수 있도록 준비하고 있어요.',
       },
       'credit-card': {
-        description: 'Visa, Mastercard, UnionPay, Amex 등 전 세계 카드 결제를 곧 제공할게요.',
+        description: 'Visa, Mastercard, UnionPay, Amex, JCB 등 전 세계 카드 결제를 곧 제공할게요.',
       },
     },
   },
@@ -153,12 +161,12 @@ const messages: Record<Locale, Messages> = {
       title: 'スティッチモンのご注文をお好みの方法で決済',
       badge: '公式オンライン決済',
       description:
-        'ここはスティッチモン ロードショップの公式オンライン決済ページです。現在はKRW決済にKakaoPayをご利用いただけ、海外のファン向けの手段も順次追加予定です。',
+        'ここはスティッチモン ロードショップの公式オンライン決済ページです。現在はKRW決済にKakao送金をご利用いただけ、海外のファン向けの手段も順次追加予定です。',
     },
     highlights: {
       instant: {
         title: '即時確認',
-        description: 'KakaoPayでスティッチモンのご注文を数秒で決済し、その場で確認できます。',
+        description: 'Kakao送金でスティッチモンのご注文を数秒で決済し、その場で確認できます。',
       },
       guidance: {
         title: 'わかりやすい案内',
@@ -195,7 +203,11 @@ const messages: Record<Locale, Messages> = {
     payment: {
       'kakaopay-qr': {
         description: 'QRコードをKakaoTalkで読み取り、数秒で決済を完了できます。',
-        cta: 'KakaoPayを開く',
+        cta: 'Kakao送金を開く',
+      },
+      'toss-transfer': {
+        description: 'Toss送金ですぐにお支払いを済ませ、その場で確認できます。',
+        cta: 'Toss送金を開く',
       },
       'naverpay-qr': {
         description: 'Naver Payでもその場でポイント決済できるよう準備中です。',
@@ -207,7 +219,7 @@ const messages: Record<Locale, Messages> = {
         description: '普段使いのPayPalアカウントで決済できるよう近日対応予定です。',
       },
       'credit-card': {
-        description: 'Visa・Mastercard・UnionPay・Amexなどの世界的なカード決済に近日対応します。',
+        description: 'Visa・Mastercard・UnionPay・Amex・JCBなどの世界的なカード決済に近日対応します。',
       },
     },
   },
@@ -217,12 +229,12 @@ const messages: Record<Locale, Messages> = {
       title: '用你喜欢的方式支付 Stitchmon 订单',
       badge: '官方在线结账',
       description:
-        '这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 KakaoPay 完成韩元订单，我们也在为全球的 Stitchmon 粉丝上线更多友好的支付选项。',
+        '这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 Kakao 汇款 完成韩元订单，我们也在为全球的 Stitchmon 粉丝上线更多友好的支付选项。',
     },
     highlights: {
       instant: {
         title: '即时确认',
-        description: '通过 KakaoPay 几秒内完成 Stitchmon 路店订单并立即确认。',
+        description: '通过 Kakao 汇款 几秒内完成 Stitchmon 路店订单并立即确认。',
       },
       guidance: {
         title: '清晰指引',
@@ -259,7 +271,11 @@ const messages: Record<Locale, Messages> = {
     payment: {
       'kakaopay-qr': {
         description: '使用 KakaoTalk 扫描二维码，数秒内完成结账。',
-        cta: '打开 KakaoPay',
+        cta: '打开 Kakao 汇款',
+      },
+      'toss-transfer': {
+        description: '通过 Toss 转账即时付款并立即确认。',
+        cta: '打开 Toss',
       },
       'naverpay-qr': {
         description: '我们正在筹备 Naver Pay，让你当场即可使用积分付款。',
@@ -271,7 +287,7 @@ const messages: Record<Locale, Messages> = {
         description: '你很快就能用熟悉的 PayPal 账户轻松完成购买。',
       },
       'credit-card': {
-        description: '我们即将上线 Visa、Mastercard、UnionPay、Amex 等全球银行卡支付，让你随时享受熟悉的结账体验。',
+        description: '我们即将上线 Visa、Mastercard、UnionPay、Amex、JCB 等全球银行卡支付，让你随时享受熟悉的结账体验。',
       },
     },
   },
