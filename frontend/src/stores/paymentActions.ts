@@ -98,6 +98,7 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
   const i18nStore = useI18nStore()
 
   const popupState = ref<PopupState | null>(null)
+  const isDeepLinkChecking = ref(false)
 
   const isPopupVisible = computed(() => popupState.value !== null)
 
@@ -145,7 +146,13 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
       return
     }
 
+    if (!isMobileDevice() && popupState.value?.type !== 'not-mobile') {
+      showPopup('not-mobile', provider)
+    }
+
     let didLaunch = false
+
+    isDeepLinkChecking.value = true
 
     const cleanup = () => {
       window.removeEventListener('blur', handleBlur)
@@ -153,6 +160,7 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
       if (fallbackTimer) {
         clearTimeout(fallbackTimer)
       }
+      isDeepLinkChecking.value = false
     }
 
     const handleBlur = () => {
@@ -170,8 +178,11 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
     const fallbackTimer = window.setTimeout(() => {
       cleanup()
       if (!didLaunch) {
-        const popupType = isMobileDevice() ? 'not-installed' : 'not-mobile'
-        showPopup(popupType, provider)
+        if (isMobileDevice()) {
+          showPopup('not-installed', provider)
+        } else if (popupState.value?.type !== 'not-mobile') {
+          showPopup('not-mobile', provider)
+        }
       }
     }, 1500)
 
@@ -228,6 +239,7 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
   return {
     isPopupVisible,
     popupContent,
+    isDeepLinkChecking,
     closePopup,
     handleMethodSelection,
     handleCurrencySelection,
