@@ -3,15 +3,21 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import PaymentOptionCard from './components/PaymentOptionCard.vue'
 import CurrencySelectorDialog from './components/CurrencySelectorDialog.vue'
+import ActionPopup from './components/ActionPopup.vue'
 import { getPaymentLayoutConfig } from './config/paymentLayout'
 import { usePaymentStore } from './stores/payment'
+import { usePaymentActionsStore } from './stores/paymentActions'
 import { type Locale, useI18nStore } from './stores/i18n'
 
 const paymentStore = usePaymentStore()
+const paymentActionsStore = usePaymentActionsStore()
+
 const { methodsByCurrency, selectedMethodId, selectedMethod, selectedCurrency, isCurrencySelectorOpen } =
   storeToRefs(paymentStore)
 
-const { selectMethod, chooseCurrency, closeCurrencySelector } = paymentStore
+const { isPopupVisible, popupContent } = storeToRefs(paymentActionsStore)
+
+const { closeCurrencySelector } = paymentStore
 
 const i18nStore = useI18nStore()
 const { locale, availableLocales } = storeToRefs(i18nStore)
@@ -60,26 +66,20 @@ const onLocaleChange = (event: Event) => {
   i18nStore.setLocale(target.value as Locale)
 }
 
-const openUrlInNewTab = (url: string | null) => {
-  if (!url || typeof window === 'undefined') {
-    return
-  }
-
-  window.open(url, '_blank', 'noopener,noreferrer')
-}
-
 const onSelectMethod = (methodId: string) => {
-  const url = selectMethod(methodId)
-  openUrlInNewTab(url)
+  paymentActionsStore.handleMethodSelection(methodId)
 }
 
 const onCurrencySelect = (currency: string) => {
-  const url = chooseCurrency(currency)
-  openUrlInNewTab(url)
+  paymentActionsStore.handleCurrencySelection(currency)
 }
 
 const onCloseCurrencySelector = () => {
   closeCurrencySelector()
+}
+
+const onPopupConfirm = () => {
+  paymentActionsStore.closePopup()
 }
 </script>
 
@@ -182,6 +182,14 @@ const onCloseCurrencySelector = () => {
       :currencies="selectedMethod.supportedCurrencies"
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
+    />
+    <ActionPopup
+      v-if="popupContent"
+      :visible="isPopupVisible"
+      :title="popupContent.title"
+      :message="popupContent.message"
+      :confirm-label="popupContent.confirmLabel"
+      @confirm="onPopupConfirm"
     />
   </div>
 </template>
