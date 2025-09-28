@@ -87,7 +87,6 @@ onBeforeUnmount(() => {
               :src="activeIcon.src"
               :alt="activeIcon.alt"
               class="h-6 w-6"
-              loading="lazy"
             >
           </Transition>
         </div>
