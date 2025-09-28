@@ -103,7 +103,9 @@ const messages: Record<Locale, Messages> = {
       description: 'Send {amountWithCurrency} to one of the accounts below.',
       copyAll: 'Copy whole details',
       copyNumber: 'Copy only account number',
+      copyTooltip: 'Copy to clipboard',
       copied: 'Copied!',
+      copiedNumber: 'Account number copied',
       close: 'Close',
     },
     payment: {
@@ -225,7 +227,9 @@ const messages: Record<Locale, Messages> = {
       description: '{amountWithCurrency}을 아래 계좌 중 하나로 이체해 주세요.',
       copyAll: '전체 정보 복사',
       copyNumber: '계좌번호만 복사',
-      copied: '복사 완료!',
+      copyTooltip: '클립보드로 복사',
+      copied: '복사됨!',
+      copiedNumber: '계좌번호만 복사됨',
       close: '닫기',
     },
     payment: {
@@ -347,7 +351,9 @@ const messages: Record<Locale, Messages> = {
       description: '下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。',
       copyAll: 'すべての情報をコピー',
       copyNumber: '口座番号のみコピー',
+      copyTooltip: 'クリップボードにコピー',
       copied: 'コピーしました！',
+      copiedNumber: '口座番号のみコピーしました',
       close: '閉じる',
     },
     payment: {
@@ -465,7 +471,9 @@ const messages: Record<Locale, Messages> = {
       description: '请向下方任意账户转账 {amountWithCurrency}。',
       copyAll: '复制全部信息',
       copyNumber: '仅复制账号',
+      copyTooltip: '复制到剪贴板',
       copied: '已复制！',
+      copiedNumber: '仅复制了账号',
       close: '关闭',
     },
     payment: {
