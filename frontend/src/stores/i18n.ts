@@ -64,24 +64,30 @@ const messages: Record<Locale, Messages> = {
     },
     payment: {
       'kakaopay-qr': {
+        name: 'Kakao Transfer',
         description: 'Scan the QR code with KakaoTalk and finish checkout in seconds.',
         cta: 'Open Kakao Transfer',
       },
       'toss-transfer': {
+        name: 'Toss Transfer',
         description: 'Send your payment instantly with Toss and see the confirmation immediately.',
         cta: 'Open Toss',
       },
       'naverpay-qr': {
+        name: 'Naver Pay',
         description: 'We are preparing Naver Pay so you can pay with your points on the spot.',
       },
       alipay: {
+        name: 'Alipay',
         description:
           'We plan to connect major global e-wallets through Alipay so travellers can pay with the wallet they already use.',
       },
       paypal: {
+        name: 'PayPal',
         description: 'Soon you will be able to complete your purchase with the PayPal account you already trust.',
       },
       'credit-card': {
+        name: 'Credit Card',
         description:
           'Visa, Mastercard, UnionPay, Amex, and JCB card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
       },
@@ -134,23 +140,29 @@ const messages: Record<Locale, Messages> = {
     },
     payment: {
       'kakaopay-qr': {
+        name: '카카오송금',
         description: '카카오톡으로 QR을 스캔하고 빠르게 결제하세요.',
         cta: '카카오송금 열기',
       },
       'toss-transfer': {
+        name: '토스송금',
         description: '토스송금으로 바로 결제하고 즉시 확인하세요.',
         cta: '토스송금 열기',
       },
       'naverpay-qr': {
+        name: '네이버페이',
         description: '현장에서도 네이버페이 포인트로 간편하게 결제할 수 있도록 준비 중이에요.',
       },
       alipay: {
+        name: '알리페이',
         description: '하나의 지갑으로 글로벌 주요 전자지갑을 연결해 결제를 지원할 계획이에요.',
       },
       paypal: {
+        name: '페이팔',
         description: '글로벌 고객이 익숙한 PayPal 계정을 통해 손쉽게 결제할 수 있도록 준비하고 있어요.',
       },
       'credit-card': {
+        name: '신용카드',
         description: 'Visa, Mastercard, UnionPay, Amex, JCB 등 전 세계 카드 결제를 곧 제공할게요.',
       },
     },
@@ -202,23 +214,29 @@ const messages: Record<Locale, Messages> = {
     },
     payment: {
       'kakaopay-qr': {
+        name: 'Kakao送金',
         description: 'QRコードをKakaoTalkで読み取り、数秒で決済を完了できます。',
         cta: 'Kakao送金を開く',
       },
       'toss-transfer': {
+        name: 'Toss送金',
         description: 'Toss送金ですぐにお支払いを済ませ、その場で確認できます。',
         cta: 'Toss送金を開く',
       },
       'naverpay-qr': {
+        name: 'Naver Pay',
         description: 'Naver Payでもその場でポイント決済できるよう準備中です。',
       },
       alipay: {
+        name: 'Alipay（アリペイ）',
         description: 'Alipayを通じて主要な海外電子ウォレットを連携し、いつものウォレットで支払えるようにします。',
       },
       paypal: {
+        name: 'PayPal（ペイパル）',
         description: '普段使いのPayPalアカウントで決済できるよう近日対応予定です。',
       },
       'credit-card': {
+        name: 'クレジットカード',
         description: 'Visa・Mastercard・UnionPay・Amex・JCBなどの世界的なカード決済に近日対応します。',
       },
     },
@@ -270,23 +288,29 @@ const messages: Record<Locale, Messages> = {
     },
     payment: {
       'kakaopay-qr': {
+        name: 'Kakao 汇款',
         description: '使用 KakaoTalk 扫描二维码，数秒内完成结账。',
         cta: '打开 Kakao 汇款',
       },
       'toss-transfer': {
+        name: 'Toss 转账',
         description: '通过 Toss 转账即时付款并立即确认。',
         cta: '打开 Toss',
       },
       'naverpay-qr': {
+        name: 'Naver Pay',
         description: '我们正在筹备 Naver Pay，让你当场即可使用积分付款。',
       },
       alipay: {
+        name: '支付宝 (Alipay)',
         description: '我们计划通过 Alipay 接入主要的全球电子钱包，让旅客可以用熟悉的钱包付款。',
       },
       paypal: {
+        name: 'PayPal',
         description: '你很快就能用熟悉的 PayPal 账户轻松完成购买。',
       },
       'credit-card': {
+        name: '信用卡',
         description: '我们即将上线 Visa、Mastercard、UnionPay、Amex、JCB 等全球银行卡支付，让你随时享受熟悉的结账体验。',
       },
     },
