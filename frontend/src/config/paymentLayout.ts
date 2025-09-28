@@ -10,6 +10,7 @@ const DEFAULT_CONFIG: PaymentLayoutConfig = {
   sectionOrder: ['GLOBAL', 'KRW'],
   methodOrder: {
     GLOBAL: ['card', 'alipay', 'paypal'],
+    KRW: ['toss', 'kakao', 'naver'],
   },
 }
 
