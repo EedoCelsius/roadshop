@@ -2,7 +2,6 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import bankList from '../config/bankList.json'
-import info from '../config/info.json'
 
 import alipayIcon from '@imgs/alipay.svg'
 import kakaotalkIcon from '@imgs/kakaotalk.svg'
@@ -14,6 +13,8 @@ import amexIcon from '@imgs/amex.svg'
 import unionpayIcon from '@imgs/unionpay.svg'
 import visaIcon from '@imgs/visacard.svg'
 import jcbIcon from '@imgs/jcb.svg'
+
+type DeepLinkProvider = 'toss' | 'kakao'
 
 export type PaymentMethod = {
   id: string
@@ -29,6 +30,7 @@ export type PaymentMethod = {
     src: string
     alt: string
   }>
+  deepLinkProvider?: DeepLinkProvider
 }
 
 export type PaymentCurrency = PaymentMethod['currency']
@@ -36,16 +38,6 @@ export type PaymentCurrency = PaymentMethod['currency']
 type BankListEntry = { code: string; name: string }
 
 const banks = (bankList as { banks?: BankListEntry[] }).banks ?? []
-
-const resolveTossDeepLink = () => {
-  const params = new URLSearchParams({
-    amount: info.toss.amount.krw.toString(),
-    bank: info.toss.bankName,
-    accountNo: info.toss.accountNo,
-  })
-
-  return `supertoss://send?${params.toString()}`
-}
 
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([
@@ -57,7 +49,7 @@ export const usePaymentStore = defineStore('payment', () => {
       supportedCurrencies: ['KRW'],
       provider: 'Viva Republica',
       status: 'available',
-      url: resolveTossDeepLink(),
+      deepLinkProvider: 'toss',
       icons: [
         { src: tossIcon, alt: 'Toss logo' },
       ],
@@ -70,7 +62,7 @@ export const usePaymentStore = defineStore('payment', () => {
       supportedCurrencies: ['KRW'],
       provider: 'KakaoBank Corp.',
       status: 'available',
-      url: 'https://qr.kakaopay.com/',
+      deepLinkProvider: 'kakao',
       icons: [
         { src: kakaotalkIcon, alt: 'KakaoTalk logo' },
       ],
@@ -181,11 +173,11 @@ export const usePaymentStore = defineStore('payment', () => {
     selectedMethodId.value ? methods.value.find((method) => method.id === selectedMethodId.value) ?? null : null
   )
 
-  const selectMethod = (methodId: string): string | null => {
+  const selectMethod = (methodId: string): void => {
     const method = methods.value.find((item) => item.id === methodId)
 
     if (!method) {
-      return null
+      return
     }
 
     selectedMethodId.value = methodId
@@ -194,31 +186,31 @@ export const usePaymentStore = defineStore('payment', () => {
       const currency = method.supportedCurrencies[0] ?? null
       selectedCurrency.value = currency
       isCurrencySelectorOpen.value = false
-      return getUrlForMethod(methodId, currency)
+      return
     }
 
     selectedCurrency.value = null
     isCurrencySelectorOpen.value = true
 
-    return null
   }
 
-  const chooseCurrency = (currency: string): string | null => {
+  const chooseCurrency = (currency: string): void => {
     const method = selectedMethod.value
 
     if (!method || !method.supportedCurrencies.includes(currency)) {
-      return null
+      return
     }
 
     selectedCurrency.value = currency
     isCurrencySelectorOpen.value = false
-
-    return getUrlForMethod(method.id, currency)
   }
 
   const closeCurrencySelector = () => {
     isCurrencySelectorOpen.value = false
   }
+
+  const getMethodById = (methodId: string): PaymentMethod | null =>
+    methods.value.find((method) => method.id === methodId) ?? null
 
   return {
     methods,
@@ -231,5 +223,6 @@ export const usePaymentStore = defineStore('payment', () => {
     chooseCurrency,
     closeCurrencySelector,
     getUrlForMethod,
+    getMethodById,
   }
 })
