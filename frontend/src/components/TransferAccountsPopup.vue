@@ -77,6 +77,8 @@ const copyNumberLabel = computed(() => i18nStore.t('transferPopup.copyNumber'))
 const copyTooltipLabel = computed(() => i18nStore.t('transferPopup.copyTooltip'))
 const copiedLabel = computed(() => i18nStore.t('transferPopup.copied'))
 const copiedNumberLabel = computed(() => i18nStore.t('transferPopup.copiedNumber'))
+const copyAllButtonLabel = computed(() => i18nStore.t('transferPopup.copyAllButton'))
+const copiedAllButtonLabel = computed(() => i18nStore.t('transferPopup.copiedAllButton'))
 const closeLabel = computed(() => i18nStore.t('transferPopup.close'))
 
 const getIconForBank = (bank: string) => firmIconMap[bank] ?? null
@@ -303,15 +305,16 @@ onBeforeUnmount(() => {
                       :aria-label="copyAllLabel"
                       @click="handleCopyAll(account)"
                     >
-                      <span class="flex items-center gap-2 sm:hidden">
-                        <span class="text-sm font-semibold text-white">
-                          {{ isCopied(account.number, 'all') ? 'Copied to clipboard' : 'Copy account info' }}
-                        </span>
+                      <span class="flex items-center gap-1 sm:hidden">
                         <span
-                          class="icon-wrapper flex h-4 w-4 items-center justify-center text-white"
+                          v-if="isCopied(account.number, 'all')"
+                          class="icon-wrapper h-4 w-4 text-white"
                           aria-hidden="true"
-                          v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
+                          v-html="successIcon"
                         ></span>
+                        <span class="text-sm font-semibold text-white">
+                          {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
+                        </span>
                       </span>
                       <span
                         class="icon-wrapper hidden h-4 w-4 items-center justify-center text-white sm:flex"
