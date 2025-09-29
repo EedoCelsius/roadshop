@@ -253,7 +253,10 @@ onBeforeUnmount(() => {
                     <img :src="getIconForBank(account.bank)" :alt="account.bank" class="h-7 w-7" />
                   </div>
                   <div>
-                    <p class="text-base font-semibold text-roadshop-primary">{{ account.bank }}</p>
+                    <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                      <p class="text-base font-semibold text-roadshop-primary">{{ account.bank }}</p>
+                      <p class="text-xs text-slate-500">{{ account.holder }}</p>
+                    </div>
                     <div class="relative mt-1">
                       <button
                         type="button"
@@ -305,7 +308,6 @@ onBeforeUnmount(() => {
                         :variant="getTooltipVariant(account.number, 'number')"
                       />
                     </div>
-                    <p class="mt-1 text-xs text-slate-500">{{ account.holder }}</p>
                   </div>
                 </div>
                 <div class="flex items-start justify-start sm:items-end sm:justify-end">
