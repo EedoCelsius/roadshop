@@ -3,6 +3,8 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useI18nStore } from '../stores/i18n'
 
+import { type PaymentCurrency } from '../stores/payment'
+
 interface Props {
   name: string
   description: string
@@ -14,6 +16,7 @@ interface Props {
     alt: string
   }>
   isSelected?: boolean
+  currency: PaymentCurrency
 }
 
 const props = defineProps<Props>()
@@ -109,7 +112,10 @@ onBeforeUnmount(() => {
       </span>
     </div>
 
-    <div v-if="props.supportedCurrencies.length" class="flex flex-wrap gap-2 text-xs text-roadshop-primary">
+    <div
+      v-if="props.currency !== 'KRW' && props.supportedCurrencies.length"
+      class="flex flex-wrap gap-2 text-xs text-roadshop-primary"
+    >
       <span
         v-for="currency in props.supportedCurrencies"
         :key="currency"

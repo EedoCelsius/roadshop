@@ -172,6 +172,7 @@ const onCloseTransferPopup = () => {
             :status="method.status"
             :icons="method.icons"
             :is-selected="method.id === selectedMethodId"
+            :currency="method.currency"
             @select="onSelectMethod(method.id)"
           />
         </div>
