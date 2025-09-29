@@ -305,18 +305,18 @@ onBeforeUnmount(() => {
                     >
                       <span class="flex items-center gap-2 sm:hidden">
                         <span class="text-sm font-semibold text-white">
-                          {{ isCopied(account.number, 'all') ? 'Copied to clipboard' : 'Copy account info' }}
+                          {{ isCopied(account.number, 'all') ? copiedLabel : copyAllLabel }}
                         </span>
                         <span
                           class="icon-wrapper flex h-4 w-4 items-center justify-center text-white"
                           aria-hidden="true"
-                          v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
+                          v-html="successIcon"
                         ></span>
                       </span>
                       <span
                         class="icon-wrapper hidden h-4 w-4 items-center justify-center text-white sm:flex"
                         aria-hidden="true"
-                        v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
+                        v-html="successIcon"
                       ></span>
                     </button>
                   </div>
