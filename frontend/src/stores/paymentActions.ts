@@ -181,6 +181,9 @@ export const usePaymentActionsStore = defineStore('payment-actions', () => {
     }, 1500)
 
     window.location.href = url
+    window.setTimeout(() => {
+      window.location.href = url
+    }, 200)
   }
 
   const handleMethodSelection = (methodId: string) => {
