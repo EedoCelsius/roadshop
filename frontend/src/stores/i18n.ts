@@ -20,33 +20,33 @@ const messages: Record<Locale, Messages> = {
   en: {
     hero: {
       kicker: 'Stitchmon Roadshop',
-      title: 'Pay for your Stitchmon order your way',
+      title: 'Pay for your Stitchmon order however you like',
       badge: 'Official online checkout',
       description:
-        "Complete your Stitchmon Roadshop order right here. Kakao Transfer handles KRW payments today, and we're adding more international options so every Stitchmon fan can check out smoothly.",
+        "Complete your Stitchmon Roadshop order right here. Kakao Transfer covers KRW payments today, and we're rolling out additional international options so every Stitchmon fan can check out smoothly.",
     },
     highlights: {
       instant: {
         title: 'Instant confirmation',
-        description: 'Pay in KRW with Kakao Transfer and finish your Stitchmon Roadshop order in seconds.',
+        description: 'Pay in KRW with Kakao Transfer and wrap up your Stitchmon Roadshop order in seconds.',
       },
       guidance: {
         title: 'Clear guidance',
-        description: 'Follow step-by-step guidance for every payment option available for Stitchmon orders.',
+        description: 'Follow step-by-step instructions for every payment option available for Stitchmon orders.',
       },
       coverage: {
         title: 'Global expansion roadmap',
-        description: 'International wallets and cards are on the way so Stitchmon customers abroad can pay with ease.',
+        description: 'International wallets and cards are on the way, so Stitchmon customers abroad can pay with ease.',
       },
     },
     sections: {
       krw: {
         title: 'KRW payments',
-        description: 'Ready-to-use options for Stitchmon Roadshop orders in Korean won.',
+        description: 'Ready-to-use options for Stitchmon Roadshop orders priced in Korean won.',
       },
       global: {
         title: 'Global payments',
-        description: 'Expanding choices for Stitchmon fans around the world.',
+        description: 'Growing choices for Stitchmon fans around the world.',
       },
     },
     status: {
@@ -54,7 +54,7 @@ const messages: Record<Locale, Messages> = {
       comingSoon: 'Coming soon',
     },
     card: {
-      preparing: 'We are working hard to launch this option soon.',
+      preparing: 'We are putting the finishing touches on this option.',
       selectedCurrency: 'Selected currency: {currency}',
       selectCurrencyPrompt: 'Choose a currency to continue.',
     },
@@ -65,7 +65,7 @@ const messages: Record<Locale, Messages> = {
       label: 'Language',
     },
     loading: {
-      deepLink: 'Opening the app to continue your payment…',
+      deepLink: 'Opening the app so you can continue your payment…',
     },
     popups: {
       deepLink: {
@@ -80,13 +80,13 @@ const messages: Record<Locale, Messages> = {
         providers: {
           kakao: {
             notMobile:
-              'The Kakao Transfer link opens only in the KakaoTalk app on mobile. Please continue on your phone.',
+              'The Kakao Transfer link only opens in the KakaoTalk mobile app. Please continue on your phone.',
             notInstalled:
               "If KakaoTalk didn't open, please make sure it's installed and try again.",
           },
           toss: {
             notMobile:
-              'The Toss Transfer link opens only in the Toss app on mobile. Please continue on your phone.',
+              'The Toss Transfer link only opens in the Toss mobile app. Please continue on your phone.',
             notInstalled:
               "If Toss didn't open, please make sure it's installed and try again.",
           },
@@ -122,17 +122,17 @@ const messages: Record<Locale, Messages> = {
       },
       'toss': {
         name: 'Toss Transfer',
-        description: 'Send your payment instantly with Toss and see the confirmation immediately.',
+        description: 'Send your payment instantly with Toss and see the confirmation right away.',
         cta: 'Open Toss',
       },
       'naver': {
         name: 'Naver Pay',
-        description: "We're preparing Naver Pay so you can use your points on the spot.",
+        description: "We're preparing Naver Pay so you can use your points right at checkout.",
       },
       alipay: {
         name: 'Alipay',
         description:
-          "We're connecting major global e-wallets through Alipay so travelers can pay with the wallet they already use.",
+          "We're partnering with Alipay to connect major global e-wallets, letting travelers pay with the wallet they already use.",
       },
       paypal: {
         name: 'PayPal',
@@ -141,40 +141,40 @@ const messages: Record<Locale, Messages> = {
       'card': {
         name: 'Credit Card',
         description:
-          'Visa, Mastercard, UnionPay, Amex, and JCB are on the roadmap so you can use a familiar card checkout wherever you are.',
+          'Visa, Mastercard, UnionPay, Amex, and JCB are on the roadmap, so you can use a familiar card checkout wherever you are.',
       },
     },
   },
   ko: {
     hero: {
       kicker: '스티치몬 로드샵',
-      title: '스티치몬 주문을 원하는 방식으로 결제하세요',
+      title: '스티치몬 주문을 원하는 방식으로 결제해 보세요',
       badge: '공식 온라인 결제',
       description:
-        '이 페이지는 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오송금으로 원화 결제를 도와드리며, 해외 고객을 위한 다양한 결제 수단도 순차적으로 마련하고 있어요.',
+        '이곳은 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오송금으로 원화 결제를 도와드리고, 해외 고객을 위한 다양한 결제 수단도 순차적으로 준비하고 있어요.',
     },
     highlights: {
       instant: {
         title: '즉시 확인',
-        description: '카카오송금으로 스티치몬 로드샵 주문을 몇 초 만에 결제하고 확인할 수 있어요.',
+        description: '카카오송금으로 몇 초 만에 스티치몬 로드샵 주문을 결제하고 바로 확인하세요.',
       },
       guidance: {
         title: '친절한 안내',
-        description: '각 결제 수단별 이용 방법을 차근차근 안내해 드려요.',
+        description: '각 결제 수단별 이용 방법을 단계별로 안내해 드려요.',
       },
       coverage: {
         title: '글로벌 준비',
-        description: '해외 전자지갑과 카드 결제를 연동해 전 세계 스티치몬 팬이 쉽게 결제할 수 있도록 준비하고 있어요.',
+        description: '해외 전자지갑과 카드 결제를 연동해 전 세계 스티치몬 팬도 편하게 결제하실 수 있도록 준비 중이에요.',
       },
     },
     sections: {
       krw: {
         title: 'KRW 결제',
-        description: '스티치몬 로드샵 원화 주문을 위한 즉시 결제 수단이에요.',
+        description: '스티치몬 로드샵 원화 주문을 바로 결제할 수 있는 수단이에요.',
       },
       global: {
         title: '글로벌 결제',
-        description: '해외 스티치몬 고객을 위한 결제 옵션을 확장하고 있어요.',
+        description: '해외 스티치몬 고객을 위한 결제 옵션을 넓혀 가고 있어요.',
       },
     },
     status: {
@@ -182,7 +182,7 @@ const messages: Record<Locale, Messages> = {
       comingSoon: '준비 중',
     },
     card: {
-      preparing: '곧 만나보실 수 있도록 열심히 준비하고 있어요.',
+      preparing: '곧 만나보실 수 있도록 마지막 손질을 하고 있어요.',
       selectedCurrency: '선택한 통화: {currency}',
       selectCurrencyPrompt: '진행하려면 통화를 선택해 주세요.',
     },
@@ -207,14 +207,14 @@ const messages: Record<Locale, Messages> = {
         },
         providers: {
           kakao: {
-            notMobile: '카카오송금 링크는 모바일 카카오톡 앱에서만 열 수 있어요. 휴대폰에서 다시 시도해 주세요.',
+            notMobile: '카카오송금 링크는 모바일 카카오톡 앱에서만 열려요. 휴대폰에서 다시 시도해 주세요.',
             notInstalled:
-              '카카오톡 앱으로 이동하지 않았다면 카카오톡 설치 여부를 확인한 후 다시 시도해 주세요.',
+              '카카오톡으로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.',
           },
           toss: {
-            notMobile: '토스송금 링크는 모바일 토스 앱에서만 열 수 있어요. 휴대폰에서 다시 시도해 주세요.',
+            notMobile: '토스송금 링크는 모바일 토스 앱에서만 열려요. 휴대폰에서 다시 시도해 주세요.',
             notInstalled:
-              '토스 앱으로 이동하지 않았다면 토스 앱 설치 여부를 확인한 후 다시 시도해 주세요.',
+              '토스로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.',
           },
         },
       },
@@ -226,24 +226,24 @@ const messages: Record<Locale, Messages> = {
     },
     transferPopup: {
       title: '계좌이체 정보',
-      description: '{amountWithCurrency} 금액을 아래 계좌 중 하나로 이체해 주세요.',
+      description: '{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.',
       copyAll: '전체 정보 복사',
       copyNumber: '계좌번호만 복사',
       copyTooltip: '클립보드로 복사',
       copyAllButton: '계좌 정보 복사',
       copiedAllButton: '클립보드에 복사됨',
       copied: '복사됨!',
-      copiedNumber: '계좌번호만 복사됨',
+      copiedNumber: '계좌번호만 복사했어요',
       close: '닫기',
     },
     payment: {
       transfer: {
         name: '계좌이체',
-        description: '원화 금액은 계좌이체로 보내 결제를 완료해 주세요.',
+        description: '원화 금액은 계좌이체로 보내 결제를 마무리해 주세요.',
       },
       'kakao': {
         name: '카카오송금',
-        description: '카카오톡으로 QR을 스캔하고 빠르게 결제하세요.',
+        description: '카카오톡으로 QR을 스캔해 빠르게 결제하세요.',
         cta: '카카오송금 열기',
       },
       'toss': {
@@ -253,15 +253,15 @@ const messages: Record<Locale, Messages> = {
       },
       'naver': {
         name: '네이버페이',
-        description: '현장에서도 네이버페이 포인트로 간편하게 결제할 수 있도록 준비 중이에요.',
+        description: '현장에서도 네이버페이 포인트로 간편하게 결제하실 수 있도록 준비 중이에요.',
       },
       alipay: {
         name: '알리페이',
-        description: '알리페이를 통해 주요 글로벌 전자지갑을 연결해, 여행 중에도 익숙한 지갑으로 결제할 수 있도록 준비하고 있어요.',
+        description: '알리페이와 연동해 주요 글로벌 전자지갑을 연결하고, 여행 중에도 익숙한 지갑으로 결제하실 수 있도록 준비하고 있어요.',
       },
       paypal: {
         name: '페이팔',
-        description: '글로벌 고객이 익숙한 PayPal 계정을 통해 손쉽게 결제할 수 있도록 준비하고 있어요.',
+        description: '글로벌 고객이 익숙한 PayPal 계정으로 손쉽게 결제하실 수 있도록 준비하고 있어요.',
       },
       'card': {
         name: '신용카드',
@@ -272,10 +272,10 @@ const messages: Record<Locale, Messages> = {
   ja: {
     hero: {
       kicker: 'スティッチモン ロードショップ',
-      title: 'スティッチモンのご注文をお好みの方法で決済',
+      title: 'スティッチモンのご注文をお好みの方法でお支払いください',
       badge: '公式オンライン決済',
       description:
-        'ここはスティッチモン ロードショップの公式オンライン決済ページです。現在はKRW決済にKakao送金をご利用いただけ、海外のファン向けの手段も順次追加予定です。',
+        'ここはスティッチモン ロードショップの公式オンライン決済ページです。現在は韓国ウォン決済にKakao送金をご利用いただけます。海外のファン向けの手段も順次追加していきます。',
     },
     highlights: {
       instant: {
@@ -294,11 +294,11 @@ const messages: Record<Locale, Messages> = {
     sections: {
       krw: {
         title: 'KRW 決済',
-        description: 'スティッチモン ロードショップのKRWご注文向け即時決済です。',
+        description: 'スティッチモン ロードショップのKRW注文向けの即時決済です。',
       },
       global: {
         title: 'グローバル決済',
-        description: '海外のスティッチモンファン向けのオプションを拡充しています。',
+        description: '海外のスティッチモンファン向けのオプションをさらに充実させています。',
       },
     },
     status: {
@@ -346,8 +346,8 @@ const messages: Record<Locale, Messages> = {
       },
     },
     currencySelector: {
-      title: '通貨を選択',
-      description: '{method}で利用する通貨を選んでください。',
+      title: '通貨を選択してください',
+      description: '{method}で利用する通貨をお選びください。',
       cancel: '閉じる',
     },
     transferPopup: {
@@ -398,19 +398,19 @@ const messages: Record<Locale, Messages> = {
   zh: {
     hero: {
       kicker: 'Stitchmon 路店',
-      title: '用你喜欢的方式支付 Stitchmon 订单',
+      title: '以你喜欢的方式支付 Stitchmon 订单',
       badge: '官方在线结账',
       description:
-        '这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 Kakao 汇款完成韩元订单，我们也在为全球的 Stitchmon 粉丝上线更多友好的支付选项。',
+        '这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 Kakao 汇款完成韩元订单，我们也在为全球的 Stitchmon 粉丝陆续上线更多顺手的支付方式。',
     },
     highlights: {
       instant: {
         title: '即时确认',
-        description: '通过 Kakao 汇款几秒内完成 Stitchmon 路店订单并立即确认。',
+        description: '通过 Kakao 汇款，几秒内就能完成 Stitchmon 路店订单并立即确认。',
       },
       guidance: {
         title: '清晰指引',
-        description: '为 Stitchmon 订单的每种支付方式提供逐步说明。',
+        description: '针对 Stitchmon 订单的每种支付方式提供逐步说明。',
       },
       coverage: {
         title: '全球规划',
@@ -420,11 +420,11 @@ const messages: Record<Locale, Messages> = {
     sections: {
       krw: {
         title: '韩元支付',
-        description: '适用于 Stitchmon 路店韩元订单的即时支付选项。',
+        description: '适用于 Stitchmon 路店韩元订单的即时支付方式。',
       },
       global: {
         title: '全球支付',
-        description: '不断扩展，满足全球 Stitchmon 粉丝的支付需求。',
+        description: '持续扩展，为全球 Stitchmon 粉丝提供更多支付选择。',
       },
     },
     status: {
@@ -443,7 +443,7 @@ const messages: Record<Locale, Messages> = {
       label: '语言',
     },
     loading: {
-      deepLink: '正在打开支付应用程序…',
+      deepLink: '正在打开支付应用…',
     },
     popups: {
       deepLink: {
@@ -501,15 +501,15 @@ const messages: Record<Locale, Messages> = {
       },
       'naver': {
         name: 'Naver Pay',
-        description: '我们正在筹备 Naver Pay，让你当场即可使用积分付款。',
+        description: '我们正在筹备 Naver Pay，让你当场就能使用积分付款。',
       },
       alipay: {
         name: '支付宝',
-        description: '我们计划通过 Alipay 接入主要的全球电子钱包，让旅客可以用熟悉的钱包付款。',
+        description: '我们计划通过 Alipay 接入主要的全球电子钱包，让旅客可以继续使用熟悉的钱包付款。',
       },
       paypal: {
         name: 'PayPal',
-        description: '你很快就能用熟悉的 PayPal 账户轻松完成购买。',
+        description: '你很快就能用熟悉的 PayPal 账户轻松结账。',
       },
       'card': {
         name: '信用卡',
