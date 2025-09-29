@@ -273,7 +273,7 @@ onBeforeUnmount(() => {
                         >
                           <span>{{ account.number }}</span>
                           <span
-                            class="flex h-3 w-3 items-center justify-center transition"
+                            class="icon-wrapper flex h-3 w-3 items-center justify-center transition"
                             :class="
                               isCopied(account.number, 'number')
                                 ? 'text-emerald-500 group-hover:text-emerald-500'
@@ -304,7 +304,7 @@ onBeforeUnmount(() => {
                     >
                       <span class="sr-only">{{ copyAllLabel }}</span>
                       <span
-                        class="flex h-4 w-4 items-center justify-center text-white"
+                        class="icon-wrapper flex h-4 w-4 items-center justify-center text-white"
                         aria-hidden="true"
                         v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
                       ></span>
@@ -338,5 +338,11 @@ onBeforeUnmount(() => {
 .popup-fade-enter-from,
 .popup-fade-leave-to {
   opacity: 0;
+}
+
+.icon-wrapper :deep(svg) {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 </style>
