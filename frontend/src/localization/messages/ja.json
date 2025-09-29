@@ -71,8 +71,10 @@
   },
   "currencySelector": {
     "title": "通貨を選択してください",
-    "description": "{method}で利用する通貨をお選びください。",
-    "cancel": "閉じる"
+    "description": "{method}で利用する通貨をお選びください。"
+  },
+  "dialog": {
+    "close": "閉じる"
   },
   "transferPopup": {
     "title": "口座振込のご案内",
@@ -83,8 +85,7 @@
     "copyAllButton": "振込情報をコピー",
     "copiedAllButton": "クリップボードにコピーしました",
     "copied": "コピーしました！",
-    "copiedNumber": "口座番号のみコピーしました",
-    "close": "閉じる"
+    "copiedNumber": "口座番号のみコピーしました"
   },
   "payment": {
     "transfer": {
