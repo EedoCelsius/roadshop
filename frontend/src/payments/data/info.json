@@ -3,7 +3,7 @@
     "amount": {
       "krw": 10000
     },
-    "bankName": "IBK기업은행",
+    "bankName": "IBK기업",
     "accountNo": "02906382504024"
   },
   "kakao": {
@@ -18,12 +18,12 @@
     },
     "account": [
       {
-        "bank": "KB국민은행",
+        "bank": "KB국민",
         "number": "93800300352361",
         "holder": "강일준"
       },
       {
-        "bank": "우리은행",
+        "bank": "우리",
         "number": "1002658182698",
         "holder": "강일준"
       }
