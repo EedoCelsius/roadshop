@@ -304,7 +304,7 @@ onBeforeUnmount(() => {
                     >
                       <span class="sr-only">{{ copyAllLabel }}</span>
                       <span
-                        class="flex h-5 w-5 items-center justify-center text-white"
+                        class="flex h-4 w-4 items-center justify-center text-white"
                         aria-hidden="true"
                         v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
                       ></span>
