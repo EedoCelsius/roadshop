@@ -1,0 +1,121 @@
+{
+  "hero": {
+    "kicker": "Stitchmon 路店",
+    "title": "以你喜欢的方式支付 Stitchmon 订单",
+    "badge": "官方在线结账",
+    "description": "这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 Kakao 汇款完成韩元订单，我们也在为全球的 Stitchmon 粉丝陆续上线更多顺手的支付方式。"
+  },
+  "highlights": {
+    "instant": {
+      "title": "即时确认",
+      "description": "通过 Kakao 汇款，几秒内就能完成 Stitchmon 路店订单并立即确认。"
+    },
+    "guidance": {
+      "title": "清晰指引",
+      "description": "针对 Stitchmon 订单的每种支付方式提供逐步说明。"
+    },
+    "coverage": {
+      "title": "全球规划",
+      "description": "我们正引入国际电子钱包和银行卡，让全球 Stitchmon 粉丝都能轻松付款。"
+    }
+  },
+  "sections": {
+    "krw": {
+      "title": "韩元支付",
+      "description": "适用于 Stitchmon 路店韩元订单的即时支付方式。"
+    },
+    "global": {
+      "title": "全球支付",
+      "description": "持续扩展，为全球 Stitchmon 粉丝提供更多支付选择。"
+    }
+  },
+  "status": {
+    "available": "立即可用",
+    "comingSoon": "即将推出"
+  },
+  "card": {
+    "preparing": "我们正在全力准备，敬请期待。",
+    "selectedCurrency": "已选择的货币：{currency}",
+    "selectCurrencyPrompt": "请选择货币以继续。"
+  },
+  "footer": {
+    "message": "© {year} Stitchmon 路店。官方在线支付中心。"
+  },
+  "language": {
+    "label": "语言"
+  },
+  "loading": {
+    "deepLink": "正在打开支付应用…"
+  },
+  "popups": {
+    "deepLink": {
+      "titles": {
+        "notMobile": "仅限移动设备使用",
+        "notInstalled": "应用没有打开吗？"
+      },
+      "confirms": {
+        "notMobile": "知道了",
+        "notInstalled": "好的"
+      },
+      "providers": {
+        "kakao": {
+          "notMobile": "Kakao 汇款链接只能在手机上的 KakaoTalk 应用中打开。请在手机上重试。",
+          "notInstalled": "如果没有跳转到 KakaoTalk，请确认已安装 KakaoTalk 后再试一次。"
+        },
+        "toss": {
+          "notMobile": "Toss 转账链接只能在手机上的 Toss 应用中打开。请在手机上重试。",
+          "notInstalled": "如果没有跳转到 Toss，请确认已安装 Toss 后再试一次。"
+        }
+      }
+    }
+  },
+  "currencySelector": {
+    "title": "选择货币",
+    "description": "请选择使用 {method} 时的付款货币。",
+    "cancel": "关闭"
+  },
+  "transferPopup": {
+    "title": "银行转账信息",
+    "description": "请将 {amountWithCurrency} 转入下方任一账户。",
+    "copyAll": "复制全部信息",
+    "copyNumber": "仅复制账号",
+    "copyTooltip": "复制到剪贴板",
+    "copyAllButton": "复制转账信息",
+    "copiedAllButton": "已复制到剪贴板",
+    "copied": "已复制！",
+    "copiedNumber": "仅复制了账号",
+    "close": "关闭"
+  },
+  "payment": {
+    "transfer": {
+      "name": "银行转账",
+      "description": "请通过银行转账支付韩元金额。"
+    },
+    "kakao": {
+      "name": "Kakao 汇款",
+      "description": "使用 KakaoTalk 扫描二维码，几秒内完成结账。",
+      "cta": "打开 Kakao 汇款"
+    },
+    "toss": {
+      "name": "Toss 转账",
+      "description": "通过 Toss 转账即时付款并立即确认。",
+      "cta": "打开 Toss"
+    },
+    "naver": {
+      "name": "Naver Pay",
+      "description": "我们正在筹备 Naver Pay，让你当场就能使用积分付款。"
+    },
+    "alipay": {
+      "name": "支付宝",
+      "description": "我们计划通过 Alipay 接入主要的全球电子钱包，让旅客可以继续使用熟悉的钱包付款。"
+    },
+    "paypal": {
+      "name": "PayPal",
+      "description": "你很快就能用熟悉的 PayPal 账户轻松结账。"
+    },
+    "card": {
+      "name": "信用卡",
+      "description": "我们即将上线 Visa、Mastercard、UnionPay、Amex、JCB 等全球银行卡支付，让你随时享受熟悉的结账体验。"
+    }
+  }
+}

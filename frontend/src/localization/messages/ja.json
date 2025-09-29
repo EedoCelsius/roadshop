@@ -1,0 +1,121 @@
+{
+  "hero": {
+    "kicker": "スティッチモン ロードショップ",
+    "title": "スティッチモンのご注文をお好みの方法でお支払いください",
+    "badge": "公式オンライン決済",
+    "description": "ここはスティッチモン ロードショップの公式オンライン決済ページです。現在は韓国ウォン決済にKakao送金をご利用いただけます。海外のファン向けの手段も順次追加していきます。"
+  },
+  "highlights": {
+    "instant": {
+      "title": "即時確認",
+      "description": "Kakao送金でスティッチモンのご注文を数秒で決済し、その場で確認できます。"
+    },
+    "guidance": {
+      "title": "わかりやすい案内",
+      "description": "利用可能な各決済方法をステップごとにご案内します。"
+    },
+    "coverage": {
+      "title": "グローバル展開",
+      "description": "海外電子ウォレットやカード決済を順次追加し、世界のスティッチモンファンが安心して決済できるようにします。"
+    }
+  },
+  "sections": {
+    "krw": {
+      "title": "KRW 決済",
+      "description": "スティッチモン ロードショップのKRW注文向けの即時決済です。"
+    },
+    "global": {
+      "title": "グローバル決済",
+      "description": "海外のスティッチモンファン向けのオプションをさらに充実させています。"
+    }
+  },
+  "status": {
+    "available": "利用可能",
+    "comingSoon": "近日公開"
+  },
+  "card": {
+    "preparing": "まもなくご利用いただけるよう準備を進めています。",
+    "selectedCurrency": "選択した通貨: {currency}",
+    "selectCurrencyPrompt": "続行するには通貨を選択してください。"
+  },
+  "footer": {
+    "message": "© {year} スティッチモン ロードショップ。公式オンライン決済センターです。"
+  },
+  "language": {
+    "label": "言語"
+  },
+  "loading": {
+    "deepLink": "お支払いアプリを開いています…"
+  },
+  "popups": {
+    "deepLink": {
+      "titles": {
+        "notMobile": "モバイル専用です",
+        "notInstalled": "アプリが起動しませんか？"
+      },
+      "confirms": {
+        "notMobile": "了解",
+        "notInstalled": "OK"
+      },
+      "providers": {
+        "kakao": {
+          "notMobile": "Kakao送金リンクはモバイル版KakaoTalkアプリでのみ開けます。スマートフォンで再度お試しください。",
+          "notInstalled": "KakaoTalkに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。"
+        },
+        "toss": {
+          "notMobile": "Toss送金リンクはモバイル版Tossアプリでのみ開けます。スマートフォンで再度お試しください。",
+          "notInstalled": "Tossに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。"
+        }
+      }
+    }
+  },
+  "currencySelector": {
+    "title": "通貨を選択してください",
+    "description": "{method}で利用する通貨をお選びください。",
+    "cancel": "閉じる"
+  },
+  "transferPopup": {
+    "title": "口座振込のご案内",
+    "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
+    "copyAll": "すべての情報をコピー",
+    "copyNumber": "口座番号のみコピー",
+    "copyTooltip": "クリップボードにコピー",
+    "copyAllButton": "振込情報をコピー",
+    "copiedAllButton": "クリップボードにコピーしました",
+    "copied": "コピーしました！",
+    "copiedNumber": "口座番号のみコピーしました",
+    "close": "閉じる"
+  },
+  "payment": {
+    "transfer": {
+      "name": "口座振込",
+      "description": "KRWの金額は口座振込でお支払いください。"
+    },
+    "kakao": {
+      "name": "Kakao送金",
+      "description": "QRコードをKakaoTalkで読み取り、数秒で決済を完了できます。",
+      "cta": "Kakao送金を開く"
+    },
+    "toss": {
+      "name": "Toss送金",
+      "description": "Toss送金ですぐにお支払いを済ませ、その場で確認できます。",
+      "cta": "Toss送金を開く"
+    },
+    "naver": {
+      "name": "Naver Pay",
+      "description": "Naver Payでもその場でポイント決済できるよう準備中です。"
+    },
+    "alipay": {
+      "name": "Alipay（アリペイ）",
+      "description": "Alipayを通じて主要な海外電子ウォレットを連携し、いつものウォレットで支払えるようにします。"
+    },
+    "paypal": {
+      "name": "PayPal（ペイパル）",
+      "description": "普段使いのPayPalアカウントで決済できるよう近日対応予定です。"
+    },
+    "card": {
+      "name": "クレジットカード",
+      "description": "Visa・Mastercard・UnionPay・Amex・JCBなどの世界的なカード決済に近日対応します。"
+    }
+  }
+}
