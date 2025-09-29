@@ -15,7 +15,7 @@ import visaIcon from '@icons/methods/visacard.svg'
 import jcbIcon from '@icons/methods/jcb.svg'
 import transferIcon from '@icons/methods/transfer.svg'
 
-type DeepLinkProvider = 'toss' | 'kakao'
+export type DeepLinkProvider = 'toss' | 'kakao'
 
 export type PaymentMethod = {
   id: string
