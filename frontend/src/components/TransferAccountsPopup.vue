@@ -3,6 +3,9 @@ import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/stores/i18n'
+import clipboardIcon from '@icons/ui/clipboard.svg?raw'
+import successIcon from '@icons/ui/success.svg?raw'
+
 import TooltipBubble from './TooltipBubble.vue'
 
 interface TransferAccount {
@@ -269,39 +272,16 @@ onBeforeUnmount(() => {
                           @blur="setHoveredControl(account.number, 'number', false)"
                         >
                           <span>{{ account.number }}</span>
-                          <span class="flex h-4 w-4 items-center justify-center transition group-hover:text-roadshop-primary">
-                            <svg
-                              v-if="isCopied(account.number, 'number')"
-                              class="h-4 w-4 text-emerald-500"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              stroke-width="2"
-                              aria-hidden="true"
-                            >
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                            <svg
-                              v-else
-                              class="h-4 w-4 text-roadshop-primary"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              stroke-width="2"
-                              aria-hidden="true"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M16 17h2a2 2 0 002-2V7a2 2 0 00-2-2h-6l-4 4v6a2 2 0 002 2h2"
-                              />
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M8 17a2 2 0 01-2-2V9"
-                              />
-                            </svg>
-                          </span>
+                          <span
+                            class="flex h-4 w-4 items-center justify-center transition"
+                            :class="
+                              isCopied(account.number, 'number')
+                                ? 'text-emerald-500 group-hover:text-emerald-500'
+                                : 'text-roadshop-primary group-hover:text-roadshop-primary'
+                            "
+                            aria-hidden="true"
+                            v-html="isCopied(account.number, 'number') ? successIcon : clipboardIcon"
+                          ></span>
                         </button>
                         <TooltipBubble
                           :visible="isTooltipVisible(account.number, 'number')"
@@ -323,37 +303,11 @@ onBeforeUnmount(() => {
                       @click="handleCopyAll(account)"
                     >
                       <span class="sr-only">{{ copyAllLabel }}</span>
-                      <svg
-                        v-if="isCopied(account.number, 'all')"
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2"
+                      <span
+                        class="flex h-5 w-5 items-center justify-center text-white"
                         aria-hidden="true"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                      <svg
-                        v-else
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        aria-hidden="true"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M8 16h8a2 2 0 002-2V6a2 2 0 00-2-2h-5l-5 5v5a2 2 0 002 2z"
-                        />
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M15 20H7a2 2 0 01-2-2v-6"
-                        />
-                      </svg>
+                        v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
+                      ></span>
                     </button>
                   </div>
                 </div>
