@@ -243,7 +243,7 @@ onBeforeUnmount(() => {
               <li
                 v-for="account in props.accounts"
                 :key="account.number"
-                class="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-roadshop-highlight/40 p-4 sm:flex-row sm:items-center sm:justify-between"
+                class="flex flex-wrap items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-roadshop-highlight/40 p-4 sm:flex-nowrap sm:items-center"
               >
                 <div class="flex items-start gap-3">
                   <div
@@ -310,7 +310,7 @@ onBeforeUnmount(() => {
                     </div>
                   </div>
                 </div>
-                <div class="flex items-start justify-start sm:items-end sm:justify-end">
+                <div class="flex items-center justify-end sm:items-center sm:justify-end">
                   <div class="relative">
                     <button
                       type="button"
