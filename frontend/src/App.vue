@@ -8,17 +8,17 @@ import LoadingOverlay from './components/LoadingOverlay.vue'
 import TransferAccountsPopup from './components/TransferAccountsPopup.vue'
 import { getPaymentLayoutConfig } from './config/paymentLayout'
 import { usePaymentStore } from './stores/payment'
-import { usePaymentInteractionStore } from './stores/paymentInteraction'
+import { usePaymentActionsStore } from './stores/paymentActions'
 import { type Locale, useI18nStore } from './stores/i18n'
 
 const paymentStore = usePaymentStore()
-const paymentInteractionStore = usePaymentInteractionStore()
+const paymentActionsStore = usePaymentActionsStore()
 
 const { methodsByCurrency, selectedMethodId, selectedMethod, selectedCurrency, isCurrencySelectorOpen } =
   storeToRefs(paymentStore)
 
 const { isPopupVisible, popupContent, isDeepLinkChecking, isTransferPopupVisible, transferAccounts, transferAmount } =
-  storeToRefs(paymentInteractionStore)
+  storeToRefs(paymentActionsStore)
 
 const { closeCurrencySelector } = paymentStore
 
@@ -70,11 +70,11 @@ const onLocaleChange = (event: Event) => {
 }
 
 const onSelectMethod = (methodId: string) => {
-  paymentInteractionStore.handleMethodSelection(methodId)
+  paymentActionsStore.handleMethodSelection(methodId)
 }
 
 const onCurrencySelect = (currency: string) => {
-  paymentInteractionStore.handleCurrencySelection(currency)
+  paymentActionsStore.handleCurrencySelection(currency)
 }
 
 const onCloseCurrencySelector = () => {
@@ -82,11 +82,11 @@ const onCloseCurrencySelector = () => {
 }
 
 const onPopupConfirm = () => {
-  paymentInteractionStore.closePopup()
+  paymentActionsStore.closePopup()
 }
 
 const onCloseTransferPopup = () => {
-  paymentInteractionStore.closeTransferPopup()
+  paymentActionsStore.closeTransferPopup()
 }
 </script>
 
