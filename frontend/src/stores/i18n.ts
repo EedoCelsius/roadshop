@@ -23,7 +23,7 @@ const messages: Record<Locale, Messages> = {
       title: 'Pay for your Stitchmon order your way',
       badge: 'Official online checkout',
       description:
-        "Use this Stitchmon Roadshop online payment page to complete your order. Kakao Transfer is ready for KRW purchases today, and we're bringing in more global-friendly options so every Stitchmon fan can check out smoothly.",
+        "Use this Stitchmon Roadshop online payment page to complete your order. Kakao Transfer is ready for KRW purchases today, and we're bringing in more globally friendly options so every Stitchmon fan can check out smoothly.",
     },
     highlights: {
       instant: {
@@ -35,7 +35,7 @@ const messages: Record<Locale, Messages> = {
         description: 'We walk you through each available payment method step by step for Stitchmon orders.',
       },
       coverage: {
-        title: 'Global-friendly roadmap',
+        title: 'Global expansion roadmap',
         description: 'International wallets and cards are on the way so Stitchmon customers abroad can pay with ease.',
       },
     },
@@ -101,7 +101,7 @@ const messages: Record<Locale, Messages> = {
     transferPopup: {
       title: 'Bank transfer details',
       description: 'Send {amountWithCurrency} to one of the accounts below.',
-      copyAll: 'Copy whole details',
+      copyAll: 'Copy all details',
       copyNumber: 'Copy only account number',
       copyTooltip: 'Copy to clipboard',
       copyAllButton: 'Copy account info',
@@ -151,7 +151,7 @@ const messages: Record<Locale, Messages> = {
       title: '스티치몬 주문을 원하는 방식으로 결제하세요',
       badge: '공식 온라인 결제',
       description:
-        '이 페이지는 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오송금으로 원화 결제를 지원하며, 해외 고객을 위한 다양한 결제 수단도 순차적으로 제공할 예정이에요.',
+        '이 페이지는 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오송금으로 원화 결제를 도와드리며, 해외 고객을 위한 다양한 결제 수단도 순차적으로 마련하고 있어요.',
     },
     highlights: {
       instant: {
@@ -173,7 +173,7 @@ const messages: Record<Locale, Messages> = {
         description: '스티치몬 로드샵 원화 주문을 위한 즉시 결제 수단이에요.',
       },
       global: {
-        title: 'GLOBAL 결제',
+        title: '글로벌 결제',
         description: '해외 스티치몬 고객을 위한 결제 옵션을 확장하고 있어요.',
       },
     },
@@ -226,7 +226,7 @@ const messages: Record<Locale, Messages> = {
     },
     transferPopup: {
       title: '계좌이체 정보',
-      description: '{amountWithCurrency}을 아래 계좌 중 하나로 이체해 주세요.',
+      description: '{amountWithCurrency} 금액을 아래 계좌 중 하나로 이체해 주세요.',
       copyAll: '전체 정보 복사',
       copyNumber: '계좌번호만 복사',
       copyTooltip: '클립보드로 복사',
@@ -239,7 +239,7 @@ const messages: Record<Locale, Messages> = {
     payment: {
       transfer: {
         name: '계좌이체',
-        description: '원화 결제 금액을 계좌이체로 결제하세요.',
+        description: '원화 금액은 계좌이체로 보내 결제를 완료해 주세요.',
       },
       'kakao': {
         name: '카카오송금',
@@ -257,7 +257,7 @@ const messages: Record<Locale, Messages> = {
       },
       alipay: {
         name: '알리페이',
-        description: '하나의 지갑으로 글로벌 주요 전자지갑을 연결해 결제를 지원할 계획이에요.',
+        description: '알리페이를 통해 주요 글로벌 전자지갑을 연결해, 여행 중에도 익숙한 지갑으로 결제할 수 있도록 준비하고 있어요.',
       },
       paypal: {
         name: '페이팔',
@@ -265,7 +265,7 @@ const messages: Record<Locale, Messages> = {
       },
       'card': {
         name: '신용카드',
-        description: 'Visa, Mastercard, UnionPay, Amex, JCB 등 전 세계 카드 결제를 곧 제공할게요.',
+        description: 'Visa, Mastercard, UnionPay, Amex, JCB 등 주요 카드 결제를 곧 지원할 예정이에요.',
       },
     },
   },
@@ -401,12 +401,12 @@ const messages: Record<Locale, Messages> = {
       title: '用你喜欢的方式支付 Stitchmon 订单',
       badge: '官方在线结账',
       description:
-        '这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 Kakao 汇款 完成韩元订单，我们也在为全球的 Stitchmon 粉丝上线更多友好的支付选项。',
+        '这里是 Stitchmon 路店的官方在线支付页面。现在可以使用 Kakao 汇款完成韩元订单，我们也在为全球的 Stitchmon 粉丝上线更多友好的支付选项。',
     },
     highlights: {
       instant: {
         title: '即时确认',
-        description: '通过 Kakao 汇款 几秒内完成 Stitchmon 路店订单并立即确认。',
+        description: '通过 Kakao 汇款几秒内完成 Stitchmon 路店订单并立即确认。',
       },
       guidance: {
         title: '清晰指引',
@@ -474,7 +474,7 @@ const messages: Record<Locale, Messages> = {
     },
     transferPopup: {
       title: '银行转账信息',
-      description: '请向下方任意账户转账 {amountWithCurrency}。',
+      description: '请将 {amountWithCurrency} 转入下方任一账户。',
       copyAll: '复制全部信息',
       copyNumber: '仅复制账号',
       copyTooltip: '复制到剪贴板',
@@ -491,7 +491,7 @@ const messages: Record<Locale, Messages> = {
       },
       'kakao': {
         name: 'Kakao 汇款',
-        description: '使用 KakaoTalk 扫描二维码，数秒内完成结账。',
+        description: '使用 KakaoTalk 扫描二维码，几秒内完成结账。',
         cta: '打开 Kakao 汇款',
       },
       'toss': {
