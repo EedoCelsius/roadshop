@@ -48,7 +48,7 @@ export const usePaymentStore = defineStore('payment', () => {
       description: 'Transfer the payment amount directly to the Stitchmon account.',
       currency: 'KRW',
       supportedCurrencies: ['KRW'],
-      provider: 'Stitchmon Roadshop',
+      provider: 'Bank',
       status: 'available',
       icons: [
         { src: transferIcon, alt: 'Bank transfer icon' },
