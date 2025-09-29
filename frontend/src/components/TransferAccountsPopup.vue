@@ -264,7 +264,7 @@ onBeforeUnmount(() => {
                       <div class="relative mt-1">
                         <button
                           type="button"
-                          class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary"
+                          class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary underline underline-offset-4"
                           @click="handleCopyNumber(account)"
                           @mouseenter="setHoveredControl(account.number, 'number', true)"
                           @mouseleave="setHoveredControl(account.number, 'number', false)"
@@ -300,11 +300,21 @@ onBeforeUnmount(() => {
                           ? 'bg-emerald-500 hover:bg-emerald-500 focus-visible:outline-emerald-500'
                           : 'bg-roadshop-primary hover:bg-roadshop-primary/90 focus-visible:outline-roadshop-primary',
                       ]"
+                      :aria-label="copyAllLabel"
                       @click="handleCopyAll(account)"
                     >
-                      <span class="sr-only">{{ copyAllLabel }}</span>
+                      <span class="flex items-center gap-2 sm:hidden">
+                        <span class="text-sm font-semibold text-white">
+                          {{ isCopied(account.number, 'all') ? 'Copied to clipboard' : 'Copy account info' }}
+                        </span>
+                        <span
+                          class="icon-wrapper flex h-4 w-4 items-center justify-center text-white"
+                          aria-hidden="true"
+                          v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
+                        ></span>
+                      </span>
                       <span
-                        class="icon-wrapper flex h-4 w-4 items-center justify-center text-white"
+                        class="icon-wrapper hidden h-4 w-4 items-center justify-center text-white sm:flex"
                         aria-hidden="true"
                         v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
                       ></span>
