@@ -192,7 +192,7 @@ const copyText = async (text: string) => {
 
 const handleCopyAll = async (account: TransferAccount) => {
   const amountText = `${formattedAmountForCopy.value}원`
-  const payload = `${account.bank} ${account.number} ${account.holder}, ${amountText}`
+  const payload = `${account.bank} ${account.number} ${account.holder} [${amountText}]`
   const success = await copyText(payload)
 
   if (success) {
