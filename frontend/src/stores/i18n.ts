@@ -23,16 +23,16 @@ const messages: Record<Locale, Messages> = {
       title: 'Pay for your Stitchmon order your way',
       badge: 'Official online checkout',
       description:
-        "Use this Stitchmon Roadshop online payment page to complete your order. Kakao Transfer is ready for KRW purchases today, and we're bringing in more globally friendly options so every Stitchmon fan can check out smoothly.",
+        "Complete your Stitchmon Roadshop order right here. Kakao Transfer handles KRW payments today, and we're adding more international options so every Stitchmon fan can check out smoothly.",
     },
     highlights: {
       instant: {
         title: 'Instant confirmation',
-        description: 'Finish your Stitchmon Roadshop order in seconds with Kakao Transfer for KRW payments.',
+        description: 'Pay in KRW with Kakao Transfer and finish your Stitchmon Roadshop order in seconds.',
       },
       guidance: {
         title: 'Clear guidance',
-        description: 'We walk you through each available payment method step by step for Stitchmon orders.',
+        description: 'Follow step-by-step guidance for every payment option available for Stitchmon orders.',
       },
       coverage: {
         title: 'Global expansion roadmap',
@@ -42,7 +42,7 @@ const messages: Record<Locale, Messages> = {
     sections: {
       krw: {
         title: 'KRW payments',
-        description: 'Immediate options for Stitchmon Roadshop orders in Korean Won.',
+        description: 'Ready-to-use options for Stitchmon Roadshop orders in Korean won.',
       },
       global: {
         title: 'Global payments',
@@ -113,7 +113,7 @@ const messages: Record<Locale, Messages> = {
     payment: {
       transfer: {
         name: 'Bank Transfer',
-        description: 'Pay the KRW amount by bank transfer.',
+        description: 'Pay the KRW amount via bank transfer.',
       },
       'kakao': {
         name: 'Kakao Transfer',
@@ -127,21 +127,21 @@ const messages: Record<Locale, Messages> = {
       },
       'naver': {
         name: 'Naver Pay',
-        description: 'We are preparing Naver Pay so you can pay with your points on the spot.',
+        description: "We're preparing Naver Pay so you can use your points on the spot.",
       },
       alipay: {
         name: 'Alipay',
         description:
-          'We plan to connect major global e-wallets through Alipay so travellers can pay with the wallet they already use.',
+          "We're connecting major global e-wallets through Alipay so travelers can pay with the wallet they already use.",
       },
       paypal: {
         name: 'PayPal',
-        description: 'Soon you will be able to complete your purchase with the PayPal account you already trust.',
+        description: "Soon you'll be able to check out with the PayPal account you already trust.",
       },
       'card': {
         name: 'Credit Card',
         description:
-          'Visa, Mastercard, UnionPay, Amex, and JCB card payments are on the roadmap so you can tap into a familiar checkout everywhere.',
+          'Visa, Mastercard, UnionPay, Amex, and JCB are on the roadmap so you can use a familiar card checkout wherever you are.',
       },
     },
   },
