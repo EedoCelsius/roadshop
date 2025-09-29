@@ -306,15 +306,15 @@ onBeforeUnmount(() => {
                       @click="handleCopyAll(account)"
                     >
                       <span class="flex items-center gap-1 sm:hidden">
+                        <span class="text-sm font-semibold text-white">
+                          {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
+                        </span>
                         <span
                           v-if="isCopied(account.number, 'all')"
                           class="icon-wrapper h-4 w-4 text-white"
                           aria-hidden="true"
                           v-html="successIcon"
                         ></span>
-                        <span class="text-sm font-semibold text-white">
-                          {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
-                        </span>
                       </span>
                       <span
                         class="icon-wrapper hidden h-4 w-4 items-center justify-center text-white sm:flex"
