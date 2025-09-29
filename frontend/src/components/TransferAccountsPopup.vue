@@ -314,12 +314,13 @@ onBeforeUnmount(() => {
                   <div class="relative flex sm:w-auto">
                     <button
                       type="button"
-                      class="flex h-full min-h-[64px] w-full items-center justify-center gap-2 bg-roadshop-primary px-5 text-sm font-semibold text-white transition hover:bg-roadshop-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-roadshop-primary sm:min-w-[64px]"
+                      :class="[
+                        'flex h-full min-h-[45px] w-full items-center justify-center gap-2 px-5 text-sm font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-w-[64px]',
+                        isCopied(account.number, 'all')
+                          ? 'bg-emerald-500 hover:bg-emerald-500 focus-visible:outline-emerald-500'
+                          : 'bg-roadshop-primary hover:bg-roadshop-primary/90 focus-visible:outline-roadshop-primary',
+                      ]"
                       @click="handleCopyAll(account)"
-                      @mouseenter="setHoveredControl(account.number, 'all', true)"
-                      @mouseleave="setHoveredControl(account.number, 'all', false)"
-                      @focus="setHoveredControl(account.number, 'all', true)"
-                      @blur="setHoveredControl(account.number, 'all', false)"
                     >
                       <span class="sr-only">{{ copyAllLabel }}</span>
                       <svg
@@ -354,11 +355,6 @@ onBeforeUnmount(() => {
                         />
                       </svg>
                     </button>
-                    <TooltipBubble
-                      :visible="isTooltipVisible(account.number, 'all')"
-                      :message="getTooltipMessage(account.number, 'all')"
-                      :variant="getTooltipVariant(account.number, 'all')"
-                    />
                   </div>
                 </div>
               </li>
