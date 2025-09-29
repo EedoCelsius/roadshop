@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useI18nStore } from '@/stores/i18n'
 import clipboardIcon from '@icons/ui/clipboard.svg?raw'
 import successIcon from '@icons/ui/success.svg?raw'
+import { copyText } from '@/utils/copy'
 
 import TooltipBubble from './TooltipBubble.vue'
 
@@ -156,40 +157,6 @@ const scheduleReset = (key: string) => {
 const setCopyStatus = (key: string, status: Exclude<CopyStatus, null>) => {
   copyStates[key] = status
   scheduleReset(key)
-}
-
-const copyText = async (text: string) => {
-  if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-    try {
-      await navigator.clipboard.writeText(text)
-      return true
-    } catch {
-      // Ignore clipboard errors and fall back
-    }
-  }
-
-  if (typeof document === 'undefined') {
-    return false
-  }
-
-  const textarea = document.createElement('textarea')
-  textarea.value = text
-  textarea.setAttribute('readonly', '')
-  textarea.style.position = 'absolute'
-  textarea.style.left = '-9999px'
-  document.body.appendChild(textarea)
-  textarea.select()
-
-  let success = false
-  try {
-    success = document.execCommand('copy')
-  } catch {
-    success = false
-  } finally {
-    document.body.removeChild(textarea)
-  }
-
-  return success
 }
 
 const handleCopyAll = async (account: TransferAccount) => {
