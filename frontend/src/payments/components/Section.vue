@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PaymentOptionCard from '@/features/payments/components/PaymentOptionCard.vue'
-import type { LocalizedPaymentSection } from '@/features/payments/composables/useLocalizedSections'
+import OptionCard from '@/payments/components/OptionCard.vue'
+import type { LocalizedPaymentSection } from '@/payments/composables/useLocalizedSections'
 
 interface Props {
   section: LocalizedPaymentSection
@@ -22,7 +22,7 @@ const emit = defineEmits<{
       <p class="text-sm text-slate-500">{{ description }}</p>
     </div>
     <div class="grid gap-6 md:grid-cols-2">
-      <PaymentOptionCard
+      <OptionCard
         v-for="method in section.methods"
         :key="method.id"
         :name="method.name"

@@ -1,4 +1,4 @@
-import type { PaymentActionContext, PaymentMethodAction } from '@/features/payments/workflows/types'
+import type { PaymentActionContext, PaymentMethodAction } from '@/payments/workflows/types'
 
 const ensureTransferInfoReady = async (
   context: PaymentActionContext,

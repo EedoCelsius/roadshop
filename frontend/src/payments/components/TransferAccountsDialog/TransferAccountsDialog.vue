@@ -3,7 +3,7 @@ import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
-import type { TransferAccount } from '@/features/payments/services/paymentInfoService'
+import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import clipboardIcon from '@icons/ui/clipboard.svg?raw'
 import successIcon from '@icons/ui/success.svg?raw'

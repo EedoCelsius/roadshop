@@ -10,7 +10,7 @@ import visaIcon from '@icons/methods/visacard.svg'
 import jcbIcon from '@icons/methods/jcb.svg'
 import transferIcon from '@icons/methods/transfer.svg'
 
-import type { PaymentMethod } from '@/features/payments/types'
+import type { PaymentMethod } from '@/payments/types'
 
 export const paymentMethods: PaymentMethod[] = [
   {

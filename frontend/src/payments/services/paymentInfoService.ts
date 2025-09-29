@@ -1,4 +1,4 @@
-import type { DeepLinkProvider } from '@/features/payments/types'
+import type { DeepLinkProvider } from '@/payments/types'
 
 export type TransferAccount = {
   bank: string
@@ -33,7 +33,7 @@ export type PaymentInfo = {
 }
 
 export const loadPaymentInfo = async (): Promise<PaymentInfo> => {
-  const module = await import('@/features/payments/data/info.json')
+  const module = await import('@/payments/data/info.json')
   return module.default as PaymentInfo
 }
 

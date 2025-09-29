@@ -1,10 +1,10 @@
-import type { PaymentMethod } from '@/features/payments/types'
+import type { PaymentMethod } from '@/payments/types'
 
-import { createDefaultAction } from '@/features/payments/workflows/actions/default'
-import { createKakaoAction } from '@/features/payments/workflows/actions/kakao'
-import { createTossAction } from '@/features/payments/workflows/actions/toss'
-import { createTransferAction } from '@/features/payments/workflows/actions/transfer'
-import type { PaymentActionContext, PaymentMethodAction } from '@/features/payments/workflows/types'
+import { createDefaultAction } from '@/payments/workflows/actions/default'
+import { createKakaoAction } from '@/payments/workflows/actions/kakao'
+import { createTossAction } from '@/payments/workflows/actions/toss'
+import { createTransferAction } from '@/payments/workflows/actions/transfer'
+import type { PaymentActionContext, PaymentMethodAction } from '@/payments/workflows/types'
 
 const createActionForMethod = (
   context: PaymentActionContext,
@@ -46,4 +46,4 @@ export type {
   PaymentSelectionPayload,
   PaymentCurrencySelectionPayload,
   DeepLinkPopupType,
-} from '@/features/payments/workflows/types'
+} from '@/payments/workflows/types'

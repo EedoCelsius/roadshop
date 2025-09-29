@@ -1,10 +1,10 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { getPaymentLayoutConfig } from '@/features/payments/data/paymentLayout'
-import type { PaymentMethod } from '@/features/payments/types'
+import { getPaymentLayoutConfig } from '@/payments/data/layout'
+import type { PaymentMethod } from '@/payments/types'
 import { useI18nStore } from '@/localization/store'
-import { usePaymentStore } from '@/features/payments/stores/payment.store'
+import { usePaymentStore } from '@/payments/stores/payment.store'
 
 export type LocalizedPaymentMethod = PaymentMethod & {
   name: string
