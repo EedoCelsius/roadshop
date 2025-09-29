@@ -40,16 +40,6 @@ const selectCurrencyPrompt = computed(() => i18nStore.t('card.selectCurrencyProm
 
 const activeIconIndex = ref(0)
 
-const activeIcon = computed(() => {
-  if (!props.icons?.length) {
-    return null
-  }
-
-  const normalizedIndex = activeIconIndex.value % props.icons.length
-
-  return props.icons[normalizedIndex]
-})
-
 let rotationTimer: ReturnType<typeof setInterval> | undefined
 
 const stopRotation = () => {
@@ -91,15 +81,18 @@ onBeforeUnmount(() => {
   >
     <div class="flex items-start justify-between gap-4">
       <div class="flex flex-1 items-start gap-4">
-        <div v-if="activeIcon" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner">
-          <Transition name="icon-fade" mode="out-in">
+        <div v-if="props.icons?.length" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner">
+          <div class="icon-wrapper">
             <img
-              :key="activeIcon.src"
-              :src="activeIcon.src"
-              :alt="activeIcon.alt"
-              class="h-6 w-6"
+              v-for="(icon, index) in props.icons"
+              :key="icon.src"
+              :src="icon.src"
+              :alt="index === activeIconIndex ? icon.alt : ''"
+              :aria-hidden="index === activeIconIndex ? 'false' : 'true'"
+              class="icon-image"
+              :class="index === activeIconIndex ? 'icon-visible' : 'icon-hidden'"
             >
-          </Transition>
+          </div>
         </div>
         <div class="flex-1">
           <h3 class="text-xl font-semibold text-roadshop-primary">
@@ -145,14 +138,28 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.icon-fade-enter-active,
-.icon-fade-leave-active {
+.icon-wrapper {
+  position: relative;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.icon-image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.icon-fade-enter-from,
-.icon-fade-leave-to {
+.icon-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.icon-hidden {
   opacity: 0;
+  pointer-events: none;
   transform: translateY(4px);
 }
 </style>
