@@ -305,7 +305,7 @@ onBeforeUnmount(() => {
                       :aria-label="copyAllLabel"
                       @click="handleCopyAll(account)"
                     >
-                      <span class="flex items-center gap-1 sm:hidden">
+                      <span class="flex items-center gap-2 sm:hidden">
                         <span class="text-sm font-semibold text-white">
                           {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
                         </span>
