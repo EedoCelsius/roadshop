@@ -1,48 +1,56 @@
 import { resolveDeepLink } from '@/utils/deepLink'
 
-import type { PaymentMethodAction } from './types'
-import type { PaymentActionContext } from './types'
+import type { PaymentActionContext, PaymentMethodAction } from './types'
 
-const runKakaoWorkflow = async (context: PaymentActionContext) => {
+const ensureKakaoDeepLink = async (context: PaymentActionContext): Promise<string | null> => {
   const loaded = await context.ensurePaymentInfoLoaded()
 
   if (!loaded) {
-    return
+    return null
   }
 
   const info = context.getDeepLinkInfo('kakao')
 
   if (!info) {
     console.error('Missing Kakao payment info payload')
-    return
+    return null
   }
-
-  let url: string
 
   try {
-    url = resolveDeepLink('kakao', info)
+    return resolveDeepLink('kakao', info)
   } catch (error) {
     console.error(error)
-    return
+    return null
+  }
+}
+
+const ensureKakaoLaunchableEnvironment = (
+  context: PaymentActionContext,
+): boolean => {
+  if (context.isMobileDevice()) {
+    return true
   }
 
-  if (!context.isMobileDevice()) {
-    context.showDeepLinkPopup('not-mobile', 'kakao')
-    return
-  }
+  context.showDeepLinkPopup('not-mobile', 'kakao')
+  return false
+}
 
+const launchKakaoDeepLink = async (
+  context: PaymentActionContext,
+  url: string,
+) => {
   context.setDeepLinkChecking(true)
 
   try {
-    const waitForLaunch = context.waitForDeepLinkResult(1500)
-    const navigated = context.navigateToDeepLink(url)
+    const launchMonitor = context.waitForDeepLinkResult(1500)
+    const didNavigate = context.navigateToDeepLink(url)
 
-    if (!navigated) {
-      await waitForLaunch
+    if (!didNavigate) {
+      await launchMonitor
       return
     }
 
-    const didLaunch = await waitForLaunch
+    const didLaunch = await launchMonitor
 
     if (!didLaunch) {
       context.showDeepLinkPopup('not-installed', 'kakao')
@@ -52,11 +60,21 @@ const runKakaoWorkflow = async (context: PaymentActionContext) => {
   }
 }
 
+const runKakaoWorkflow = async (context: PaymentActionContext) => {
+  const deepLink = await ensureKakaoDeepLink(context)
+
+  if (!deepLink) {
+    return
+  }
+
+  if (!ensureKakaoLaunchableEnvironment(context)) {
+    return
+  }
+
+  await launchKakaoDeepLink(context, deepLink)
+}
+
 export const createKakaoAction = (context: PaymentActionContext): PaymentMethodAction => ({
-  handleSelection: async () => {
-    await runKakaoWorkflow(context)
-  },
-  handleCurrencySelection: async () => {
-    await runKakaoWorkflow(context)
-  },
+  handleSelection: () => runKakaoWorkflow(context),
+  handleCurrencySelection: () => runKakaoWorkflow(context),
 })

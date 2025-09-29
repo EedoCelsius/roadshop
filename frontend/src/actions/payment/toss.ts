@@ -1,49 +1,50 @@
 import { resolveDeepLink } from '@/utils/deepLink'
 
-import type { PaymentMethodAction } from './types'
-import type { PaymentActionContext } from './types'
+import type { PaymentActionContext, PaymentMethodAction } from './types'
 
-const runTossWorkflow = async (context: PaymentActionContext) => {
+const ensureTossDeepLink = async (context: PaymentActionContext): Promise<string | null> => {
   const loaded = await context.ensurePaymentInfoLoaded()
 
   if (!loaded) {
-    return
+    return null
   }
 
   const info = context.getDeepLinkInfo('toss')
 
   if (!info) {
     console.error('Missing Toss payment info payload')
-    return
+    return null
   }
-
-  let url: string
 
   try {
-    url = resolveDeepLink('toss', info)
+    return resolveDeepLink('toss', info)
   } catch (error) {
     console.error(error)
-    return
+    return null
   }
+}
 
-  if (!context.isMobileDevice()) {
-    context.showDeepLinkPopup('not-mobile', 'toss')
-    context.openUrlInNewTab(url)
-    return
-  }
+const openTossFallback = (context: PaymentActionContext, url: string) => {
+  context.showDeepLinkPopup('not-mobile', 'toss')
+  context.openUrlInNewTab(url)
+}
 
+const launchTossDeepLink = async (
+  context: PaymentActionContext,
+  url: string,
+) => {
   context.setDeepLinkChecking(true)
 
   try {
-    const waitForLaunch = context.waitForDeepLinkResult(2000)
-    const navigated = context.navigateToDeepLink(url)
+    const launchMonitor = context.waitForDeepLinkResult(2000)
+    const didNavigate = context.navigateToDeepLink(url)
 
-    if (!navigated) {
-      await waitForLaunch
+    if (!didNavigate) {
+      await launchMonitor
       return
     }
 
-    const didLaunch = await waitForLaunch
+    const didLaunch = await launchMonitor
 
     if (!didLaunch) {
       context.showDeepLinkPopup('not-installed', 'toss')
@@ -53,11 +54,22 @@ const runTossWorkflow = async (context: PaymentActionContext) => {
   }
 }
 
+const runTossWorkflow = async (context: PaymentActionContext) => {
+  const deepLink = await ensureTossDeepLink(context)
+
+  if (!deepLink) {
+    return
+  }
+
+  if (!context.isMobileDevice()) {
+    openTossFallback(context, deepLink)
+    return
+  }
+
+  await launchTossDeepLink(context, deepLink)
+}
+
 export const createTossAction = (context: PaymentActionContext): PaymentMethodAction => ({
-  handleSelection: async () => {
-    await runTossWorkflow(context)
-  },
-  handleCurrencySelection: async () => {
-    await runTossWorkflow(context)
-  },
+  handleSelection: () => runTossWorkflow(context),
+  handleCurrencySelection: () => runTossWorkflow(context),
 })

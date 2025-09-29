@@ -1,23 +1,28 @@
-import type { PaymentMethodAction } from './types'
-import type { PaymentActionContext } from './types'
+import type { PaymentActionContext, PaymentMethodAction } from './types'
+
+const ensureTransferInfoReady = async (
+  context: PaymentActionContext,
+): Promise<boolean> => {
+  const loaded = await context.ensurePaymentInfoLoaded()
+
+  if (!loaded) {
+    return false
+  }
+
+  return true
+}
+
+const runTransferWorkflow = async (context: PaymentActionContext) => {
+  const ready = await ensureTransferInfoReady(context)
+
+  if (!ready) {
+    return
+  }
+
+  context.openTransferPopup()
+}
 
 export const createTransferAction = (context: PaymentActionContext): PaymentMethodAction => ({
-  handleSelection: async () => {
-    const loaded = await context.ensurePaymentInfoLoaded()
-
-    if (!loaded) {
-      return
-    }
-
-    context.openTransferPopup()
-  },
-  handleCurrencySelection: async () => {
-    const loaded = await context.ensurePaymentInfoLoaded()
-
-    if (!loaded) {
-      return
-    }
-
-    context.openTransferPopup()
-  },
+  handleSelection: () => runTransferWorkflow(context),
+  handleCurrencySelection: () => runTransferWorkflow(context),
 })

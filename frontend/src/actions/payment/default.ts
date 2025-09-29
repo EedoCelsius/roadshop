@@ -1,5 +1,4 @@
-import type { PaymentMethodAction } from './types'
-import type { PaymentActionContext } from './types'
+import type { PaymentActionContext, PaymentMethodAction } from './types'
 
 export const createDefaultAction = (context: PaymentActionContext): PaymentMethodAction => ({
   handleSelection: ({ method, currency }) => {
