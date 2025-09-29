@@ -28,7 +28,7 @@ const variantClasses = computed(() => {
   <Transition name="tooltip-bubble-fade">
     <div
       v-if="props.visible"
-      class="pointer-events-none absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-[15px] transform whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold shadow-lg"
+      class="pointer-events-none absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/5 transform whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold shadow-lg"
       :class="variantClasses.bubble"
       role="status"
       aria-live="polite"
