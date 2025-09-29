@@ -71,10 +71,8 @@
   },
   "currencySelector": {
     "title": "选择货币",
-    "description": "请选择使用 {method} 时的付款货币。"
-  },
-  "dialog": {
-    "close": "关闭"
+    "description": "请选择使用 {method} 时的付款货币。",
+    "cancel": "关闭"
   },
   "transferPopup": {
     "title": "银行转账信息",
@@ -85,7 +83,8 @@
     "copyAllButton": "复制转账信息",
     "copiedAllButton": "已复制到剪贴板",
     "copied": "已复制！",
-    "copiedNumber": "仅复制了账号"
+    "copiedNumber": "仅复制了账号",
+    "close": "关闭"
   },
   "payment": {
     "transfer": {

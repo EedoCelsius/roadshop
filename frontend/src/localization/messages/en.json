@@ -71,10 +71,8 @@
   },
   "currencySelector": {
     "title": "Choose a currency",
-    "description": "Select the currency you want to use with {method}."
-  },
-  "dialog": {
-    "close": "Close"
+    "description": "Select the currency you want to use with {method}.",
+    "cancel": "Cancel"
   },
   "transferPopup": {
     "title": "Bank transfer details",
@@ -85,7 +83,8 @@
     "copyAllButton": "Copy transfer details",
     "copiedAllButton": "Copied to clipboard",
     "copied": "Copied!",
-    "copiedNumber": "Account number copied"
+    "copiedNumber": "Account number copied",
+    "close": "Close"
   },
   "payment": {
     "transfer": {
