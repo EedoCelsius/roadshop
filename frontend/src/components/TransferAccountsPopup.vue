@@ -273,7 +273,7 @@ onBeforeUnmount(() => {
                         >
                           <span>{{ account.number }}</span>
                           <span
-                            class="flex h-4 w-4 items-center justify-center transition"
+                            class="flex h-3 w-3 items-center justify-center transition"
                             :class="
                               isCopied(account.number, 'number')
                                 ? 'text-emerald-500 group-hover:text-emerald-500'
