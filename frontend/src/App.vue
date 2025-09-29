@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import PaymentOptionCard from './components/PaymentOptionCard.vue'
 import CurrencySelectorDialog from './components/CurrencySelectorDialog.vue'
@@ -24,6 +24,8 @@ const { closeCurrencySelector } = paymentStore
 
 const i18nStore = useI18nStore()
 const { locale, availableLocales } = storeToRefs(i18nStore)
+
+const languageSelectRef = ref<HTMLSelectElement | null>(null)
 
 const localizedSections = computed(() => {
   const layoutConfig = getPaymentLayoutConfig(locale.value)
@@ -69,6 +71,18 @@ const onLocaleChange = (event: Event) => {
   i18nStore.setLocale(target.value as Locale)
 }
 
+const onLanguageLabelClick = (event: MouseEvent) => {
+  const selectEl = languageSelectRef.value
+  const target = event.target as Node | null
+
+  if (!selectEl || (target && selectEl.contains(target))) {
+    return
+  }
+
+  selectEl.focus()
+  selectEl.click()
+}
+
 const onSelectMethod = (methodId: string) => {
   paymentActionsStore.handleMethodSelection(methodId)
 }
@@ -109,10 +123,12 @@ const onCloseTransferPopup = () => {
               <span>{{ i18nStore.t('hero.badge') }}</span>
             </div>
             <label
+              @click="onLanguageLabelClick"
               class="relative flex cursor-pointer items-center gap-3 rounded-full border border-roadshop-primary/10 bg-white/70 px-4 py-2 text-xs font-semibold text-roadshop-primary shadow-sm backdrop-blur"
             >
               <span class="tracking-[0.2em] text-roadshop-accent">{{ i18nStore.t('language.label') }}</span>
               <select
+                ref="languageSelectRef"
                 class="min-w-[8rem] appearance-none cursor-pointer bg-transparent pr-8 text-sm font-medium text-roadshop-primary focus:outline-none"
                 :value="locale"
                 @change="onLocaleChange"
