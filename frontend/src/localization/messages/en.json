@@ -1,0 +1,121 @@
+{
+  "hero": {
+    "kicker": "Stitchmon Roadshop",
+    "title": "Pay for your Stitchmon order however you like",
+    "badge": "Official online checkout",
+    "description": "Complete your Stitchmon Roadshop order right here. Kakao Transfer covers KRW payments today, and we're rolling out additional international options so every Stitchmon fan can check out smoothly."
+  },
+  "highlights": {
+    "instant": {
+      "title": "Instant confirmation",
+      "description": "Pay in KRW with Kakao Transfer and wrap up your Stitchmon Roadshop order in seconds."
+    },
+    "guidance": {
+      "title": "Clear guidance",
+      "description": "Follow step-by-step instructions for every payment option available for Stitchmon orders."
+    },
+    "coverage": {
+      "title": "Global expansion roadmap",
+      "description": "International wallets and cards are on the way, so Stitchmon customers abroad can pay with ease."
+    }
+  },
+  "sections": {
+    "krw": {
+      "title": "KRW payments",
+      "description": "Ready-to-use options for Stitchmon Roadshop orders priced in Korean won."
+    },
+    "global": {
+      "title": "Global payments",
+      "description": "Growing choices for Stitchmon fans around the world."
+    }
+  },
+  "status": {
+    "available": "Available now",
+    "comingSoon": "Coming soon"
+  },
+  "card": {
+    "preparing": "We are putting the finishing touches on this option.",
+    "selectedCurrency": "Selected currency: {currency}",
+    "selectCurrencyPrompt": "Choose a currency to continue."
+  },
+  "footer": {
+    "message": "© {year} Stitchmon Roadshop. The official online payment center for your orders."
+  },
+  "language": {
+    "label": "Language"
+  },
+  "loading": {
+    "deepLink": "Opening the app so you can continue your payment…"
+  },
+  "popups": {
+    "deepLink": {
+      "titles": {
+        "notMobile": "Open on your mobile device",
+        "notInstalled": "Having trouble opening the app?"
+      },
+      "confirms": {
+        "notMobile": "Got it",
+        "notInstalled": "OK"
+      },
+      "providers": {
+        "kakao": {
+          "notMobile": "The Kakao Transfer link only opens in the KakaoTalk mobile app. Please continue on your phone.",
+          "notInstalled": "If KakaoTalk didn't open, please make sure it's installed and try again."
+        },
+        "toss": {
+          "notMobile": "The Toss Transfer link only opens in the Toss mobile app. Please continue on your phone.",
+          "notInstalled": "If Toss didn't open, please make sure it's installed and try again."
+        }
+      }
+    }
+  },
+  "currencySelector": {
+    "title": "Choose a currency",
+    "description": "Select the currency you want to use with {method}.",
+    "cancel": "Cancel"
+  },
+  "transferPopup": {
+    "title": "Bank transfer details",
+    "description": "Send {amountWithCurrency} to one of the accounts below.",
+    "copyAll": "Copy all details",
+    "copyNumber": "Copy only account number",
+    "copyTooltip": "Copy to clipboard",
+    "copyAllButton": "Copy transfer details",
+    "copiedAllButton": "Copied to clipboard",
+    "copied": "Copied!",
+    "copiedNumber": "Account number copied",
+    "close": "Close"
+  },
+  "payment": {
+    "transfer": {
+      "name": "Bank Transfer",
+      "description": "Pay the KRW amount via bank transfer."
+    },
+    "kakao": {
+      "name": "Kakao Transfer",
+      "description": "Scan the QR code with KakaoTalk and finish checkout in seconds.",
+      "cta": "Open Kakao Transfer"
+    },
+    "toss": {
+      "name": "Toss Transfer",
+      "description": "Send your payment instantly with Toss and see the confirmation right away.",
+      "cta": "Open Toss"
+    },
+    "naver": {
+      "name": "Naver Pay",
+      "description": "We're preparing Naver Pay so you can use your points right at checkout."
+    },
+    "alipay": {
+      "name": "Alipay",
+      "description": "We're partnering with Alipay to connect major global e-wallets, letting travelers pay with the wallet they already use."
+    },
+    "paypal": {
+      "name": "PayPal",
+      "description": "Soon you'll be able to check out with the PayPal account you already trust."
+    },
+    "card": {
+      "name": "Credit Card",
+      "description": "Visa, Mastercard, UnionPay, Amex, and JCB are on the roadmap, so you can use a familiar card checkout wherever you are."
+    }
+  }
+}
