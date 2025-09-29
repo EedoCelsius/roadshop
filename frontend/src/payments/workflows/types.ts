@@ -1,5 +1,5 @@
-import type { PaymentMethod, DeepLinkProvider } from '@/features/payments/types'
-import type { KakaoPaymentInfo, TossPaymentInfo } from '@/features/payments/services/paymentInfoService'
+import type { PaymentMethod, DeepLinkProvider } from '@/payments/types'
+import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
 export type PaymentActionContext = {
   openTransferPopup: () => void

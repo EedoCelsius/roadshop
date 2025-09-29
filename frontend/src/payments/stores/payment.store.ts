@@ -1,8 +1,8 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import { paymentMethods } from '@/features/payments/data/paymentMethods'
-import type { PaymentCurrency, PaymentMethod } from '@/features/payments/types'
+import { paymentMethods } from '@/payments/data/method'
+import type { PaymentCurrency, PaymentMethod } from '@/payments/types'
 
 export const usePaymentStore = defineStore('payment', () => {
   const methods = ref<PaymentMethod[]>([...paymentMethods])

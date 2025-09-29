@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useI18nStore } from '@/localization/store'
-import type { PaymentCurrency } from '@/features/payments/types'
+import type { PaymentCurrency } from '@/payments/types'
 
 interface Props {
   name: string

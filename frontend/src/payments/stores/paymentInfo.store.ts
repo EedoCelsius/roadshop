@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { DeepLinkProvider } from '@/features/payments/types'
+import type { DeepLinkProvider } from '@/payments/types'
 import {
   loadPaymentInfo,
   resolveDeepLinkPayload,
@@ -9,7 +9,7 @@ import {
   type TransferPaymentInfo,
   type TossPaymentInfo,
   type KakaoPaymentInfo,
-} from '@/features/payments/services/paymentInfoService'
+} from '@/payments/services/paymentInfoService'
 
 let pendingRequest: Promise<boolean> | null = null
 

@@ -1,5 +1,5 @@
-import { resolveDeepLink } from '@/features/payments/services/deepLinkService'
-import type { PaymentActionContext, PaymentMethodAction } from '@/features/payments/workflows/types'
+import { resolveDeepLink } from '@/payments/services/deepLinkService'
+import type { PaymentActionContext, PaymentMethodAction } from '@/payments/workflows/types'
 
 const ensureTossDeepLink = async (context: PaymentActionContext): Promise<string | null> => {
   const loaded = await context.ensurePaymentInfoLoaded()

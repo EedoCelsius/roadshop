@@ -1,5 +1,5 @@
-import type { DeepLinkProvider } from '@/features/payments/types'
-import type { KakaoPaymentInfo, TossPaymentInfo } from '@/features/payments/services/paymentInfoService'
+import type { DeepLinkProvider } from '@/payments/types'
+import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
 export const createTossDeepLink = (info: TossPaymentInfo): string => {
   const params = new URLSearchParams({

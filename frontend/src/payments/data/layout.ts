@@ -1,5 +1,5 @@
 import type { Locale } from '@/localization/store'
-import type { PaymentCurrency } from '@/features/payments/types'
+import type { PaymentCurrency } from '@/payments/types'
 
 export type PaymentLayoutConfig = {
   sectionOrder: PaymentCurrency[]

@@ -4,12 +4,12 @@ import { storeToRefs } from 'pinia'
 
 import ActionPopup from '@/shared/components/ActionPopup.vue'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
-import CurrencySelectorDialog from '@/features/payments/components/CurrencySelectorDialog.vue'
-import PaymentSection from '@/features/payments/components/PaymentSection.vue'
-import TransferAccountsDialog from '@/features/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
-import { useLocalizedSections } from '@/features/payments/composables/useLocalizedSections'
-import { usePaymentStore } from '@/features/payments/stores/payment.store'
-import { usePaymentInteractionStore } from '@/features/payments/stores/paymentInteraction.store'
+import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
+import Section from '@/payments/components/Section.vue'
+import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
+import { useLocalizedSections } from '@/payments/composables/useLocalizedSections'
+import { usePaymentStore } from '@/payments/stores/payment.store'
+import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
 import { useI18nStore } from '@/localization/store'
 
 const paymentStore = usePaymentStore()
@@ -59,7 +59,7 @@ const onCloseTransferPopup = () => {
 
 <template>
   <div class="flex flex-col gap-16">
-    <PaymentSection
+    <Section
       v-for="(entry, index) in localizedSections"
       :key="`${entry.section.currency}-${index}`"
       :section="entry.section"
