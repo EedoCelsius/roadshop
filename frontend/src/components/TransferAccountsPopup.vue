@@ -261,7 +261,7 @@ onBeforeUnmount(() => {
                       <div class="relative mt-1">
                         <button
                           type="button"
-                          class="group inline-flex items-center gap-1 rounded-md bg-white/40 px-2 py-1 font-mono text-sm text-roadshop-primary transition hover:bg-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-roadshop-primary"
+                          class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary"
                           @click="handleCopyNumber(account)"
                           @mouseenter="setHoveredControl(account.number, 'number', true)"
                           @mouseleave="setHoveredControl(account.number, 'number', false)"
