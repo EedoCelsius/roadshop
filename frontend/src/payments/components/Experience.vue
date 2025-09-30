@@ -35,8 +35,8 @@ const { sections } = useLocalizedSections()
 const localizedSections = computed(() =>
   sections.value.map((section) => ({
     section,
-    title: i18nStore.t(`sections.${section.currency.toLowerCase()}.title`),
-    description: i18nStore.t(`sections.${section.currency.toLowerCase()}.description`),
+    title: i18nStore.t(`sections.${section.category.toLowerCase()}.title`),
+    description: i18nStore.t(`sections.${section.category.toLowerCase()}.description`),
   })),
 )
 
@@ -83,7 +83,7 @@ const onLaunchTossInstructionDialog = () => {
   <div class="flex flex-col gap-16">
     <Section
       v-for="(entry, index) in localizedSections"
-      :key="`${entry.section.currency}-${index}`"
+      :key="`${entry.section.category}-${index}`"
       :section="entry.section"
       :title="entry.title"
       :description="entry.description"

@@ -1,9 +1,9 @@
 import type { Locale } from '@/localization/store'
-import type { PaymentCurrency } from '@/payments/types'
+import type { PaymentCategory } from '@/payments/types'
 
 export type PaymentLayoutConfig = {
-  sectionOrder: PaymentCurrency[]
-  methodOrder?: Partial<Record<PaymentCurrency, string[]>>
+  sectionOrder: PaymentCategory[]
+  methodOrder?: Partial<Record<PaymentCategory, string[]>>
 }
 
 const DEFAULT_CONFIG: PaymentLayoutConfig = {

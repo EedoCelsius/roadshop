@@ -31,7 +31,7 @@ const emit = defineEmits<{
         :provider="method.provider"
         :icons="method.icons"
         :is-selected="method.isSelected"
-        :currency="method.currency"
+        :category="method.category"
         @select="emit('select', method.id)"
       />
     </div>

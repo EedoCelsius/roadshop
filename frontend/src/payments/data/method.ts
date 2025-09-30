@@ -15,14 +15,14 @@ import type { PaymentMethod } from '@/payments/types'
 export const paymentMethods: PaymentMethod[] = [
   {
     id: 'transfer',
-    currency: 'KRW',
+    category: 'KRW',
     icons: [
       { src: transferIcon, alt: 'Bank transfer icon' },
     ],
   },
   {
     id: 'toss',
-    currency: 'KRW',
+    category: 'KRW',
     deepLinkProvider: 'toss',
     icons: [
       { src: tossIcon, alt: 'Toss logo' },
@@ -30,7 +30,7 @@ export const paymentMethods: PaymentMethod[] = [
   },
   {
     id: 'kakao',
-    currency: 'KRW',
+    category: 'KRW',
     deepLinkProvider: 'kakao',
     icons: [
       { src: kakaotalkIcon, alt: 'KakaoTalk logo' },
@@ -38,28 +38,28 @@ export const paymentMethods: PaymentMethod[] = [
   },
   {
     id: 'naver',
-    currency: 'KRW',
+    category: 'KRW',
     icons: [
       { src: naverIcon, alt: 'Naver logo' },
     ],
   },
   {
     id: 'alipay',
-    currency: 'GLOBAL',
+    category: 'GLOBAL',
     icons: [
       { src: alipayIcon, alt: 'Alipay logo' },
     ],
   },
   {
     id: 'paypal',
-    currency: 'GLOBAL',
+    category: 'GLOBAL',
     icons: [
       { src: paypalIcon, alt: 'PayPal logo' },
     ],
   },
   {
     id: 'card',
-    currency: 'GLOBAL',
+    category: 'GLOBAL',
     icons: [
       { src: visaIcon, alt: 'Visa logo' },
       { src: mastercardIcon, alt: 'Mastercard logo' },
