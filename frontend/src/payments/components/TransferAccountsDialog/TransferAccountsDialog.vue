@@ -4,7 +4,12 @@ import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
 import type { TransferAccount } from '@/payments/services/paymentInfoService'
-import { useTransferCopyState } from './useTransferCopyState'
+import TooltipBubble from '@/shared/components/TooltipBubble.vue'
+import AppDialog from '@/shared/components/AppDialog.vue'
+import clipboardIcon from '@icons/ui/clipboard.svg?raw'
+import successIcon from '@icons/ui/success.svg?raw'
+
+import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
   visible: boolean
@@ -21,7 +26,8 @@ const emit = defineEmits<{
 const i18nStore = useI18nStore()
 const { locale } = storeToRefs(i18nStore)
 
-const { isCopied, handleCopyAll, handleCopyNumber, reset } = useTransferCopyState()
+const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
+  useTransferCopyState()
 
 const firmIcons = import.meta.glob('@icons/firms/*.svg', {
   eager: true,
@@ -70,11 +76,11 @@ const descriptionHtml = computed(() =>
       `<strong class="font-semibold text-roadshop-primary">${formattedAmountWithCurrency.value}</strong>`,
     ),
 )
+const copyAllLabel = computed(() => i18nStore.t('transferPopup.copyAll'))
 const copyNumberLabel = computed(() => i18nStore.t('transferPopup.copyNumber'))
 const copiedNumberLabel = computed(() => i18nStore.t('transferPopup.copiedNumber'))
 const copyAllButtonLabel = computed(() => i18nStore.t('transferPopup.copyAllButton'))
 const copiedAllButtonLabel = computed(() => i18nStore.t('transferPopup.copiedAllButton'))
-const closeLabel = computed(() => i18nStore.t('dialog.close'))
 
 const getIconForBank = (bank: string) => firmIconMap[bank] ?? null
 
@@ -86,6 +92,10 @@ const copyTransferDetails = async (account: TransferAccount) => {
 
 const copyAccountNumber = async (account: TransferAccount) => {
   await handleCopyNumber(account.number)
+}
+
+const setHoverState = (accountNumber: string, action: CopyAction, value: boolean) => {
+  setHoveredControl(accountNumber, action, value)
 }
 
 const onClose = () => {
@@ -103,81 +113,102 @@ watch(
 </script>
 
 <template>
-  <Dialog
+  <AppDialog
     :visible="props.visible"
-    modal
-    dismissable-mask
-    close-on-escape
-    :header="title"
-    :style="{ width: 'min(92vw, 38rem)' }"
-    :pt="{
-      root: { class: 'rounded-3xl border-0 bg-white/95 shadow-xl backdrop-blur-sm' },
-      mask: { class: 'bg-slate-900/40 backdrop-blur-sm' },
-      header: { class: 'text-roadshop-primary font-semibold text-lg' },
-      content: { class: 'text-slate-600' },
-      footer: { class: 'flex justify-end gap-2' },
-    }"
-    @update:visible="(value) => {
-      if (!value) {
-        onClose()
-      }
-    }"
+    :title="title"
+    :description="descriptionHtml"
+    size="lg"
+    @close="onClose"
   >
-    <p class="text-sm leading-relaxed text-slate-600" v-html="descriptionHtml"></p>
-    <div class="mt-6 space-y-4">
-      <Card
+    <ul class="space-y-4">
+      <li
         v-for="account in props.accounts"
         :key="account.number"
-        :pt="{
-          root: { class: 'rounded-2xl border border-slate-200 bg-roadshop-highlight/40 shadow-sm' },
-          body: { class: 'p-5' },
-        }"
+        class="overflow-hidden rounded-2xl border border-slate-200 shadow-sm"
       >
-        <template #content>
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <div class="flex flex-1 items-start gap-3">
-              <div
-                v-if="getIconForBank(account.bank)"
-                class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white shadow"
-              >
-                <img :src="getIconForBank(account.bank)" :alt="account.bank" class="h-7 w-7" />
+        <div class="flex w-full flex-col items-stretch sm:flex-row sm:items-stretch">
+          <div class="flex flex-1 items-start gap-3 bg-roadshop-highlight/40 p-4">
+            <div
+              v-if="getIconForBank(account.bank)"
+              class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white shadow"
+            >
+              <img :src="getIconForBank(account.bank)" :alt="account.bank" class="h-7 w-7" />
+            </div>
+            <div>
+              <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <p class="text-base font-semibold text-roadshop-primary">{{ account.bank }}</p>
+                <p class="text-xs text-slate-500">{{ account.holder }}</p>
               </div>
-              <div class="flex-1">
-                <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <p class="text-base font-semibold text-roadshop-primary">{{ account.bank }}</p>
-                  <Tag
-                    :value="account.holder"
-                    severity="secondary"
-                    :pt="{ root: { class: 'bg-white text-roadshop-primary/80 border border-roadshop-primary/20 text-xs' } }"
-                  />
-                </div>
-                <Button
+              <div class="relative mt-1">
+                <button
                   type="button"
-                  class="mt-3 inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary"
-                  text
-                  :label="account.number"
-                  :icon="isCopied(account.number, 'number') ? 'pi pi-check' : 'pi pi-copy'"
-                  icon-pos="right"
-                  v-tooltip.top="isCopied(account.number, 'number') ? copiedNumberLabel : copyNumberLabel"
+                  class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary underline underline-offset-4"
                   @click="copyAccountNumber(account)"
+                  @mouseenter="setHoverState(account.number, 'number', true)"
+                  @mouseleave="setHoverState(account.number, 'number', false)"
+                  @focus="setHoverState(account.number, 'number', true)"
+                  @blur="setHoverState(account.number, 'number', false)"
+                >
+                  <span>{{ account.number }}</span>
+                  <span
+                    class="icon-wrapper flex h-3 w-3 items-center justify-center transition"
+                    :class="
+                      isCopied(account.number, 'number')
+                        ? 'text-emerald-500 group-hover:text-emerald-500'
+                        : 'text-roadshop-primary group-hover:text-roadshop-primary'
+                    "
+                    aria-hidden="true"
+                    v-html="isCopied(account.number, 'number') ? successIcon : clipboardIcon"
+                  ></span>
+                </button>
+                <TooltipBubble
+                  :visible="isTooltipVisible(account.number, 'number')"
+                  :message="isCopied(account.number, 'number') ? copiedNumberLabel : copyNumberLabel"
+                  :variant="isCopied(account.number, 'number') ? 'success' : 'default'"
                 />
               </div>
             </div>
-            <Button
-              type="button"
-              class="w-full sm:w-auto"
-              :label="isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel"
-              :icon="isCopied(account.number, 'all') ? 'pi pi-check' : 'pi pi-copy'"
-              icon-pos="right"
-              :severity="isCopied(account.number, 'all') ? 'success' : 'primary'"
-              @click="copyTransferDetails(account)"
-            />
           </div>
-        </template>
-      </Card>
-    </div>
-    <template #footer>
-      <Button type="button" :label="closeLabel" text severity="secondary" @click="onClose" />
-    </template>
-  </Dialog>
+          <div class="relative flex sm:w-auto">
+            <button
+              type="button"
+              :class="[
+                'flex h-full min-h-[45px] w-full items-center justify-center gap-2 px-5 text-sm font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-w-[64px]',
+                isCopied(account.number, 'all')
+                  ? 'bg-emerald-500 hover:bg-emerald-500 focus-visible:outline-emerald-500'
+                  : 'bg-roadshop-primary hover:bg-roadshop-primary/90 focus-visible:outline-roadshop-primary',
+              ]"
+              :aria-label="copyAllLabel"
+              @click="copyTransferDetails(account)"
+            >
+              <span class="flex items-center gap-2 sm:hidden">
+                <span class="text-sm font-semibold text-white">
+                  {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
+                </span>
+                <span
+                  v-if="isCopied(account.number, 'all')"
+                  class="icon-wrapper h-4 w-4 text-white"
+                  aria-hidden="true"
+                  v-html="successIcon"
+                ></span>
+              </span>
+              <span
+                class="icon-wrapper hidden h-4 w-4 items-center justify-center text-white sm:flex"
+                aria-hidden="true"
+                v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </AppDialog>
 </template>
+
+<style scoped>
+.icon-wrapper :deep(svg) {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+</style>

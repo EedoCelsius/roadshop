@@ -49,33 +49,23 @@ const bankMonogram = computed(() => {
 </script>
 
 <template>
-  <Card
-    :pt="{
-      root: { class: 'relative overflow-hidden rounded-3xl border border-slate-200 bg-white/95 shadow-md' },
-      body: { class: 'p-8' },
-    }"
-  >
-    <template #content>
-      <div class="flex flex-col items-center gap-7 text-center">
-        <div class="flex flex-col items-center gap-5">
-          <div
-            class="flex h-20 w-20 items-center justify-center rounded-3xl bg-roadshop-highlight/60 shadow-inner"
-            aria-hidden="true"
-          >
-            <img v-if="bankIcon" :src="bankIcon" :alt="props.bankName" class="h-14 w-14" />
-            <span v-else class="text-2xl font-semibold text-roadshop-primary">{{ bankMonogram }}</span>
-          </div>
-          <div>
-            <p class="text-2xl font-semibold text-roadshop-primary">
-              {{ props.bankName }}
-              <span class="ml-2 text-lg font-medium text-roadshop-primary/80">
-                ({{ props.accountHolder }})
-              </span>
-            </p>
-            <p class="mt-3 font-mono text-lg tracking-wider text-slate-700">{{ props.accountNo }}</p>
-          </div>
+  <article class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white/95 p-8 shadow-md">
+    <div class="flex flex-col items-center gap-7 text-center">
+      <div class="flex flex-col items-center gap-5">
+        <div
+          class="flex h-20 w-20 items-center justify-center rounded-3xl bg-roadshop-highlight/60 shadow-inner"
+          aria-hidden="true"
+        >
+          <img v-if="bankIcon" :src="bankIcon" :alt="props.bankName" class="h-14 w-14" />
+          <span v-else class="text-2xl font-semibold text-roadshop-primary">{{ bankMonogram }}</span>
+        </div>
+        <div>
+          <p class="text-2xl font-semibold text-roadshop-primary">
+            {{ props.bankName }}<span class="ml-2 text-lg font-medium text-roadshop-primary/80">({{ props.accountHolder }})</span>
+          </p>
+          <p class="mt-3 font-mono text-lg tracking-wider text-slate-700">{{ props.accountNo }}</p>
         </div>
       </div>
-    </template>
-  </Card>
+    </div>
+  </article>
 </template>
