@@ -63,7 +63,7 @@ const onClose = () => {
     <Transition name="dialog-fade">
       <div
         v-if="props.visible"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 px-6"
+        class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/60 px-6"
         @click="onBackdropClick"
       >
         <div class="w-full rounded-2xl bg-white p-6 shadow-xl" :class="containerWidthClass" @click.stop>
