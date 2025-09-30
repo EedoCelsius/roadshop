@@ -1,4 +1,4 @@
-import { onBeforeUnmount, reactive, ref } from 'vue'
+import { onBeforeUnmount, reactive } from 'vue'
 
 import { copyText } from '@/shared/utils/clipboard'
 
@@ -9,7 +9,6 @@ const controlKey = (accountNumber: string, action: CopyAction) => `${accountNumb
 export const useTransferCopyState = () => {
   const copyStates = reactive<Record<string, CopyAction | null>>({})
   const copyTimers = new Map<string, number>()
-  const hoveredControl = ref<string | null>(null)
 
   const scheduleReset = (key: string) => {
     if (typeof window === 'undefined') {
@@ -29,30 +28,14 @@ export const useTransferCopyState = () => {
     copyTimers.set(key, timeoutId)
   }
 
-  const markCopied = (key: string, action: CopyAction) => {
+  const markCopied = (accountNumber: string, action: CopyAction) => {
+    const key = controlKey(accountNumber, action)
     copyStates[key] = action
     scheduleReset(key)
   }
 
-  const setHoveredControl = (accountNumber: string, action: CopyAction, value: boolean) => {
-    const key = controlKey(accountNumber, action)
-
-    if (value) {
-      hoveredControl.value = key
-      return
-    }
-
-    if (hoveredControl.value === key) {
-      hoveredControl.value = null
-    }
-  }
-
-  const isCopied = (accountNumber: string, action: CopyAction) => copyStates[accountNumber] === action
-
-  const isTooltipVisible = (accountNumber: string, action: CopyAction) => {
-    const key = controlKey(accountNumber, action)
-    return hoveredControl.value === key || isCopied(accountNumber, action)
-  }
+  const isCopied = (accountNumber: string, action: CopyAction) =>
+    copyStates[controlKey(accountNumber, action)] === action
 
   const reset = () => {
     Object.keys(copyStates).forEach((key) => {
@@ -66,7 +49,6 @@ export const useTransferCopyState = () => {
     }
 
     copyTimers.clear()
-    hoveredControl.value = null
   }
 
   const handleCopyAll = async (accountNumber: string, payload: string) => {
@@ -74,7 +56,10 @@ export const useTransferCopyState = () => {
 
     if (success) {
       markCopied(accountNumber, 'all')
+      return true
     }
+
+    return false
   }
 
   const handleCopyNumber = async (accountNumber: string) => {
@@ -82,7 +67,10 @@ export const useTransferCopyState = () => {
 
     if (success) {
       markCopied(accountNumber, 'number')
+      return true
     }
+
+    return false
   }
 
   onBeforeUnmount(() => {
@@ -91,8 +79,6 @@ export const useTransferCopyState = () => {
 
   return {
     isCopied,
-    isTooltipVisible,
-    setHoveredControl,
     handleCopyAll,
     handleCopyNumber,
     reset,
