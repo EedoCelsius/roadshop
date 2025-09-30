@@ -68,6 +68,10 @@ const onCloseTossInstructionDialog = () => {
 const onReopenTossInstructionDialog = () => {
   void paymentInteractionStore.reopenTossDeepLink()
 }
+
+const onLaunchTossInstructionDialog = () => {
+  paymentInteractionStore.completeTossInstructionCountdown()
+}
 </script>
 
 <template>
@@ -110,6 +114,7 @@ const onReopenTossInstructionDialog = () => {
       :countdown="tossInstructionCountdown"
       :copied="hasCopiedTossAccountInfo"
       @close="onCloseTossInstructionDialog"
+      @launch-now="onLaunchTossInstructionDialog"
       @reopen="onReopenTossInstructionDialog"
     />
     <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />

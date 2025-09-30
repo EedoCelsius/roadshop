@@ -16,8 +16,9 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  close: []
-  reopen: []
+  (event: 'close'): void
+  (event: 'reopen'): void
+  (event: 'launch-now'): void
 }>()
 
 const i18nStore = useI18nStore()
@@ -46,6 +47,10 @@ const onClose = () => {
 const onReopen = () => {
   emit('reopen')
 }
+
+const onLaunchNow = () => {
+  emit('launch-now')
+}
 </script>
 
 <template>
@@ -69,9 +74,14 @@ const onReopen = () => {
       <div
         class="flex items-center justify-center"
       >
-        <p v-if="isCountingDown" class="font-semibold text-roadshop-primary">
+        <button
+          v-if="isCountingDown"
+          type="button"
+          class="font-semibold text-roadshop-primary cursor-pointer"
+          @click="onLaunchNow"
+        >
           {{ countdownLabel }}
-        </p>
+        </button>
         <button
           v-else
           type="button"

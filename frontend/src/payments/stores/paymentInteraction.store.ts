@@ -21,7 +21,7 @@ const buildWorkflowContext = (
   setDeepLinkChecking: (value: boolean) => void,
   openTransferDialog: () => void,
   copyTossAccountInfo: () => Promise<boolean>,
-  showTossInstructionDialog: (seconds: number) => Promise<void>,
+  showTossInstructionDialog: (seconds: number) => Promise<boolean>,
   completeTossInstructionDialog: () => void,
   setTossDeepLinkUrl: (url: string | null) => void,
 ): PaymentActionContext => ({
@@ -73,7 +73,15 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const hasCopiedTossAccountInfo = ref(false)
   const tossDeepLinkUrl = ref<string | null>(null)
   let tossCountdownTimer: ReturnType<typeof setInterval> | null = null
-  let tossCountdownResolver: (() => void) | null = null
+  let tossCountdownResolver: ((shouldLaunch: boolean) => void) | null = null
+
+  const resolveTossCountdown = (shouldLaunch: boolean) => {
+    if (tossCountdownResolver) {
+      const resolve = tossCountdownResolver
+      tossCountdownResolver = null
+      resolve(shouldLaunch)
+    }
+  }
 
   const transferAmount = computed(() => paymentInfoStore.transferInfo?.amount.krw ?? 0)
   const transferAccounts = computed(() => paymentInfoStore.transferInfo?.account ?? [])
@@ -121,9 +129,9 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     return success
   }
 
-  const showTossInstructionDialog = (seconds: number): Promise<void> => {
+  const showTossInstructionDialog = (seconds: number): Promise<boolean> => {
     if (!tossInfo.value) {
-      return Promise.resolve()
+      return Promise.resolve(false)
     }
 
     if (tossCountdownTimer) {
@@ -135,10 +143,10 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     isTossInstructionDialogVisible.value = true
 
     if (tossInstructionCountdown.value === 0) {
-      return Promise.resolve()
+      return Promise.resolve(true)
     }
 
-    return new Promise<void>((resolve) => {
+    return new Promise<boolean>((resolve) => {
       tossCountdownResolver = resolve
       tossCountdownTimer = setInterval(() => {
         if (tossInstructionCountdown.value <= 1) {
@@ -149,11 +157,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
           tossInstructionCountdown.value = 0
 
-          if (tossCountdownResolver) {
-            const countdownResolve = tossCountdownResolver
-            tossCountdownResolver = null
-            countdownResolve()
-          }
+          resolveTossCountdown(true)
 
           return
         }
@@ -169,16 +173,26 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       tossCountdownTimer = null
     }
 
-    if (tossCountdownResolver) {
-      const resolve = tossCountdownResolver
-      tossCountdownResolver = null
-      resolve()
-    }
+    resolveTossCountdown(false)
 
     isTossInstructionDialogVisible.value = false
     tossInstructionCountdown.value = 0
     hasCopiedTossAccountInfo.value = false
     tossDeepLinkUrl.value = null
+  }
+
+  const completeTossInstructionCountdown = () => {
+    if (tossInstructionCountdown.value === 0) {
+      return
+    }
+
+    if (tossCountdownTimer) {
+      clearInterval(tossCountdownTimer)
+      tossCountdownTimer = null
+    }
+
+    tossInstructionCountdown.value = 0
+    resolveTossCountdown(true)
   }
 
   const completeTossInstructionDialog = () => {
@@ -292,6 +306,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     tossAccountInfo: tossInfo,
     closePopup,
     closeTransferDialog,
+    completeTossInstructionCountdown,
     closeTossInstructionDialog,
     reopenTossDeepLink,
     handleMethodSelection,
