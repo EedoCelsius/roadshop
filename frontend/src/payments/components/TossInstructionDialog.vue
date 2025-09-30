@@ -26,7 +26,6 @@ const i18nStore = useI18nStore()
 const title = computed(() => i18nStore.t('tossInstruction.title'))
 const description = computed(() => i18nStore.t('tossInstruction.description'))
 const copiedLabel = computed(() => i18nStore.t('tossInstruction.copied'))
-const openLabel = computed(() => i18nStore.t('payment.toss.cta'))
 const countdownLabel = computed(() => {
   if (props.countdown > 0) {
     return i18nStore.t('tossInstruction.countdown').replace(
@@ -40,9 +39,6 @@ const countdownLabel = computed(() => {
 
 const reopenLabel = computed(() => i18nStore.t('tossInstruction.reopen'))
 const isCountingDown = computed(() => props.countdown > 0)
-const openButtonLabel = computed(() =>
-  isCountingDown.value ? openLabel.value : reopenLabel.value,
-)
 
 const onClose = () => {
   emit('close')
@@ -54,15 +50,6 @@ const onReopen = () => {
 
 const onLaunchNow = () => {
   emit('launch-now')
-}
-
-const onOpen = () => {
-  if (isCountingDown.value) {
-    onLaunchNow()
-    return
-  }
-
-  onReopen()
 }
 </script>
 
@@ -84,23 +71,26 @@ const onOpen = () => {
         :account-no="props.info.accountNo"
         :account-holder="props.info.accountHolder"
       />
+      <div
+        class="flex items-center justify-center"
+      >
+        <button
+          v-if="isCountingDown"
+          type="button"
+          class="font-semibold text-roadshop-primary cursor-pointer"
+          @click="onLaunchNow"
+        >
+          {{ countdownLabel }}
+        </button>
+        <button
+          v-else
+          type="button"
+          class="font-semibold text-roadshop-primary underline underline-offset-2"
+          @click="onReopen"
+        >
+          {{ reopenLabel }}
+        </button>
+      </div>
     </div>
-    <template #actions>
-      <button
-        type="button"
-        class="w-full rounded-xl bg-roadshop-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-roadshop-accent"
-        @click="onOpen"
-      >
-        {{ openButtonLabel }}
-      </button>
-      <button
-        v-if="isCountingDown"
-        type="button"
-        class="w-full rounded-xl border border-roadshop-primary/30 px-4 py-2 text-sm font-semibold text-roadshop-primary transition hover:border-roadshop-primary/60 hover:bg-roadshop-highlight/60"
-        @click="onLaunchNow"
-      >
-        {{ countdownLabel }}
-      </button>
-    </template>
   </AppDialog>
 </template>
