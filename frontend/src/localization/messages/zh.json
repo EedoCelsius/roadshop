@@ -76,6 +76,19 @@
   "dialog": {
     "close": "关闭"
   },
+  "accountInfo": {
+    "bank": "银行",
+    "account": "账号",
+    "amount": "汇款金额"
+  },
+  "tossInstruction": {
+    "title": "使用 Toss 转账",
+    "description": "已为 Toss 转账复制所需的账户信息。",
+    "copied": "账户信息已复制",
+    "countdown": "{seconds} 秒后打开 Toss",
+    "launching": "正在打开 Toss...",
+    "reopen": "重新打开 Toss"
+  },
   "transferPopup": {
     "title": "银行转账信息",
     "description": "请将 {amountWithCurrency} 转入下方任一账户。",
