@@ -7,7 +7,6 @@ import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
 import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
-import TossInstructionDialog from '@/payments/components/TossInstructionDialog.vue'
 import { useLocalizedSections } from '@/payments/composables/useLocalizedSections'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
@@ -25,10 +24,6 @@ const {
   isTransferDialogVisible,
   transferAmount,
   transferAccounts,
-  isTossInstructionDialogVisible,
-  tossInstructionCountdown,
-  hasCopiedTossAccountInfo,
-  tossAccountInfo,
 } = storeToRefs(paymentInteractionStore)
 
 const { sections } = useLocalizedSections()
@@ -59,14 +54,6 @@ const onPopupConfirm = () => {
 
 const onCloseTransferDialog = () => {
   paymentInteractionStore.closeTransferDialog()
-}
-
-const onCloseTossInstructionDialog = () => {
-  paymentInteractionStore.closeTossInstructionDialog()
-}
-
-const onReopenTossInstructionDialog = () => {
-  void paymentInteractionStore.reopenTossDeepLink()
 }
 </script>
 
@@ -102,14 +89,6 @@ const onReopenTossInstructionDialog = () => {
       :accounts="transferAccounts"
       :amount="transferAmount"
       @close="onCloseTransferDialog"
-    />
-    <TossInstructionDialog
-      :visible="isTossInstructionDialogVisible"
-      :info="tossAccountInfo"
-      :countdown="tossInstructionCountdown"
-      :copied="hasCopiedTossAccountInfo"
-      @close="onCloseTossInstructionDialog"
-      @reopen="onReopenTossInstructionDialog"
     />
     <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
   </div>

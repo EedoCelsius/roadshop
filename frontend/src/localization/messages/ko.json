@@ -76,19 +76,6 @@
   "dialog": {
     "close": "닫기"
   },
-  "accountInfo": {
-    "bank": "은행",
-    "account": "계좌번호",
-    "holder": "계좌주"
-  },
-  "tossInstruction": {
-    "title": "토스로 송금하기",
-    "description": "토스 송금에 필요한 계좌 정보를 복사해 두었어요.",
-    "copied": "계좌 정보가 복사되었어요",
-    "countdown": "{seconds}초 후 토스를 실행할게요",
-    "launching": "토스를 실행하는 중...",
-    "reopen": "다시열기"
-  },
   "transferPopup": {
     "title": "계좌이체 정보",
     "description": "{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.",
