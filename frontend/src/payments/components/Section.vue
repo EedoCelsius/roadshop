@@ -15,11 +15,11 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <section class="flex flex-col gap-6">
+  <section class="flex flex-col gap-5">
     <div class="flex flex-col gap-2">
       <h2 class="text-2xl font-semibold text-roadshop-primary">{{ title }}</h2>
     </div>
-    <div class="grid gap-6 md:grid-cols-2">
+    <div class="grid gap-3 md:grid-cols-2">
       <OptionCard
         v-for="method in section.methods"
         :key="method.id"
