@@ -36,7 +36,6 @@ const localizedSections = computed(() =>
   sections.value.map((section) => ({
     section,
     title: i18nStore.t(`sections.${section.category.toLowerCase()}.title`),
-    description: i18nStore.t(`sections.${section.category.toLowerCase()}.description`),
   })),
 )
 
@@ -86,7 +85,6 @@ const onLaunchTossInstructionDialog = () => {
       :key="`${entry.section.category}-${index}`"
       :section="entry.section"
       :title="entry.title"
-      :description="entry.description"
       @select="onSelectMethod"
     />
 

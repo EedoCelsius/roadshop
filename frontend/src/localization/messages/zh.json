@@ -96,34 +96,27 @@
   },
   "payment": {
     "transfer": {
-      "name": "银行转账",
-      "description": "请通过银行转账支付韩元金额。"
+      "name": "银行转账"
     },
     "kakao": {
       "name": "Kakao 汇款",
-      "description": "使用 KakaoTalk 扫描二维码，几秒内完成结账。",
       "cta": "打开 Kakao 汇款"
     },
     "toss": {
       "name": "Toss 转账",
-      "description": "通过 Toss 转账即时付款并立即确认。",
       "cta": "打开 Toss"
     },
     "naver": {
-      "name": "Naver Pay",
-      "description": "我们正在筹备 Naver Pay，让你当场就能使用积分付款。"
+      "name": "Naver Pay"
     },
     "alipay": {
-      "name": "支付宝",
-      "description": "我们计划通过 Alipay 接入主要的全球电子钱包，让旅客可以继续使用熟悉的钱包付款。"
+      "name": "支付宝"
     },
     "paypal": {
-      "name": "PayPal",
-      "description": "你很快就能用熟悉的 PayPal 账户轻松结账。"
+      "name": "PayPal"
     },
     "card": {
-      "name": "信用卡",
-      "description": "我们即将上线 Visa、Mastercard、UnionPay、Amex、JCB 等全球银行卡支付，让你随时享受熟悉的结账体验。"
+      "name": "信用卡"
     }
   }
 }

@@ -96,34 +96,27 @@
   },
   "payment": {
     "transfer": {
-      "name": "口座振込",
-      "description": "KRWの金額は口座振込でお支払いください。"
+      "name": "口座振込"
     },
     "kakao": {
       "name": "Kakao送金",
-      "description": "QRコードをKakaoTalkで読み取り、数秒で決済を完了できます。",
       "cta": "Kakao送金を開く"
     },
     "toss": {
       "name": "Toss送金",
-      "description": "Toss送金ですぐにお支払いを済ませ、その場で確認できます。",
       "cta": "Toss送金を開く"
     },
     "naver": {
-      "name": "Naver Pay",
-      "description": "Naver Payでもその場でポイント決済できるよう準備中です。"
+      "name": "Naver Pay"
     },
     "alipay": {
-      "name": "Alipay（アリペイ）",
-      "description": "Alipayを通じて主要な海外電子ウォレットを連携し、いつものウォレットで支払えるようにします。"
+      "name": "Alipay（アリペイ）"
     },
     "paypal": {
-      "name": "PayPal（ペイパル）",
-      "description": "普段使いのPayPalアカウントで決済できるよう近日対応予定です。"
+      "name": "PayPal（ペイパル）"
     },
     "card": {
-      "name": "クレジットカード",
-      "description": "Visa・Mastercard・UnionPay・Amex・JCBなどの世界的なカード決済に近日対応します。"
+      "name": "クレジットカード"
     }
   }
 }
