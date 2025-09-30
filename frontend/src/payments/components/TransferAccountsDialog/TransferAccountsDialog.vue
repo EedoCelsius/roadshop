@@ -4,11 +4,12 @@ import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
 import type { TransferAccount } from '@/payments/services/paymentInfoService'
+import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import AppDialog from '@/shared/components/AppDialog.vue'
 import clipboardIcon from '@icons/ui/clipboard.svg?raw'
 import successIcon from '@icons/ui/success.svg?raw'
 
-import { useTransferCopyState } from './useTransferCopyState'
+import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
   visible: boolean
@@ -25,7 +26,8 @@ const emit = defineEmits<{
 const i18nStore = useI18nStore()
 const { locale } = storeToRefs(i18nStore)
 
-const { isCopied, handleCopyAll, handleCopyNumber, reset } = useTransferCopyState()
+const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
+  useTransferCopyState()
 
 const firmIcons = import.meta.glob('@icons/firms/*.svg', {
   eager: true,
@@ -92,23 +94,8 @@ const copyAccountNumber = async (account: TransferAccount) => {
   await handleCopyNumber(account.number)
 }
 
-const tooltipOptions = (accountNumber: string) => {
-  const copied = isCopied(accountNumber, 'number')
-
-  return {
-    value: copied ? copiedNumberLabel.value : copyNumberLabel.value,
-    class: [
-      'rounded-full px-3 py-1 text-xs font-semibold shadow-lg border-0',
-      copied ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-white',
-    ].join(' '),
-    pt: {
-      arrow: {
-        class: copied ? 'bg-emerald-500' : 'bg-slate-800',
-      },
-    },
-    showDelay: 0,
-    hideDelay: 0,
-  }
+const setHoverState = (accountNumber: string, action: CopyAction, value: boolean) => {
+  setHoveredControl(accountNumber, action, value)
 }
 
 const onClose = () => {
@@ -157,7 +144,10 @@ watch(
                   type="button"
                   class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary underline underline-offset-4"
                   @click="copyAccountNumber(account)"
-                  v-tooltip.top.focus="tooltipOptions(account.number)"
+                  @mouseenter="setHoverState(account.number, 'number', true)"
+                  @mouseleave="setHoverState(account.number, 'number', false)"
+                  @focus="setHoverState(account.number, 'number', true)"
+                  @blur="setHoverState(account.number, 'number', false)"
                 >
                   <span>{{ account.number }}</span>
                   <span
@@ -171,6 +161,11 @@ watch(
                     v-html="isCopied(account.number, 'number') ? successIcon : clipboardIcon"
                   ></span>
                 </button>
+                <TooltipBubble
+                  :visible="isTooltipVisible(account.number, 'number')"
+                  :message="isCopied(account.number, 'number') ? copiedNumberLabel : copyNumberLabel"
+                  :variant="isCopied(account.number, 'number') ? 'success' : 'default'"
+                />
               </div>
             </div>
           </div>
