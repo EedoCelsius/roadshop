@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import AlertDialog from '@/shared/components/AlertDialog.vue'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
@@ -10,6 +9,9 @@ import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog
 import { useLocalizedSections } from '@/payments/composables/useLocalizedSections'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
+import Dialog from 'primevue/dialog'
+import Button from 'primevue/button'
+
 import { useI18nStore } from '@/localization/store'
 
 const paymentStore = usePaymentStore()
@@ -52,6 +54,15 @@ const onPopupConfirm = () => {
   paymentInteractionStore.closePopup()
 }
 
+const alertVisibility = computed({
+  get: () => isPopupVisible.value,
+  set: (value: boolean) => {
+    if (!value) {
+      onPopupConfirm()
+    }
+  },
+})
+
 const onCloseTransferDialog = () => {
   paymentInteractionStore.closeTransferDialog()
 }
@@ -76,14 +87,27 @@ const onCloseTransferDialog = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <AlertDialog
+    <Dialog
       v-if="popupContent"
-      :visible="isPopupVisible"
-      :title="popupContent.title"
-      :message="popupContent.message"
-      :confirm-label="popupContent.confirmLabel"
-      @confirm="onPopupConfirm"
-    />
+      v-model:visible="alertVisibility"
+      modal
+      :header="popupContent.title"
+      :style="{ width: '26rem' }"
+      :dismissableMask="true"
+      content-class="rounded-3xl"
+    >
+      <p class="text-sm leading-relaxed text-slate-600">
+        {{ popupContent.message }}
+      </p>
+      <template #footer>
+        <Button
+          :label="popupContent.confirmLabel"
+          class="w-full md:w-auto"
+          severity="primary"
+          @click="onPopupConfirm"
+        />
+      </template>
+    </Dialog>
     <TransferAccountsDialog
       :visible="isTransferDialogVisible"
       :accounts="transferAccounts"

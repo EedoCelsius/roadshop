@@ -1,20 +1,37 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import Dialog from 'primevue/dialog'
+import ProgressSpinner from 'primevue/progressspinner'
+
 const props = defineProps<{
   visible: boolean
   message: string
 }>()
+
+const dialogVisibility = computed({
+  get: () => props.visible,
+  set: () => {
+    // Dialog should remain controlled by parent state
+  },
+})
 </script>
 
 <template>
-  <div
-    v-if="props.visible"
-    class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-slate-900/40 backdrop-blur"
+    <Dialog
+      v-model:visible="dialogVisibility"
+      modal
+      :show-header="false"
+      :closable="false"
+      :dismissableMask="false"
+      style="width: 18rem"
+      content-class="bg-white/90 backdrop-blur rounded-3xl"
   >
-    <div class="flex items-center justify-center">
-      <div class="h-12 w-12 animate-spin rounded-full border-4 border-white/30 border-t-white"></div>
+    <div class="flex flex-col items-center justify-center gap-4 py-8">
+      <ProgressSpinner strokeWidth="4" style="width: 3rem; height: 3rem" />
+      <p class="text-sm font-semibold text-roadshop-primary text-center">
+        {{ props.message }}
+      </p>
     </div>
-    <p class="text-sm font-semibold text-white drop-shadow">
-      {{ props.message }}
-    </p>
-  </div>
+  </Dialog>
 </template>

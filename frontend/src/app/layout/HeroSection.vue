@@ -2,6 +2,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
+import Dropdown from 'primevue/dropdown'
+
 import type { Locale } from '@/localization/store'
 import { useI18nStore } from '@/localization/store'
 
@@ -31,14 +33,22 @@ const highlights = computed(() => [
 ])
 
 const languageLabel = computed(() => i18nStore.t('language.label'))
+const localeOptions = computed(() =>
+  availableLocales.value.map((option) => ({
+    label: formatLocaleLabel(option),
+    value: option.code,
+  })),
+)
+
+const selectedLocale = computed({
+  get: () => locale.value,
+  set: (value) => {
+    void i18nStore.setLocale(value as Locale)
+  },
+})
 
 const formatLocaleLabel = (option: { label: string; nativeLabel: string }) =>
   option.label === option.nativeLabel ? option.label : `${option.label} · ${option.nativeLabel}`
-
-const onLocaleChange = async (event: Event) => {
-  const target = event.target as HTMLSelectElement
-  await i18nStore.setLocale(target.value as Locale)
-}
 </script>
 
 <template>
@@ -58,23 +68,31 @@ const onLocaleChange = async (event: Event) => {
             <span class="inline-block h-2 w-2 rounded-full bg-emerald-400"></span>
             <span>{{ heroCopy.badge }}</span>
           </div>
-          <label
-            class="relative flex cursor-pointer items-center gap-3 rounded-full border border-roadshop-primary/10 bg-white/70 px-4 py-2 text-xs font-semibold text-roadshop-primary shadow-sm backdrop-blur"
+          <Dropdown
+            v-model="selectedLocale"
+            :options="localeOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full rounded-full border border-roadshop-primary/20 bg-white/80 text-roadshop-primary shadow-sm backdrop-blur sm:w-56"
+            :aria-label="languageLabel"
+            :placeholder="languageLabel"
           >
-            <span class="tracking-[0.2em] text-roadshop-accent">{{ languageLabel }}</span>
-            <select
-              class="min-w-[8rem] appearance-none cursor-pointer bg-transparent pr-8 text-sm font-medium text-roadshop-primary focus:outline-none"
-              :value="locale"
-              @change="onLocaleChange"
-            >
-              <option v-for="option in availableLocales" :key="option.code" :value="option.code">
-                {{ formatLocaleLabel(option) }}
-              </option>
-            </select>
-            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-              <span class="block h-0 w-0 border-x-[5px] border-x-transparent border-t-[6px] border-t-roadshop-primary"></span>
-            </span>
-          </label>
+            <template #value="{ value, placeholder }">
+              <div v-if="value" class="flex items-center gap-2 text-sm font-semibold text-roadshop-primary">
+                <i class="pi pi-globe text-roadshop-accent"></i>
+                <span>{{ localeOptions.find((option) => option.value === value)?.label }}</span>
+              </div>
+              <span v-else class="text-xs font-semibold uppercase tracking-[0.2em] text-roadshop-accent">
+                {{ placeholder }}
+              </span>
+            </template>
+            <template #option="{ option }">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-sm font-medium text-roadshop-primary">{{ option.label }}</span>
+                <i class="pi pi-angle-right text-roadshop-accent"></i>
+              </div>
+            </template>
+          </Dropdown>
         </div>
       </div>
       <p class="max-w-3xl text-lg leading-relaxed text-slate-600">
