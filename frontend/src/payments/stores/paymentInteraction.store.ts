@@ -5,6 +5,7 @@ import { useI18nStore } from '@/localization/store'
 import { waitForDeepLinkLaunch } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
+import { createCountdownManager } from '@/payments/stores/utils/createCountdownManager'
 import type { DeepLinkProvider, PaymentMethod } from '@/payments/types'
 import { createPaymentActionResolver } from '@/payments/workflows/createPaymentActionResolver'
 import type { PaymentActionContext } from '@/payments/workflows/types'
@@ -72,16 +73,10 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const tossInstructionCountdown = ref(0)
   const hasCopiedTossAccountInfo = ref(false)
   const tossDeepLinkUrl = ref<string | null>(null)
-  let tossCountdownTimer: ReturnType<typeof setInterval> | null = null
-  let tossCountdownResolver: ((shouldLaunch: boolean) => void) | null = null
 
-  const resolveTossCountdown = (shouldLaunch: boolean) => {
-    if (tossCountdownResolver) {
-      const resolve = tossCountdownResolver
-      tossCountdownResolver = null
-      resolve(shouldLaunch)
-    }
-  }
+  const tossCountdownManager = createCountdownManager((remainingSeconds) => {
+    tossInstructionCountdown.value = remainingSeconds
+  })
 
   const transferAmount = computed(() => paymentInfoStore.transferInfo?.amount.krw ?? 0)
   const transferAccounts = computed(() => paymentInfoStore.transferInfo?.account ?? [])
@@ -134,46 +129,13 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       return Promise.resolve(false)
     }
 
-    if (tossCountdownTimer) {
-      clearInterval(tossCountdownTimer)
-      tossCountdownTimer = null
-    }
-
-    tossInstructionCountdown.value = Math.max(0, seconds)
     isTossInstructionDialogVisible.value = true
 
-    if (tossInstructionCountdown.value === 0) {
-      return Promise.resolve(true)
-    }
-
-    return new Promise<boolean>((resolve) => {
-      tossCountdownResolver = resolve
-      tossCountdownTimer = setInterval(() => {
-        if (tossInstructionCountdown.value <= 1) {
-          if (tossCountdownTimer) {
-            clearInterval(tossCountdownTimer)
-            tossCountdownTimer = null
-          }
-
-          tossInstructionCountdown.value = 0
-
-          resolveTossCountdown(true)
-
-          return
-        }
-
-        tossInstructionCountdown.value -= 1
-      }, 1000)
-    })
+    return tossCountdownManager.start(seconds)
   }
 
   const closeTossInstructionDialog = () => {
-    if (tossCountdownTimer) {
-      clearInterval(tossCountdownTimer)
-      tossCountdownTimer = null
-    }
-
-    resolveTossCountdown(false)
+    tossCountdownManager.cancel()
 
     isTossInstructionDialogVisible.value = false
     tossInstructionCountdown.value = 0
@@ -182,26 +144,11 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   }
 
   const completeTossInstructionCountdown = () => {
-    if (tossInstructionCountdown.value === 0) {
-      return
-    }
-
-    if (tossCountdownTimer) {
-      clearInterval(tossCountdownTimer)
-      tossCountdownTimer = null
-    }
-
-    tossInstructionCountdown.value = 0
-    resolveTossCountdown(true)
+    tossCountdownManager.complete()
   }
 
   const completeTossInstructionDialog = () => {
-    if (tossCountdownTimer) {
-      clearInterval(tossCountdownTimer)
-      tossCountdownTimer = null
-    }
-
-    tossCountdownResolver = null
+    tossCountdownManager.reset()
     tossInstructionCountdown.value = 0
   }
 
