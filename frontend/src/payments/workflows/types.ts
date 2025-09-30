@@ -13,7 +13,7 @@ export type PaymentActionContext = {
   isMobileDevice: () => boolean
   openUrlInNewTab: (url: string | null) => void
   copyTossAccountInfo: () => Promise<boolean>
-  showTossInstructionDialog: (seconds: number) => Promise<void>
+  showTossInstructionDialog: (seconds: number) => Promise<boolean>
   completeTossInstructionDialog: () => void
   setTossDeepLinkUrl: (url: string | null) => void
 }

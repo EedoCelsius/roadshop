@@ -61,7 +61,12 @@ const runTossWorkflow = async (context: PaymentActionContext) => {
   context.setTossDeepLinkUrl(deepLink)
 
   await context.copyTossAccountInfo()
-  await context.showTossInstructionDialog(5)
+  const shouldLaunch = await context.showTossInstructionDialog(5)
+
+  if (!shouldLaunch) {
+    context.completeTossInstructionDialog()
+    return
+  }
 
   const isMobile = context.isMobileDevice()
 
