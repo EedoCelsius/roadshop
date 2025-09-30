@@ -27,7 +27,6 @@ const {
   transferAccounts,
   isTossInstructionDialogVisible,
   tossInstructionCountdown,
-  hasCopiedTossAccountInfo,
   tossAccountInfo,
 } = storeToRefs(paymentInteractionStore)
 
@@ -111,7 +110,6 @@ const onLaunchTossInstructionDialog = () => {
       :visible="isTossInstructionDialogVisible"
       :info="tossAccountInfo"
       :countdown="tossInstructionCountdown"
-      :copied="hasCopiedTossAccountInfo"
       @close="onCloseTossInstructionDialog"
       @launch-now="onLaunchTossInstructionDialog"
       @reopen="onReopenTossInstructionDialog"

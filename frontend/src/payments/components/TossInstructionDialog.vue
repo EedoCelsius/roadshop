@@ -10,7 +10,6 @@ interface Props {
   visible: boolean
   info: TossPaymentInfo | null
   countdown: number
-  copied: boolean
 }
 
 const props = defineProps<Props>()
@@ -25,7 +24,6 @@ const i18nStore = useI18nStore()
 
 const title = computed(() => i18nStore.t('tossInstruction.title'))
 const description = computed(() => i18nStore.t('tossInstruction.description'))
-const copiedLabel = computed(() => i18nStore.t('tossInstruction.copied'))
 const closeLabel = computed(() => i18nStore.t('dialog.close'))
 const countdownLabel = computed(() => {
   if (props.countdown > 0) {
@@ -62,9 +60,6 @@ const onLaunchNow = () => {
     @close="onClose"
   >
     <div class="flex flex-col gap-4">
-      <p v-if="props.copied" class="text-xs font-medium text-emerald-600">
-        {{ copiedLabel }}
-      </p>
       <AccountInfoCard
         v-if="props.info"
         :bank-name="props.info.bankName"
