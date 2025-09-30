@@ -67,7 +67,7 @@ const onReopen = () => {
         :account-holder="props.info.accountHolder"
       />
       <div
-        class="flex items-center justify-center px-4 py-3"
+        class="flex items-center justify-center"
       >
         <p v-if="isCountingDown" class="text-sm font-semibold text-roadshop-primary">
           {{ countdownLabel }}
