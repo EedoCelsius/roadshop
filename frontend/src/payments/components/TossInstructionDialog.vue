@@ -62,7 +62,7 @@ const onLaunchNow = () => {
         <button
           v-if="isCountingDown"
           type="button"
-          class="w-full rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-600/90"
+          class="w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
           @click="onLaunchNow"
         >
           <span class="flex items-center justify-center gap-2">
@@ -78,7 +78,7 @@ const onLaunchNow = () => {
         <button
           v-else
           type="button"
-          class="w-full rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-600/90"
+          class="w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
           @click="onReopen"
         >
           {{ reopenLabel }}
