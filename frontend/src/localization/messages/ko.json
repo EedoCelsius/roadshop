@@ -81,10 +81,8 @@
     "description": "{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.",
     "copyAll": "전체 정보 복사",
     "copyNumber": "계좌번호만 복사",
-    "copyTooltip": "클립보드로 복사",
     "copyAllButton": "이체 정보 복사",
     "copiedAllButton": "클립보드에 복사됨",
-    "copied": "복사됨!",
     "copiedNumber": "계좌번호만 복사했어요"
   },
   "payment": {

@@ -81,10 +81,8 @@
     "description": "请将 {amountWithCurrency} 转入下方任一账户。",
     "copyAll": "复制全部信息",
     "copyNumber": "仅复制账号",
-    "copyTooltip": "复制到剪贴板",
     "copyAllButton": "复制转账信息",
     "copiedAllButton": "已复制到剪贴板",
-    "copied": "已复制！",
     "copiedNumber": "仅复制了账号"
   },
   "payment": {

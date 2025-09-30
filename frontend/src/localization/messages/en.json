@@ -81,10 +81,8 @@
     "description": "Send {amountWithCurrency} to one of the accounts below.",
     "copyAll": "Copy all details",
     "copyNumber": "Copy only account number",
-    "copyTooltip": "Copy to clipboard",
     "copyAllButton": "Copy transfer details",
     "copiedAllButton": "Copied to clipboard",
-    "copied": "Copied!",
     "copiedNumber": "Account number copied"
   },
   "payment": {

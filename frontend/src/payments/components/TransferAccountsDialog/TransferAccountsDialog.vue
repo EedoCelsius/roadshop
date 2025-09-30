@@ -78,24 +78,11 @@ const descriptionHtml = computed(() =>
 )
 const copyAllLabel = computed(() => i18nStore.t('transferPopup.copyAll'))
 const copyNumberLabel = computed(() => i18nStore.t('transferPopup.copyNumber'))
-const copyTooltipLabel = computed(() => i18nStore.t('transferPopup.copyTooltip'))
-const copiedLabel = computed(() => i18nStore.t('transferPopup.copied'))
 const copiedNumberLabel = computed(() => i18nStore.t('transferPopup.copiedNumber'))
 const copyAllButtonLabel = computed(() => i18nStore.t('transferPopup.copyAllButton'))
 const copiedAllButtonLabel = computed(() => i18nStore.t('transferPopup.copiedAllButton'))
 
 const getIconForBank = (bank: string) => firmIconMap[bank] ?? null
-
-const getTooltipVariant = (accountNumber: string, action: CopyAction) =>
-  isCopied(accountNumber, action) ? 'success' : 'default'
-
-const getTooltipMessage = (accountNumber: string, action: CopyAction) => {
-  if (isCopied(accountNumber, action)) {
-    return action === 'all' ? copiedLabel.value : copiedNumberLabel.value
-  }
-
-  return action === 'all' ? copyTooltipLabel.value : copyNumberLabel.value
-}
 
 const copyTransferDetails = async (account: TransferAccount) => {
   const amountText = `${formattedAmountForCopy.value}원`
@@ -176,8 +163,8 @@ watch(
                 </button>
                 <TooltipBubble
                   :visible="isTooltipVisible(account.number, 'number')"
-                  :message="getTooltipMessage(account.number, 'number')"
-                  :variant="getTooltipVariant(account.number, 'number')"
+                  :message="isCopied(account.number, 'number') ? copiedNumberLabel : copyNumberLabel"
+                  :variant="isCopied(account.number, 'number') ? 'success' : 'default'"
                 />
               </div>
             </div>
@@ -193,10 +180,6 @@ watch(
               ]"
               :aria-label="copyAllLabel"
               @click="copyTransferDetails(account)"
-              @mouseenter="setHoverState(account.number, 'all', true)"
-              @mouseleave="setHoverState(account.number, 'all', false)"
-              @focus="setHoverState(account.number, 'all', true)"
-              @blur="setHoverState(account.number, 'all', false)"
             >
               <span class="flex items-center gap-2 sm:hidden">
                 <span class="text-sm font-semibold text-white">
@@ -215,11 +198,6 @@ watch(
                 v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
               ></span>
             </button>
-            <TooltipBubble
-              :visible="isTooltipVisible(account.number, 'all')"
-              :message="getTooltipMessage(account.number, 'all')"
-              :variant="getTooltipVariant(account.number, 'all')"
-            />
           </div>
         </div>
       </li>
