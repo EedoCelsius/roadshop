@@ -69,7 +69,7 @@ const onReopen = () => {
       <div
         class="flex items-center justify-center"
       >
-        <p v-if="isCountingDown" class="text-md font-semibold text-roadshop-primary">
+        <p v-if="isCountingDown" class="text-base font-semibold text-roadshop-primary">
           {{ countdownLabel }}
         </p>
         <button
