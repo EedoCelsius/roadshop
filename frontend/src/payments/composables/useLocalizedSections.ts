@@ -9,7 +9,6 @@ import { usePaymentStore } from '@/payments/stores/payment.store'
 export type LocalizedPaymentMethod = PaymentMethod & {
   name: string
   description: string
-  provider: string
   supportedCurrencies: string[]
   isSelected: boolean
 }
@@ -49,7 +48,6 @@ export const useLocalizedSections = () => {
             ...method,
             name: i18nStore.t(`payment.${method.id}.name`),
             description: i18nStore.t(`payment.${method.id}.description`),
-            provider: i18nStore.t(`payment.${method.id}.provider`),
             isSelected: method.id === selectedMethodId.value,
           }))
           .filter((method) => method.name),
