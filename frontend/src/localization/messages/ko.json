@@ -87,7 +87,7 @@
     "copied": "계좌 정보가 복사되었어요",
     "countdown": "{seconds}초 후 토스를 실행할게요",
     "launching": "토스를 실행하는 중...",
-    "reopen": "다시열기"
+    "reopen": "토스 다시열기"
   },
   "transferPopup": {
     "title": "계좌이체 정보",

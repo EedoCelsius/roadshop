@@ -87,7 +87,7 @@
     "copied": "口座情報をコピーしました",
     "countdown": "{seconds}秒後にTossを起動します",
     "launching": "Tossを起動しています...",
-    "reopen": "もう一度開く"
+    "reopen": "Tossをもう一度開く"
   },
   "transferPopup": {
     "title": "口座振込のご案内",
