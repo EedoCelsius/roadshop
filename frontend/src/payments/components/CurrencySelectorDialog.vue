@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 import { useI18nStore } from '@/localization/store'
-import AppDialog from '@/shared/components/AppDialog.vue'
+import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 
 interface Props {
   visible: boolean
@@ -34,7 +34,7 @@ const onClose = () => {
 </script>
 
 <template>
-  <AppDialog
+  <DialogCloseFull
     :visible="props.visible"
     :title="title"
     :description="description"
@@ -52,5 +52,5 @@ const onClose = () => {
         <span aria-hidden="true" class="text-roadshop-accent">→</span>
       </button>
     </div>
-  </AppDialog>
+  </DialogCloseFull>
 </template>
