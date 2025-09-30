@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import { useI18nStore } from '@/localization/store'
 import AccountInfoCard from '@/payments/components/AccountInfoCard.vue'
-import DialogBase from '@/shared/components/DialogBase.vue'
+import AppDialog from '@/shared/components/AppDialog.vue'
 import type { TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
 interface Props {
@@ -26,7 +26,6 @@ const i18nStore = useI18nStore()
 const title = computed(() => i18nStore.t('tossInstruction.title'))
 const description = computed(() => i18nStore.t('tossInstruction.description'))
 const copiedLabel = computed(() => i18nStore.t('tossInstruction.copied'))
-const closeLabel = computed(() => i18nStore.t('dialog.close'))
 const countdownLabel = computed(() => {
   if (props.countdown > 0) {
     return i18nStore.t('tossInstruction.countdown').replace(
@@ -55,10 +54,11 @@ const onLaunchNow = () => {
 </script>
 
 <template>
-  <DialogBase
+  <AppDialog
     :visible="props.visible"
     :title="title"
     :description="description"
+    close-alignment="full"
     @close="onClose"
   >
     <div class="flex flex-col gap-4">
@@ -71,13 +71,13 @@ const onLaunchNow = () => {
         :account-no="props.info.accountNo"
         :account-holder="props.info.accountHolder"
       />
-    </div>
-    <template #footer="{ onClose: closeDialog }">
-      <footer class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+      <div
+        class="flex items-center justify-center"
+      >
         <button
           v-if="isCountingDown"
           type="button"
-          class="rounded-xl bg-roadshop-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-roadshop-primary/90"
+          class="font-semibold text-roadshop-primary cursor-pointer"
           @click="onLaunchNow"
         >
           {{ countdownLabel }}
@@ -85,19 +85,12 @@ const onLaunchNow = () => {
         <button
           v-else
           type="button"
-          class="rounded-xl bg-roadshop-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-roadshop-primary/90"
+          class="font-semibold text-roadshop-primary underline underline-offset-2"
           @click="onReopen"
         >
           {{ reopenLabel }}
         </button>
-        <button
-          type="button"
-          class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100"
-          @click="closeDialog()"
-        >
-          {{ closeLabel }}
-        </button>
-      </footer>
-    </template>
-  </DialogBase>
+      </div>
+    </div>
+  </AppDialog>
 </template>
