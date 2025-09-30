@@ -1,5 +1,8 @@
 import { createApp } from 'vue'
 import type { Pinia } from 'pinia'
+import PrimeVue from 'primevue/config'
+import Tooltip from 'primevue/tooltip'
+import Aura from '@primevue/themes/aura'
 
 import App from '@/app/App.vue'
 import { createAppPinia } from '@/app/providers/createPinia'
@@ -15,6 +18,19 @@ export const bootstrapApp = async () => {
   const pinia = createAppPinia()
 
   app.use(pinia)
+  app.use(PrimeVue, {
+    theme: {
+      preset: Aura,
+      options: {
+        cssLayer: {
+          name: 'primevue',
+          order: 'tailwind-base, primevue, tailwind-utilities',
+        },
+        darkModeSelector: 'none',
+      },
+    },
+  })
+  app.directive('tooltip', Tooltip)
 
   await initializeLocalization(pinia)
 
