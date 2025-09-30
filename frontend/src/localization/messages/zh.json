@@ -68,7 +68,7 @@
   },
   "currencySelector": {
     "title": "选择货币",
-    "description": "请选择使用 {method} 时的付款货币。"
+    "description": "请选择用于 {method} 付款的货币。"
   },
   "dialog": {
     "close": "关闭"

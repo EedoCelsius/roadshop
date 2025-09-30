@@ -68,7 +68,7 @@
   },
   "currencySelector": {
     "title": "Choose a currency",
-    "description": "Select the currency you want to use with {method}."
+    "description": "Choose the currency to use for {method} payments."
   },
   "dialog": {
     "close": "Close"

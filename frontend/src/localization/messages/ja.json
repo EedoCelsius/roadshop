@@ -68,7 +68,7 @@
   },
   "currencySelector": {
     "title": "通貨を選択してください",
-    "description": "{method}で利用する通貨をお選びください。"
+    "description": "{method} 決済に使用する通貨を選択してください。"
   },
   "dialog": {
     "close": "閉じる"
