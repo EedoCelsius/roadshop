@@ -81,10 +81,8 @@
     "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
     "copyAll": "すべての情報をコピー",
     "copyNumber": "口座番号のみコピー",
-    "copyTooltip": "クリップボードにコピー",
     "copyAllButton": "振込情報をコピー",
     "copiedAllButton": "クリップボードにコピーしました",
-    "copied": "コピーしました！",
     "copiedNumber": "口座番号のみコピーしました"
   },
   "payment": {
