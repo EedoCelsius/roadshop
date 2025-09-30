@@ -3,6 +3,7 @@ import { computed } from 'vue'
 
 import { useI18nStore } from '@/localization/store'
 import AccountInfoCard from '@/payments/components/AccountInfoCard.vue'
+import AppDialog from '@/shared/components/AppDialog.vue'
 import type { TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
 interface Props {
@@ -38,7 +39,6 @@ const countdownLabel = computed(() => {
 
 const reopenLabel = computed(() => i18nStore.t('tossInstruction.reopen'))
 const isCountingDown = computed(() => props.countdown > 0)
-const closeLabel = computed(() => i18nStore.t('dialog.close'))
 
 const onClose = () => {
   emit('close')
@@ -54,61 +54,43 @@ const onLaunchNow = () => {
 </script>
 
 <template>
-  <Dialog
+  <AppDialog
     :visible="props.visible"
-    modal
-    dismissable-mask
-    close-on-escape
-    :header="title"
-    :style="{ width: 'min(90vw, 28rem)' }"
-    :pt="{
-      root: { class: 'rounded-3xl border-0 bg-white/95 shadow-xl backdrop-blur-sm' },
-      mask: { class: 'bg-slate-900/40 backdrop-blur-sm' },
-      header: { class: 'text-roadshop-primary font-semibold text-lg' },
-      content: { class: 'text-slate-600' },
-      footer: { class: 'flex justify-end' },
-    }"
-    @update:visible="(value) => {
-      if (!value) {
-        onClose()
-      }
-    }"
+    :title="title"
+    :description="description"
+    close-alignment="full"
+    @close="onClose"
   >
     <div class="flex flex-col gap-4">
-      <p class="text-sm leading-relaxed text-slate-600">{{ description }}</p>
-      <Tag
-        v-if="props.copied"
-        :value="copiedLabel"
-        severity="success"
-        :pt="{ root: { class: 'w-full justify-center bg-emerald-100 text-emerald-700 border-emerald-200 text-xs font-medium' } }"
-      />
+      <p v-if="props.copied" class="text-xs font-medium text-emerald-600">
+        {{ copiedLabel }}
+      </p>
       <AccountInfoCard
         v-if="props.info"
         :bank-name="props.info.bankName"
         :account-no="props.info.accountNo"
         :account-holder="props.info.accountHolder"
       />
-      <div class="flex items-center justify-center">
-        <Button
+      <div
+        class="flex items-center justify-center"
+      >
+        <button
           v-if="isCountingDown"
           type="button"
-          text
-          severity="primary"
-          :label="countdownLabel"
+          class="font-semibold text-roadshop-primary cursor-pointer"
           @click="onLaunchNow"
-        />
-        <Button
+        >
+          {{ countdownLabel }}
+        </button>
+        <button
           v-else
           type="button"
-          text
-          severity="primary"
-          :label="reopenLabel"
+          class="font-semibold text-roadshop-primary underline underline-offset-2"
           @click="onReopen"
-        />
+        >
+          {{ reopenLabel }}
+        </button>
       </div>
     </div>
-    <template #footer>
-      <Button type="button" :label="closeLabel" text severity="secondary" @click="onClose" />
-    </template>
-  </Dialog>
+  </AppDialog>
 </template>

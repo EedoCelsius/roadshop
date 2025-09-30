@@ -2,6 +2,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
+import AppDialog from '@/shared/components/AppDialog.vue'
+import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
 import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
@@ -10,7 +12,6 @@ import { useLocalizedSections } from '@/payments/composables/useLocalizedSection
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
 import { useI18nStore } from '@/localization/store'
-import BusyOverlay from '@/shared/components/BusyOverlay.vue'
 
 const paymentStore = usePaymentStore()
 const paymentInteractionStore = usePaymentInteractionStore()
@@ -84,40 +85,15 @@ const onLaunchTossInstructionDialog = () => {
       @select="onSelectMethod"
     />
 
-    <Dialog
+    <AppDialog
       v-if="popupContent"
       :visible="isPopupVisible"
-      modal
-      :header="popupContent.title"
-      :style="{ width: 'min(90vw, 28rem)' }"
-      dismissable-mask
-      close-on-escape
-      :pt="{
-        root: { class: 'rounded-3xl border-0 bg-white/95 shadow-xl backdrop-blur-sm' },
-        mask: { class: 'bg-slate-900/40 backdrop-blur-sm' },
-        header: { class: 'text-roadshop-primary font-semibold text-lg' },
-        content: { class: 'text-slate-600' },
-        footer: { class: 'flex justify-end' },
-      }"
-      @update:visible="(value) => {
-        if (!value) {
-          onPopupConfirm()
-        }
-      }"
-    >
-      <p class="text-sm leading-relaxed text-slate-600">
-        {{ popupContent.message }}
-      </p>
-      <template #footer>
-        <Button
-          type="button"
-          :label="popupContent.confirmLabel"
-          class="min-w-[7rem]"
-          severity="primary"
-          @click="onPopupConfirm"
-        />
-      </template>
-    </Dialog>
+      :title="popupContent.title"
+      :description="popupContent.message"
+      close-alignment="end"
+      :close-label="popupContent.confirmLabel"
+      @close="onPopupConfirm"
+    />
     <CurrencySelectorDialog
       v-if="selectedMethod"
       :visible="isCurrencySelectorOpen"
@@ -141,6 +117,6 @@ const onLaunchTossInstructionDialog = () => {
       @launch-now="onLaunchTossInstructionDialog"
       @reopen="onReopenTossInstructionDialog"
     />
-    <BusyOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
+    <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
   </div>
 </template>
