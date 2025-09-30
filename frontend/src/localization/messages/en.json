@@ -76,6 +76,19 @@
   "dialog": {
     "close": "Close"
   },
+  "accountInfo": {
+    "bank": "Bank",
+    "account": "Account number",
+    "holder": "Account holder"
+  },
+  "tossInstruction": {
+    "title": "Send with Toss",
+    "description": "We've copied the account details you need for Toss.",
+    "copied": "Account info copied to clipboard",
+    "countdown": "Opening Toss in {seconds}s",
+    "launching": "Opening Toss...",
+    "reopen": "Reopen Toss"
+  },
   "transferPopup": {
     "title": "Bank transfer details",
     "description": "Send {amountWithCurrency} to one of the accounts below.",

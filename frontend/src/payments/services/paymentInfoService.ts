@@ -19,6 +19,7 @@ export type TossPaymentInfo = {
   amount: AmountKRW
   bankName: string
   accountNo: string
+  accountHolder: string
 }
 
 export type KakaoPaymentInfo = {
