@@ -64,7 +64,7 @@ const bankMonogram = computed(() => {
             {{ props.bankName }}
             <span class="ml-2 text-lg font-medium text-roadshop-primary/80">({{ props.accountHolder }})</span>
           </p>
-          <p class="mt-3 font-mono text-xl tracking-wider text-slate-700">{{ props.accountNo }}</p>
+          <p class="mt-3 font-mono text-lg tracking-wider text-slate-700">{{ props.accountNo }}</p>
         </div>
       </div>
     </div>
