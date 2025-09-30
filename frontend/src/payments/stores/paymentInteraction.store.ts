@@ -13,15 +13,10 @@ import { openUrlInNewTab } from '@/shared/utils/navigation'
 
 type PopupType = 'not-mobile' | 'not-installed'
 
-type PopupState = {
-  type: PopupType
-  provider: DeepLinkProvider
-}
-
 const buildWorkflowContext = (
   paymentStore: ReturnType<typeof usePaymentStore>,
   paymentInfoStore: ReturnType<typeof usePaymentInfoStore>,
-  showPopup: (state: PopupState) => void,
+  showPopup: (type: PopupType, provider: DeepLinkProvider) => void,
   setDeepLinkChecking: (value: boolean) => void,
   openTransferDialog: () => void,
 ): PaymentActionContext => ({
@@ -32,9 +27,7 @@ const buildWorkflowContext = (
   },
   ensurePaymentInfoLoaded: paymentInfoStore.ensureLoaded,
   getDeepLinkInfo: paymentInfoStore.getDeepLinkInfo,
-  showDeepLinkPopup: (type, provider) => {
-    showPopup({ type, provider })
-  },
+  showDeepLinkPopup: showPopup,
   setDeepLinkChecking,
   waitForDeepLinkResult: waitForDeepLinkLaunch,
   navigateToDeepLink: (url: string) => {
@@ -58,44 +51,32 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
   void paymentInfoStore.ensureLoaded()
 
-  const popupState = ref<PopupState | null>(null)
+  const popupContent = ref<{
+    title: string
+    message: string
+    confirmLabel: string
+  } | null>(null)
   const isDeepLinkChecking = ref(false)
   const isTransferDialogVisible = ref(false)
 
   const transferAmount = computed(() => paymentInfoStore.transferInfo?.amount.krw ?? 0)
   const transferAccounts = computed(() => paymentInfoStore.transferInfo?.account ?? [])
 
-  const isPopupVisible = computed(() => popupState.value !== null)
-
-  const popupContent = computed(() => {
-    if (!popupState.value) {
-      return null
-    }
-
-    const { type, provider } = popupState.value
-    const baseKey = 'popups.deepLink'
-
-    if (type === 'not-mobile') {
-      return {
-        title: i18nStore.t(`${baseKey}.titles.notMobile`),
-        message: i18nStore.t(`${baseKey}.providers.${provider}.notMobile`),
-        confirmLabel: i18nStore.t(`${baseKey}.confirms.notMobile`),
-      }
-    }
-
-    return {
-      title: i18nStore.t(`${baseKey}.titles.notInstalled`),
-      message: i18nStore.t(`${baseKey}.providers.${provider}.notInstalled`),
-      confirmLabel: i18nStore.t(`${baseKey}.confirms.notInstalled`),
-    }
-  })
+  const isPopupVisible = computed(() => popupContent.value !== null)
 
   const closePopup = () => {
-    popupState.value = null
+    popupContent.value = null
   }
 
-  const showPopup = (state: PopupState) => {
-    popupState.value = state
+  const showPopup = (type: PopupType, provider: DeepLinkProvider) => {
+    const baseKey = 'popups.deepLink'
+    const keySuffix = type === 'not-mobile' ? 'notMobile' : 'notInstalled'
+
+    popupContent.value = {
+      title: i18nStore.t(`${baseKey}.titles.${keySuffix}`),
+      message: i18nStore.t(`${baseKey}.providers.${provider}.${keySuffix}`),
+      confirmLabel: i18nStore.t(`${baseKey}.confirms.${keySuffix}`),
+    }
   }
 
   const openTransferDialog = () => {
