@@ -260,19 +260,11 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const resolveAction = createPaymentActionResolver(workflowContext)
 
   const handleMethodSelection = async (methodId: string) => {
-    const method = paymentStore.getMethodById(methodId)
-
     paymentStore.selectMethod(methodId)
 
-    if (!method) {
-      return
-    }
+    const method = selectedMethod.value
 
-    if (!selectedMethod.value) {
-      return
-    }
-
-    if (isCurrencySelectorOpen.value) {
+    if (!method || isCurrencySelectorOpen.value) {
       return
     }
 
@@ -289,7 +281,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
     paymentStore.chooseCurrency(currency)
 
-    if (!selectedMethod.value) {
+    if (selectedCurrency.value !== currency) {
       return
     }
 
