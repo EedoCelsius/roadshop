@@ -29,10 +29,9 @@ const emit = defineEmits<{
         :description="method.description"
         :supported-currencies="method.supportedCurrencies"
         :provider="method.provider"
-        :status="method.status"
         :icons="method.icons"
         :is-selected="method.isSelected"
-        :currency="method.currency"
+        :category="method.category"
         @select="emit('select', method.id)"
       />
     </div>

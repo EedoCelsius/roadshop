@@ -35,10 +35,16 @@ const { sections } = useLocalizedSections()
 const localizedSections = computed(() =>
   sections.value.map((section) => ({
     section,
-    title: i18nStore.t(`sections.${section.currency.toLowerCase()}.title`),
-    description: i18nStore.t(`sections.${section.currency.toLowerCase()}.description`),
+    title: i18nStore.t(`sections.${section.category.toLowerCase()}.title`),
+    description: i18nStore.t(`sections.${section.category.toLowerCase()}.description`),
   })),
 )
+
+const selectedMethodName = computed(() =>
+  selectedMethod.value ? i18nStore.t(`payment.${selectedMethod.value.id}.name`) : '',
+)
+
+const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
 
 const onSelectMethod = (methodId: string) => {
   void paymentInteractionStore.handleMethodSelection(methodId)
@@ -77,7 +83,7 @@ const onLaunchTossInstructionDialog = () => {
   <div class="flex flex-col gap-16">
     <Section
       v-for="(entry, index) in localizedSections"
-      :key="`${entry.section.currency}-${index}`"
+      :key="`${entry.section.category}-${index}`"
       :section="entry.section"
       :title="entry.title"
       :description="entry.description"
@@ -95,8 +101,8 @@ const onLaunchTossInstructionDialog = () => {
     <CurrencySelectorDialog
       v-if="selectedMethod"
       :visible="isCurrencySelectorOpen"
-      :method-name="selectedMethod.name"
-      :currencies="selectedMethod.supportedCurrencies"
+      :method-name="selectedMethodName"
+      :currencies="selectedMethodCurrencies"
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />

@@ -2,20 +2,19 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useI18nStore } from '@/localization/store'
-import type { PaymentCurrency } from '@/payments/types'
+import type { PaymentCategory } from '@/payments/types'
 
 interface Props {
   name: string
   description: string
   supportedCurrencies: string[]
   provider: string
-  status: 'available' | 'coming-soon'
   icons?: Array<{
     src: string
     alt: string
   }>
   isSelected?: boolean
-  currency: PaymentCurrency
+  category: PaymentCategory
 }
 
 const props = defineProps<Props>()
@@ -26,18 +25,6 @@ const emit = defineEmits<{
 
 const i18nStore = useI18nStore()
 
-const statusMeta = computed(() => ({
-  available: {
-    label: i18nStore.t('status.available'),
-    classes: 'bg-green-100 text-green-700',
-  },
-  'coming-soon': {
-    label: i18nStore.t('status.comingSoon'),
-    classes: 'bg-amber-100 text-amber-700',
-  },
-}))
-
-const preparingCopy = computed(() => i18nStore.t('card.preparing'))
 const selectCurrencyPrompt = computed(() => i18nStore.t('card.selectCurrencyPrompt'))
 
 const activeIconIndex = ref(0)
@@ -103,16 +90,10 @@ onBeforeUnmount(() => {
           <p class="text-sm text-slate-500">{{ props.provider }}</p>
         </div>
       </div>
-      <span
-        class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
-        :class="statusMeta[props.status].classes"
-      >
-        {{ statusMeta[props.status].label }}
-      </span>
     </div>
 
     <div
-      v-if="props.currency !== 'KRW' && props.supportedCurrencies.length"
+      v-if="props.category !== 'KRW' && props.supportedCurrencies.length"
       class="flex flex-wrap gap-2 text-xs text-roadshop-primary"
     >
       <span
@@ -128,17 +109,12 @@ onBeforeUnmount(() => {
       {{ props.description }}
     </p>
 
-    <template v-if="props.status === 'available'">
-      <p
-        v-if="props.isSelected && props.supportedCurrencies.length > 1"
-        class="text-xs text-roadshop-accent"
-      >
-        {{ selectCurrencyPrompt }}
-      </p>
-    </template>
-    <template v-else>
-      <p class="text-xs text-slate-400">{{ preparingCopy }}</p>
-    </template>
+    <p
+      v-if="props.isSelected && props.supportedCurrencies.length > 1"
+      class="text-xs text-roadshop-accent"
+    >
+      {{ selectCurrencyPrompt }}
+    </p>
   </article>
 </template>
 

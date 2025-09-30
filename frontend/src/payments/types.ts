@@ -1,7 +1,5 @@
 export type DeepLinkProvider = 'toss' | 'kakao'
 
-export type PaymentMethodStatus = 'available' | 'coming-soon'
-
 export type PaymentIcon = {
   src: string
   alt: string
@@ -9,16 +7,10 @@ export type PaymentIcon = {
 
 export type PaymentMethod = {
   id: string
-  name: string
-  description: string
-  currency: 'KRW' | 'GLOBAL'
-  supportedCurrencies: string[]
-  provider: string
-  status: PaymentMethodStatus
+  category: 'KRW' | 'GLOBAL'
   url?: string
-  urlsByCurrency?: Record<string, string>
   icons?: PaymentIcon[]
   deepLinkProvider?: DeepLinkProvider
 }
 
-export type PaymentCurrency = PaymentMethod['currency']
+export type PaymentCategory = PaymentMethod['category']

@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { getPaymentLayoutConfig } from '@/payments/data/layout'
-import type { PaymentMethod } from '@/payments/types'
+import type { PaymentCategory, PaymentMethod } from '@/payments/types'
 import { useI18nStore } from '@/localization/store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 
@@ -10,11 +10,12 @@ export type LocalizedPaymentMethod = PaymentMethod & {
   name: string
   description: string
   provider: string
+  supportedCurrencies: string[]
   isSelected: boolean
 }
 
 export type LocalizedPaymentSection = {
-  currency: PaymentMethod['currency']
+  category: PaymentCategory
   methods: LocalizedPaymentMethod[]
 }
 
@@ -22,14 +23,14 @@ export const useLocalizedSections = () => {
   const paymentStore = usePaymentStore()
   const i18nStore = useI18nStore()
   const { locale } = storeToRefs(i18nStore)
-  const { methodsByCurrency, selectedMethodId } = storeToRefs(paymentStore)
+  const { methodsByCategory, selectedMethodId } = storeToRefs(paymentStore)
 
   const sections = computed<LocalizedPaymentSection[]>(() => {
     const layoutConfig = getPaymentLayoutConfig(locale.value)
 
-    return layoutConfig.sectionOrder.map((currency) => {
-      const methods = [...(methodsByCurrency.value[currency] ?? [])]
-      const orderedIds = layoutConfig.methodOrder?.[currency]
+    return layoutConfig.sectionOrder.map((category) => {
+      const methods = [...(methodsByCategory.value[category] ?? [])]
+      const orderedIds = layoutConfig.methodOrder?.[category]
 
       if (orderedIds) {
         const fallbackIndex = Number.MAX_SAFE_INTEGER
@@ -42,14 +43,16 @@ export const useLocalizedSections = () => {
       }
 
       return {
-        currency,
-        methods: methods.map((method) => ({
-          ...method,
-          name: i18nStore.t(`payment.${method.id}.name`, method.name),
-          description: i18nStore.t(`payment.${method.id}.description`, method.description),
-          provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
-          isSelected: method.id === selectedMethodId.value,
-        })),
+        category,
+        methods: methods
+          .map((method) => ({
+            ...method,
+            name: i18nStore.t(`payment.${method.id}.name`),
+            description: i18nStore.t(`payment.${method.id}.description`),
+            provider: i18nStore.t(`payment.${method.id}.provider`),
+            isSelected: method.id === selectedMethodId.value,
+          }))
+          .filter((method) => method.name),
       }
     })
   })

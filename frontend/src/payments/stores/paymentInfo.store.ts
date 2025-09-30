@@ -9,6 +9,7 @@ import {
   type TransferPaymentInfo,
   type TossPaymentInfo,
   type KakaoPaymentInfo,
+  type MethodUrlInfo,
 } from '@/payments/services/paymentInfoService'
 
 let pendingRequest: Promise<boolean> | null = null
@@ -50,9 +51,53 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     return fetchPaymentInfo()
   }
 
-  const transferInfo = computed<TransferPaymentInfo | null>(() => info.value?.transfer ?? null)
-  const tossInfo = computed<TossPaymentInfo | null>(() => info.value?.toss ?? null)
-  const kakaoInfo = computed<KakaoPaymentInfo | null>(() => info.value?.kakao ?? null)
+  const transferInfo = computed<TransferPaymentInfo | null>(() => {
+    const payload = info.value?.transfer
+    return payload ? (payload as TransferPaymentInfo) : null
+  })
+
+  const tossInfo = computed<TossPaymentInfo | null>(() => {
+    const payload = info.value?.toss
+    return payload ? (payload as TossPaymentInfo) : null
+  })
+
+  const kakaoInfo = computed<KakaoPaymentInfo | null>(() => {
+    const payload = info.value?.kakao
+    return payload ? (payload as KakaoPaymentInfo) : null
+  })
+
+  const getPayload = (methodId: string): unknown => info.value?.[methodId] ?? null
+
+  const isMethodUrlInfo = (payload: unknown): payload is MethodUrlInfo =>
+    typeof payload === 'object' &&
+    payload !== null &&
+    'url' in payload &&
+    typeof (payload as { url?: unknown }).url === 'object' &&
+    (payload as { url?: unknown }).url !== null
+
+  const hasMethodPayload = (methodId: string): boolean => getPayload(methodId) !== null
+
+  const getMethodInfo = (methodId: string): MethodUrlInfo | null => {
+    const payload = getPayload(methodId)
+    return isMethodUrlInfo(payload) ? payload : null
+  }
+
+  const getMethodUrl = (methodId: string, currency?: string | null): string | null => {
+    const methodInfo = getMethodInfo(methodId)
+
+    if (!methodInfo?.url) {
+      return null
+    }
+
+    const normalizedCurrency = currency?.toUpperCase() ?? null
+
+    if (normalizedCurrency && methodInfo.url[normalizedCurrency]) {
+      return methodInfo.url[normalizedCurrency]
+    }
+
+    const [firstUrl] = Object.values(methodInfo.url)
+    return firstUrl ?? null
+  }
 
   const getDeepLinkInfo = (provider: DeepLinkProvider): TossPaymentInfo | KakaoPaymentInfo | null =>
     resolveDeepLinkPayload(info.value, provider)
@@ -67,5 +112,8 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     ensureLoaded,
     fetchPaymentInfo,
     getDeepLinkInfo,
+    getMethodInfo,
+    getMethodUrl,
+    hasMethodPayload,
   }
 })
