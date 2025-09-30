@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import AppDialog from '@/shared/components/AppDialog.vue'
+import DialogCloseEnd from '@/shared/components/DialogCloseEnd.vue'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
@@ -85,12 +85,11 @@ const onLaunchTossInstructionDialog = () => {
       @select="onSelectMethod"
     />
 
-    <AppDialog
+    <DialogCloseEnd
       v-if="popupContent"
       :visible="isPopupVisible"
       :title="popupContent.title"
       :description="popupContent.message"
-      close-alignment="end"
       :close-label="popupContent.confirmLabel"
       @close="onPopupConfirm"
     />
