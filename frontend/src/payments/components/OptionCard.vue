@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
-import Card from 'primevue/card'
-import Chip from 'primevue/chip'
-import Message from 'primevue/message'
-import Tag from 'primevue/tag'
-
 import { useI18nStore } from '@/localization/store'
 import type { PaymentCurrency } from '@/payments/types'
 
@@ -34,11 +29,11 @@ const i18nStore = useI18nStore()
 const statusMeta = computed(() => ({
   available: {
     label: i18nStore.t('status.available'),
-    severity: 'success' as const,
+    classes: 'bg-green-100 text-green-700',
   },
   'coming-soon': {
     label: i18nStore.t('status.comingSoon'),
-    severity: 'warn' as const,
+    classes: 'bg-amber-100 text-amber-700',
   },
 }))
 
@@ -74,90 +69,77 @@ watch(
 onBeforeUnmount(() => {
   stopRotation()
 })
-
-const cardClasses = computed(
-  () =>
-    [
-      'group cursor-pointer border border-slate-200 bg-white/80 transition-all duration-150 rounded-2xl',
-      props.isSelected
-        ? 'ring-2 ring-roadshop-accent shadow-lg'
-        : 'shadow-sm hover:-translate-y-1 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-roadshop-accent',
-    ].join(' '),
-)
 </script>
 
 <template>
-  <Card
-    :pt="{ root: { class: cardClasses }, body: { class: 'flex flex-col gap-4 p-6 backdrop-blur' } }"
+  <article
+    class="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg focus:outline-none cursor-pointer"
+    :class="props.isSelected ? 'ring-2 ring-roadshop-accent' : ''"
     role="button"
     tabindex="0"
     @click="emit('select')"
     @keydown.enter.prevent="emit('select')"
     @keydown.space.prevent="emit('select')"
   >
-    <template #header>
-      <div class="flex items-start justify-between gap-4 px-6 pt-6">
-        <div class="flex flex-1 items-start gap-4">
-          <div
-            v-if="props.icons?.length"
-            class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-roadshop-highlight/60 shadow-inner"
-          >
-            <div class="icon-wrapper">
-              <img
-                v-for="(icon, index) in props.icons"
-                :key="icon.src"
-                :src="icon.src"
-                :alt="index === activeIconIndex ? icon.alt : ''"
-                :aria-hidden="index === activeIconIndex ? 'false' : 'true'"
-                class="icon-image"
-                :class="index === activeIconIndex ? 'icon-visible' : 'icon-hidden'"
-              >
-            </div>
-          </div>
-          <div class="flex-1">
-            <h3 class="text-xl font-semibold text-roadshop-primary">{{ props.name }}</h3>
-            <p class="text-sm text-slate-500">{{ props.provider }}</p>
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex flex-1 items-start gap-4">
+        <div v-if="props.icons?.length" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner">
+          <div class="icon-wrapper">
+            <img
+              v-for="(icon, index) in props.icons"
+              :key="icon.src"
+              :src="icon.src"
+              :alt="index === activeIconIndex ? icon.alt : ''"
+              :aria-hidden="index === activeIconIndex ? 'false' : 'true'"
+              class="icon-image"
+              :class="index === activeIconIndex ? 'icon-visible' : 'icon-hidden'"
+            >
           </div>
         </div>
-        <Tag :value="statusMeta[props.status].label" :severity="statusMeta[props.status].severity" rounded />
-      </div>
-    </template>
-
-    <template #content>
-      <div class="flex flex-col gap-4">
-        <div v-if="props.currency !== 'KRW' && props.supportedCurrencies.length" class="flex flex-wrap gap-2">
-          <Chip
-            v-for="currency in props.supportedCurrencies"
-            :key="currency"
-            :label="currency"
-            class="!bg-roadshop-highlight/70 !text-roadshop-primary !font-semibold"
-          />
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-roadshop-primary">
+            {{ props.name }}
+          </h3>
+          <p class="text-sm text-slate-500">{{ props.provider }}</p>
         </div>
-
-        <p class="text-sm leading-relaxed text-slate-600">
-          {{ props.description }}
-        </p>
-
-        <Message
-          v-if="props.status === 'available' && props.isSelected && props.supportedCurrencies.length > 1"
-          severity="info"
-          :closable="false"
-          class="!border-roadshop-accent/40 !bg-roadshop-highlight/60 !text-roadshop-accent"
-        >
-          {{ selectCurrencyPrompt }}
-        </Message>
-
-        <Message
-          v-else-if="props.status !== 'available'"
-          severity="warn"
-          :closable="false"
-          class="!text-amber-700"
-        >
-          {{ preparingCopy }}
-        </Message>
       </div>
+      <span
+        class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
+        :class="statusMeta[props.status].classes"
+      >
+        {{ statusMeta[props.status].label }}
+      </span>
+    </div>
+
+    <div
+      v-if="props.currency !== 'KRW' && props.supportedCurrencies.length"
+      class="flex flex-wrap gap-2 text-xs text-roadshop-primary"
+    >
+      <span
+        v-for="currency in props.supportedCurrencies"
+        :key="currency"
+        class="inline-flex items-center gap-1 rounded-full border border-roadshop-primary/20 bg-roadshop-highlight/60 px-3 py-1 font-semibold"
+      >
+        {{ currency }}
+      </span>
+    </div>
+
+    <p class="flex-1 text-sm leading-relaxed text-slate-600">
+      {{ props.description }}
+    </p>
+
+    <template v-if="props.status === 'available'">
+      <p
+        v-if="props.isSelected && props.supportedCurrencies.length > 1"
+        class="text-xs text-roadshop-accent"
+      >
+        {{ selectCurrencyPrompt }}
+      </p>
     </template>
-  </Card>
+    <template v-else>
+      <p class="text-xs text-slate-400">{{ preparingCopy }}</p>
+    </template>
+  </article>
 </template>
 
 <style scoped>
