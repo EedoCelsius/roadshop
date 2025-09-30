@@ -57,9 +57,6 @@ const onReopen = () => {
     @close="onClose"
   >
     <div class="flex flex-col gap-4">
-      <p v-if="props.copied" class="text-xs font-medium text-emerald-600">
-        {{ copiedLabel }}
-      </p>
       <AccountInfoCard
         v-if="props.info"
         :bank-name="props.info.bankName"
@@ -81,6 +78,9 @@ const onReopen = () => {
           {{ reopenLabel }}
         </button>
       </div>
+      <p v-if="props.copied" class="text-xs font-medium text-emerald-600">
+        {{ copiedLabel }}
+      </p>
     </div>
   </AppDialog>
 </template>
