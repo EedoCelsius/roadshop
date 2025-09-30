@@ -8,7 +8,6 @@ interface Props {
   name: string
   description: string
   supportedCurrencies: string[]
-  provider: string
   icons?: Array<{
     src: string
     alt: string
@@ -68,8 +67,8 @@ onBeforeUnmount(() => {
     @keydown.enter.prevent="emit('select')"
     @keydown.space.prevent="emit('select')"
   >
-    <div class="flex items-start justify-between gap-4">
-      <div class="flex flex-1 items-start gap-4">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex flex-1 items-center gap-4">
         <div v-if="props.icons?.length" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner">
           <div class="icon-wrapper">
             <img
@@ -83,11 +82,10 @@ onBeforeUnmount(() => {
             >
           </div>
         </div>
-        <div class="flex-1">
+        <div class="flex flex-1 items-center">
           <h3 class="text-xl font-semibold text-roadshop-primary">
             {{ props.name }}
           </h3>
-          <p class="text-sm text-slate-500">{{ props.provider }}</p>
         </div>
       </div>
     </div>

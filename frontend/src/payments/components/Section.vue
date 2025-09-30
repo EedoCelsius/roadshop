@@ -28,7 +28,6 @@ const emit = defineEmits<{
         :name="method.name"
         :description="method.description"
         :supported-currencies="method.supportedCurrencies"
-        :provider="method.provider"
         :icons="method.icons"
         :is-selected="method.isSelected"
         :category="method.category"
