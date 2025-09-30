@@ -83,7 +83,7 @@
   },
   "tossInstruction": {
     "title": "토스로 송금하기",
-    "description": "송금에 필요한 계좌 정보를 **자동으로 복사**해 두었어요.",
+    "description": "토스 송금에 필요한 계좌 정보를 복사해 두었어요.",
     "launchCta": "토스로 이동하기",
     "launching": "토스를 실행하는 중...",
     "reopen": "토스 다시열기"

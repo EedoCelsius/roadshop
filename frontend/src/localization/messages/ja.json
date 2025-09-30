@@ -83,7 +83,7 @@
   },
   "tossInstruction": {
     "title": "Tossで送金",
-    "description": "送金に必要な口座情報を**自動でコピー**しました。",
+    "description": "Toss送金に必要な口座情報をコピーしました。",
     "launchCta": "Tossへ移動",
     "launching": "Tossを起動しています...",
     "reopen": "Tossをもう一度開く"
