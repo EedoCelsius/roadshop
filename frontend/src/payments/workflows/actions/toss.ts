@@ -52,16 +52,9 @@ const launchTossDeepLink = async (
 const runTossWorkflow = async (context: PaymentActionContext) => {
   const deepLink = await ensureTossDeepLink(context)
 
-  context.setTossDeepLinkUrl(null)
-
   if (!deepLink) {
     return
   }
-
-  context.setTossDeepLinkUrl(deepLink)
-
-  await context.copyTossAccountInfo()
-  await context.showTossInstructionDialog(5)
 
   const isMobile = context.isMobileDevice()
 
@@ -69,11 +62,7 @@ const runTossWorkflow = async (context: PaymentActionContext) => {
     context.showDeepLinkPopup('not-mobile', 'toss')
   }
 
-  try {
-    await launchTossDeepLink(context, deepLink, { checkInstallation: isMobile })
-  } finally {
-    context.completeTossInstructionDialog()
-  }
+  await launchTossDeepLink(context, deepLink, { checkInstallation: isMobile })
 
   if (!isMobile) {
     context.openUrlInNewTab(deepLink)

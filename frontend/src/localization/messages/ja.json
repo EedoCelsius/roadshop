@@ -76,19 +76,6 @@
   "dialog": {
     "close": "閉じる"
   },
-  "accountInfo": {
-    "bank": "銀行",
-    "account": "口座番号",
-    "holder": "口座名義"
-  },
-  "tossInstruction": {
-    "title": "Tossで送金",
-    "description": "Toss送金に必要な口座情報をコピーしました。",
-    "copied": "口座情報をコピーしました",
-    "countdown": "{seconds}秒後にTossを起動します",
-    "launching": "Tossを起動しています...",
-    "reopen": "もう一度開く"
-  },
   "transferPopup": {
     "title": "口座振込のご案内",
     "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
