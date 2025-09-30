@@ -4,11 +4,12 @@ import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
 import type { TransferAccount } from '@/payments/services/paymentInfoService'
+import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import AppDialog from '@/shared/components/AppDialog.vue'
 import clipboardIcon from '@icons/ui/clipboard.svg?raw'
 import successIcon from '@icons/ui/success.svg?raw'
 
-import { useTransferCopyState } from './useTransferCopyState'
+import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
   visible: boolean
@@ -25,7 +26,8 @@ const emit = defineEmits<{
 const i18nStore = useI18nStore()
 const { locale } = storeToRefs(i18nStore)
 
-const { isCopied, handleCopyAll, handleCopyNumber, reset } = useTransferCopyState()
+const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
+  useTransferCopyState()
 
 const firmIcons = import.meta.glob('@icons/firms/*.svg', {
   eager: true,
@@ -92,35 +94,8 @@ const copyAccountNumber = async (account: TransferAccount) => {
   await handleCopyNumber(account.number)
 }
 
-const tooltipOptions = (accountNumber: string) => {
-  const copied = isCopied(accountNumber, 'number')
-
-  return {
-    value: copied ? copiedNumberLabel.value : copyNumberLabel.value,
-    class: copied ? 'transfer-tooltip transfer-tooltip--copied' : 'transfer-tooltip',
-    showDelay: 0,
-    hideDelay: 0,
-  }
-}
-
-const showTooltipOnFocus = (event: FocusEvent) => {
-  const target = event.currentTarget as HTMLElement | null
-
-  if (!target) {
-    return
-  }
-
-  target.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
-}
-
-const hideTooltipOnBlur = (event: FocusEvent) => {
-  const target = event.currentTarget as HTMLElement | null
-
-  if (!target) {
-    return
-  }
-
-  target.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
+const setHoverState = (accountNumber: string, action: CopyAction, value: boolean) => {
+  setHoveredControl(accountNumber, action, value)
 }
 
 const onClose = () => {
@@ -169,9 +144,10 @@ watch(
                   type="button"
                   class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary underline underline-offset-4"
                   @click="copyAccountNumber(account)"
-                  @focus="showTooltipOnFocus"
-                  @blur="hideTooltipOnBlur"
-                  v-tooltip.top="tooltipOptions(account.number)"
+                  @mouseenter="setHoverState(account.number, 'number', true)"
+                  @mouseleave="setHoverState(account.number, 'number', false)"
+                  @focus="setHoverState(account.number, 'number', true)"
+                  @blur="setHoverState(account.number, 'number', false)"
                 >
                   <span>{{ account.number }}</span>
                   <span
@@ -185,6 +161,11 @@ watch(
                     v-html="isCopied(account.number, 'number') ? successIcon : clipboardIcon"
                   ></span>
                 </button>
+                <TooltipBubble
+                  :visible="isTooltipVisible(account.number, 'number')"
+                  :message="isCopied(account.number, 'number') ? copiedNumberLabel : copyNumberLabel"
+                  :variant="isCopied(account.number, 'number') ? 'success' : 'default'"
+                />
               </div>
             </div>
           </div>
@@ -229,28 +210,5 @@ watch(
   width: 100%;
   height: 100%;
   display: block;
-}
-
-:global(.transfer-tooltip) {
-  border-radius: 9999px;
-  background-color: #1f2937;
-  color: #ffffff;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border: none;
-  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.4);
-}
-
-:global(.transfer-tooltip .p-tooltip-arrow) {
-  background-color: #1f2937;
-}
-
-:global(.transfer-tooltip--copied) {
-  background-color: #10b981;
-}
-
-:global(.transfer-tooltip--copied .p-tooltip-arrow) {
-  background-color: #10b981;
 }
 </style>
