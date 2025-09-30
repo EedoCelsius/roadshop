@@ -75,13 +75,13 @@ const bankMonogram = computed(() => {
       </div>
 
       <div class="grid w-full gap-3 sm:grid-cols-2">
-        <div class="rounded-2xl border border-roadshop-highlight/70 bg-roadshop-highlight/40 p-4 text-center sm:text-left">
+        <div class="p-4 text-center sm:text-left">
           <p class="text-[0.65rem] font-semibold uppercase tracking-wider text-slate-500">
             {{ accountLabel }}
           </p>
           <p class="mt-2 font-mono text-lg text-roadshop-primary">{{ props.accountNo }}</p>
         </div>
-        <div class="rounded-2xl border border-roadshop-highlight/40 bg-roadshop-highlight/20 p-4 text-center sm:text-left">
+        <div class="p-4 text-center sm:text-left">
           <p class="text-[0.65rem] font-semibold uppercase tracking-wider text-slate-500">
             {{ holderLabel }}
           </p>
