@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useI18nStore } from '@/localization/store'
 import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
-import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
+import AppDialog from '@/shared/components/AppDialog.vue'
 import clipboardIcon from '@icons/ui/clipboard.svg?raw'
 import successIcon from '@icons/ui/success.svg?raw'
 
@@ -113,10 +113,11 @@ watch(
 </script>
 
 <template>
-  <DialogCloseFull
+  <AppDialog
     :visible="props.visible"
     :title="title"
     :description="descriptionHtml"
+    size="lg"
     @close="onClose"
   >
     <ul class="space-y-4">
@@ -201,7 +202,7 @@ watch(
         </div>
       </li>
     </ul>
-  </DialogCloseFull>
+  </AppDialog>
 </template>
 
 <style scoped>
