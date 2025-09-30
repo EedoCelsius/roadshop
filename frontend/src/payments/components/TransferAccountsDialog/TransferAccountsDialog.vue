@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
 import type { TransferAccount } from '@/payments/services/paymentInfoService'
-import { copyText } from '@/shared/utils/clipboard'
+import TooltipBubble from '@/shared/components/TooltipBubble.vue'
+import AppDialog from '@/shared/components/AppDialog.vue'
+import clipboardIcon from '@icons/ui/clipboard.svg?raw'
+import successIcon from '@icons/ui/success.svg?raw'
 
-import Dialog from 'primevue/dialog'
-import Button from 'primevue/button'
-import InlineMessage from 'primevue/inlinemessage'
-import Avatar from 'primevue/avatar'
-import { useToast } from 'primevue/usetoast'
-
-type CopyAction = 'all' | 'number'
+import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
   visible: boolean
@@ -29,7 +26,8 @@ const emit = defineEmits<{
 const i18nStore = useI18nStore()
 const { locale } = storeToRefs(i18nStore)
 
-const toast = useToast()
+const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
+  useTransferCopyState()
 
 const firmIcons = import.meta.glob('@icons/firms/*.svg', {
   eager: true,
@@ -75,7 +73,7 @@ const descriptionHtml = computed(() =>
     .t('transferPopup.description')
     .replace(
       '{amountWithCurrency}',
-      `<strong class="font-semibold text-primary">${formattedAmountWithCurrency.value}</strong>`,
+      `<strong class="font-semibold text-roadshop-primary">${formattedAmountWithCurrency.value}</strong>`,
     ),
 )
 const copyAllLabel = computed(() => i18nStore.t('transferPopup.copyAll'))
@@ -84,59 +82,20 @@ const copiedNumberLabel = computed(() => i18nStore.t('transferPopup.copiedNumber
 const copyAllButtonLabel = computed(() => i18nStore.t('transferPopup.copyAllButton'))
 const copiedAllButtonLabel = computed(() => i18nStore.t('transferPopup.copiedAllButton'))
 
-const copyFeedback = ref<{ accountNumber: string; action: CopyAction } | null>(null)
-let resetTimer: number | null = null
-
-const showCopyFeedback = (accountNumber: string, action: CopyAction) => {
-  copyFeedback.value = { accountNumber, action }
-
-  if (typeof window !== 'undefined') {
-    if (resetTimer) {
-      window.clearTimeout(resetTimer)
-    }
-
-    resetTimer = window.setTimeout(() => {
-      copyFeedback.value = null
-      resetTimer = null
-    }, 2000)
-  }
-}
-
-const isCopied = (accountNumber: string, action: CopyAction) =>
-  copyFeedback.value?.accountNumber === accountNumber && copyFeedback.value?.action === action
-
 const getIconForBank = (bank: string) => firmIconMap[bank] ?? null
-
-const notifyCopy = (message: string) => {
-  toast.add({ severity: 'success', summary: message, life: 2000 })
-}
 
 const copyTransferDetails = async (account: TransferAccount) => {
   const amountText = `${formattedAmountForCopy.value}원`
   const payload = `${account.bank} ${account.number} ${account.holder} [${amountText}]`
-  const success = await copyText(payload)
-
-  if (success) {
-    showCopyFeedback(account.number, 'all')
-    notifyCopy(copiedAllButtonLabel.value)
-  }
+  await handleCopyAll(account.number, payload)
 }
 
 const copyAccountNumber = async (account: TransferAccount) => {
-  const success = await copyText(account.number)
-
-  if (success) {
-    showCopyFeedback(account.number, 'number')
-    notifyCopy(copiedNumberLabel.value)
-  }
+  await handleCopyNumber(account.number)
 }
 
-const resetFeedback = () => {
-  copyFeedback.value = null
-  if (typeof window !== 'undefined' && resetTimer) {
-    window.clearTimeout(resetTimer)
-    resetTimer = null
-  }
+const setHoverState = (accountNumber: string, action: CopyAction, value: boolean) => {
+  setHoveredControl(accountNumber, action, value)
 }
 
 const onClose = () => {
@@ -147,86 +106,109 @@ watch(
   () => props.visible,
   (visible) => {
     if (!visible) {
-      resetFeedback()
+      reset()
     }
   },
 )
-
-onBeforeUnmount(() => {
-  resetFeedback()
-})
 </script>
 
 <template>
-  <Dialog
+  <AppDialog
     :visible="props.visible"
-    modal
-    :draggable="false"
-    :breakpoints="{ '960px': '95vw' }"
-    style="width: 34rem"
-    @hide="onClose"
+    :title="title"
+    :description="descriptionHtml"
+    size="lg"
+    @close="onClose"
   >
-    <template #header>
-      <div class="flex flex-column gap-1">
-        <span class="font-semibold text-lg text-primary">{{ title }}</span>
-        <p class="m-0 text-sm text-color-secondary" v-html="descriptionHtml"></p>
-      </div>
-    </template>
-    <div class="flex flex-column gap-3">
-      <div
+    <ul class="space-y-4">
+      <li
         v-for="account in props.accounts"
         :key="account.number"
-        class="surface-card border-1 border-round-2xl shadow-1 overflow-hidden"
+        class="overflow-hidden rounded-2xl border border-slate-200 shadow-sm"
       >
-        <div class="flex flex-column sm:flex-row">
-          <div class="flex flex-1 align-items-start gap-3 surface-100 p-4">
-            <Avatar
+        <div class="flex w-full flex-col items-stretch sm:flex-row sm:items-stretch">
+          <div class="flex flex-1 items-start gap-3 bg-roadshop-highlight/40 p-4">
+            <div
               v-if="getIconForBank(account.bank)"
-              shape="circle"
-              size="large"
-              class="shadow-1"
-              :image="getIconForBank(account.bank)"
-              :label="account.bank"
-              :pt="{ image: { alt: account.bank } }"
-            />
-            <div class="flex flex-column gap-2">
-              <div class="flex align-items-center gap-2 flex-wrap">
-                <span class="text-base font-semibold text-primary">{{ account.bank }}</span>
-                <span class="text-xs text-color-secondary">{{ account.holder }}</span>
+              class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white shadow"
+            >
+              <img :src="getIconForBank(account.bank)" :alt="account.bank" class="h-7 w-7" />
+            </div>
+            <div>
+              <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <p class="text-base font-semibold text-roadshop-primary">{{ account.bank }}</p>
+                <p class="text-xs text-slate-500">{{ account.holder }}</p>
               </div>
-              <div class="flex flex-column gap-1">
-                <Button
-                  :label="account.number"
-                  :icon="isCopied(account.number, 'number') ? 'pi pi-check' : 'pi pi-copy'"
-                  icon-pos="right"
-                  link
-                  :aria-label="copyNumberLabel"
-                  class="p-0 font-mono text-sm"
+              <div class="relative mt-1">
+                <button
+                  type="button"
+                  class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary underline underline-offset-4"
                   @click="copyAccountNumber(account)"
-                />
-                <InlineMessage
-                  v-if="isCopied(account.number, 'number')"
-                  severity="success"
-                  class="w-full"
+                  @mouseenter="setHoverState(account.number, 'number', true)"
+                  @mouseleave="setHoverState(account.number, 'number', false)"
+                  @focus="setHoverState(account.number, 'number', true)"
+                  @blur="setHoverState(account.number, 'number', false)"
                 >
-                  {{ copiedNumberLabel }}
-                </InlineMessage>
+                  <span>{{ account.number }}</span>
+                  <span
+                    class="icon-wrapper flex h-3 w-3 items-center justify-center transition"
+                    :class="
+                      isCopied(account.number, 'number')
+                        ? 'text-emerald-500 group-hover:text-emerald-500'
+                        : 'text-roadshop-primary group-hover:text-roadshop-primary'
+                    "
+                    aria-hidden="true"
+                    v-html="isCopied(account.number, 'number') ? successIcon : clipboardIcon"
+                  ></span>
+                </button>
+                <TooltipBubble
+                  :visible="isTooltipVisible(account.number, 'number')"
+                  :message="isCopied(account.number, 'number') ? copiedNumberLabel : copyNumberLabel"
+                  :variant="isCopied(account.number, 'number') ? 'success' : 'default'"
+                />
               </div>
             </div>
           </div>
-          <div class="flex align-items-center justify-content-center surface-200 sm:w-10rem">
-            <Button
-              :label="isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel"
-              :icon="isCopied(account.number, 'all') ? 'pi pi-check' : 'pi pi-clipboard'"
-              :severity="isCopied(account.number, 'all') ? 'success' : 'primary'"
-              icon-pos="right"
-              class="w-full sm:w-auto"
+          <div class="relative flex sm:w-auto">
+            <button
+              type="button"
+              :class="[
+                'flex h-full min-h-[45px] w-full items-center justify-center gap-2 px-5 text-sm font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-w-[64px]',
+                isCopied(account.number, 'all')
+                  ? 'bg-emerald-500 hover:bg-emerald-500 focus-visible:outline-emerald-500'
+                  : 'bg-roadshop-primary hover:bg-roadshop-primary/90 focus-visible:outline-roadshop-primary',
+              ]"
               :aria-label="copyAllLabel"
               @click="copyTransferDetails(account)"
-            />
+            >
+              <span class="flex items-center gap-2 sm:hidden">
+                <span class="text-sm font-semibold text-white">
+                  {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
+                </span>
+                <span
+                  v-if="isCopied(account.number, 'all')"
+                  class="icon-wrapper h-4 w-4 text-white"
+                  aria-hidden="true"
+                  v-html="successIcon"
+                ></span>
+              </span>
+              <span
+                class="icon-wrapper hidden h-4 w-4 items-center justify-center text-white sm:flex"
+                aria-hidden="true"
+                v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
+              ></span>
+            </button>
           </div>
         </div>
-      </div>
-    </div>
-  </Dialog>
+      </li>
+    </ul>
+  </AppDialog>
 </template>
+
+<style scoped>
+.icon-wrapper :deep(svg) {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+</style>

@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 
 import { useI18nStore } from '@/localization/store'
-
-import Dialog from 'primevue/dialog'
-import Listbox from 'primevue/listbox'
+import AppDialog from '@/shared/components/AppDialog.vue'
 
 interface Props {
   visible: boolean
@@ -26,21 +24,8 @@ const description = computed(() =>
   i18nStore.t('currencySelector.description').replace('{method}', props.methodName),
 )
 
-const selectedCurrency = ref<string | null>(null)
-
-watch(
-  () => props.visible,
-  (visible) => {
-    if (!visible) {
-      selectedCurrency.value = null
-    }
-  },
-)
-
-const onSelectCurrency = (currency: string | null) => {
-  if (currency) {
-    emit('select', currency)
-  }
+const onSelectCurrency = (currency: string) => {
+  emit('select', currency)
 }
 
 const onClose = () => {
@@ -49,26 +34,23 @@ const onClose = () => {
 </script>
 
 <template>
-  <Dialog
+  <AppDialog
     :visible="props.visible"
-    modal
-    :draggable="false"
-    :breakpoints="{ '960px': '90vw' }"
-    style="width: 26rem"
-    @hide="onClose"
+    :title="title"
+    :description="description"
+    @close="onClose"
   >
-    <template #header>
-      <div class="flex flex-column gap-1">
-        <span class="font-semibold text-lg text-primary">{{ title }}</span>
-        <small class="text-sm text-color-secondary">{{ description }}</small>
-      </div>
-    </template>
-    <Listbox
-      v-model="selectedCurrency"
-      :options="props.currencies"
-      class="w-full"
-      :pt="{ list: { class: 'max-h-20rem' } }"
-      @update:modelValue="onSelectCurrency"
-    />
-  </Dialog>
+    <div class="grid gap-3">
+      <button
+        v-for="currency in props.currencies"
+        :key="currency"
+        type="button"
+        class="flex items-center justify-between rounded-xl border border-roadshop-primary/20 px-4 py-3 text-roadshop-primary transition hover:border-roadshop-accent hover:bg-roadshop-highlight/60"
+        @click="onSelectCurrency(currency)"
+      >
+        <span class="text-sm font-semibold">{{ currency }}</span>
+        <span aria-hidden="true" class="text-roadshop-accent">→</span>
+      </button>
+    </div>
+  </AppDialog>
 </template>
