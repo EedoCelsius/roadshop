@@ -32,10 +32,15 @@ export type MethodUrlInfo = {
 }
 
 export type PaymentInfo = {
-  transfer: TransferPaymentInfo
-  toss: TossPaymentInfo
-  kakao: KakaoPaymentInfo
-  methods?: Record<string, MethodUrlInfo>
+  transfer?: TransferPaymentInfo
+  toss?: TossPaymentInfo
+  kakao?: KakaoPaymentInfo
+  [methodId: string]:
+    | TransferPaymentInfo
+    | TossPaymentInfo
+    | KakaoPaymentInfo
+    | MethodUrlInfo
+    | undefined
 }
 
 export const loadPaymentInfo = async (): Promise<PaymentInfo> => {

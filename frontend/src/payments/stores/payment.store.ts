@@ -14,6 +14,10 @@ export const usePaymentStore = defineStore('payment', () => {
   void paymentInfoStore.ensureLoaded()
 
   const resolveSupportedCurrencies = (method: PaymentMethod): string[] => {
+    if (!paymentInfoStore.hasMethodPayload(method.id)) {
+      return []
+    }
+
     if (method.category !== 'GLOBAL') {
       return [method.category]
     }
@@ -27,7 +31,7 @@ export const usePaymentStore = defineStore('payment', () => {
       .map((method) => {
         const supportedCurrencies = resolveSupportedCurrencies(method)
 
-        if (method.category === 'GLOBAL' && supportedCurrencies.length === 0) {
+        if (supportedCurrencies.length === 0) {
           return null
         }
 
