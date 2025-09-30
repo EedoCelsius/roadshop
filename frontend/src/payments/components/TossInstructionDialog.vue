@@ -53,7 +53,7 @@ const onReopen = () => {
     :visible="props.visible"
     :title="title"
     :description="description"
-    close-alignment="end"
+    close-alignment="full"
     @close="onClose"
   >
     <div class="flex flex-col gap-4">
@@ -67,7 +67,7 @@ const onReopen = () => {
         :account-holder="props.info.accountHolder"
       />
       <div
-        class="flex items-center justify-center rounded-2xl bg-roadshop-highlight/70 px-4 py-3"
+        class="flex items-center justify-center px-4 py-3"
       >
         <p v-if="isCountingDown" class="text-sm font-semibold text-roadshop-primary">
           {{ countdownLabel }}
