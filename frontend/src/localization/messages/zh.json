@@ -41,9 +41,6 @@
   "footer": {
     "message": "© {year} Stitchmon 路店。官方在线支付中心。"
   },
-  "language": {
-    "label": "语言"
-  },
   "loading": {
     "deepLink": "正在打开支付应用…"
   },

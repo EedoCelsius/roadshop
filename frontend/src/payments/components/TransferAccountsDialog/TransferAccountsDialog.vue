@@ -6,9 +6,6 @@ import { useI18nStore } from '@/localization/store'
 import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
-import clipboardIcon from '@icons/ui/clipboard.svg?raw'
-import successIcon from '@icons/ui/success.svg?raw'
-
 import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
@@ -149,16 +146,15 @@ watch(
                   @blur="setHoverState(account.number, 'number', false)"
                 >
                   <span>{{ account.number }}</span>
-                  <span
-                    class="icon-wrapper flex h-3 w-3 items-center justify-center transition"
+                  <i
+                    aria-hidden="true"
+                    class="pi text-xs transition"
                     :class="
                       isCopied(account.number, 'number')
-                        ? 'text-emerald-500 group-hover:text-emerald-500'
-                        : 'text-roadshop-primary group-hover:text-roadshop-primary'
+                        ? ['pi-check-circle', 'text-emerald-500', 'group-hover:text-emerald-500']
+                        : ['pi-copy', 'text-roadshop-primary', 'group-hover:text-roadshop-primary']
                     "
-                    aria-hidden="true"
-                    v-html="isCopied(account.number, 'number') ? successIcon : clipboardIcon"
-                  ></span>
+                  ></i>
                 </button>
                 <TooltipBubble
                   :visible="isTooltipVisible(account.number, 'number')"
@@ -184,18 +180,17 @@ watch(
                 <span class="text-sm font-semibold text-white">
                   {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
                 </span>
-                <span
+                <i
                   v-if="isCopied(account.number, 'all')"
-                  class="icon-wrapper h-4 w-4 text-white"
                   aria-hidden="true"
-                  v-html="successIcon"
-                ></span>
+                  class="pi pi-check-circle text-sm text-white"
+                ></i>
               </span>
-              <span
-                class="icon-wrapper hidden h-4 w-4 items-center justify-center text-white sm:flex"
+              <i
                 aria-hidden="true"
-                v-html="isCopied(account.number, 'all') ? successIcon : clipboardIcon"
-              ></span>
+                class="pi hidden text-base text-white sm:flex"
+                :class="isCopied(account.number, 'all') ? 'pi-check-circle' : 'pi-copy'"
+              ></i>
             </button>
           </div>
         </div>
@@ -205,9 +200,7 @@ watch(
 </template>
 
 <style scoped>
-.icon-wrapper :deep(svg) {
-  width: 100%;
-  height: 100%;
-  display: block;
+.pi {
+  line-height: 1;
 }
 </style>

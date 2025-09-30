@@ -41,9 +41,6 @@
   "footer": {
     "message": "© {year} 스티치몬 로드샵. 공식 온라인 결제 센터입니다."
   },
-  "language": {
-    "label": "언어"
-  },
   "loading": {
     "deepLink": "결제 앱을 여는 중이에요…"
   },

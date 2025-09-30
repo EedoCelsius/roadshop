@@ -41,9 +41,6 @@
   "footer": {
     "message": "© {year} Stitchmon Roadshop. The official online payment center for your orders."
   },
-  "language": {
-    "label": "Language"
-  },
   "loading": {
     "deepLink": "Opening the app so you can continue your payment…"
   },

@@ -30,8 +30,6 @@ const highlights = computed(() => [
   },
 ])
 
-const languageLabel = computed(() => i18nStore.t('language.label'))
-
 const formatLocaleLabel = (option: { label: string; nativeLabel: string }) =>
   option.label === option.nativeLabel ? option.label : `${option.label} · ${option.nativeLabel}`
 
@@ -61,7 +59,7 @@ const onLocaleChange = async (event: Event) => {
           <label
             class="relative flex cursor-pointer items-center gap-3 rounded-full border border-roadshop-primary/10 bg-white/70 px-4 py-2 text-xs font-semibold text-roadshop-primary shadow-sm backdrop-blur"
           >
-            <span class="tracking-[0.2em] text-roadshop-accent">{{ languageLabel }}</span>
+            <i aria-hidden="true" class="pi pi-globe text-base text-roadshop-accent"></i>
             <select
               class="min-w-[8rem] appearance-none cursor-pointer bg-transparent pr-8 text-sm font-medium text-roadshop-primary focus:outline-none"
               :value="locale"

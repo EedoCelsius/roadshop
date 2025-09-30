@@ -41,9 +41,6 @@
   "footer": {
     "message": "© {year} スティッチモン ロードショップ。公式オンライン決済センターです。"
   },
-  "language": {
-    "label": "言語"
-  },
   "loading": {
     "deepLink": "お支払いアプリを開いています…"
   },
