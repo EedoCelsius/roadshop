@@ -138,20 +138,20 @@ watch(
               <div class="relative mt-1">
                 <button
                   type="button"
-                  class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary underline underline-offset-4"
+                  class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary"
                   @click="copyAccountNumber(account)"
                   @mouseenter="setHoverState(account.number, 'number', true)"
                   @mouseleave="setHoverState(account.number, 'number', false)"
                   @focus="setHoverState(account.number, 'number', true)"
                   @blur="setHoverState(account.number, 'number', false)"
                 >
-                  <span>{{ account.number }}</span>
+                  <span class="underline underline-offset-4">{{ account.number }}</span>
                   <i
                     aria-hidden="true"
                     class="pi text-xs transition"
                     :class="
                       isCopied(account.number, 'number')
-                        ? ['pi-check-circle', 'text-emerald-500', 'group-hover:text-emerald-500']
+                        ? ['pi-check', 'text-emerald-500', 'group-hover:text-emerald-500']
                         : ['pi-copy', 'text-roadshop-primary', 'group-hover:text-roadshop-primary']
                     "
                   ></i>
@@ -177,19 +177,19 @@ watch(
               @click="copyTransferDetails(account)"
             >
               <span class="flex items-center gap-2 sm:hidden">
-                <span class="text-sm font-semibold text-white">
+                <span class="font-semibold text-white">
                   {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
                 </span>
                 <i
                   v-if="isCopied(account.number, 'all')"
                   aria-hidden="true"
-                  class="pi pi-check-circle text-sm text-white"
+                  class="pi pi-check-circle text-white"
                 ></i>
               </span>
               <i
                 aria-hidden="true"
-                class="pi hidden text-base text-white sm:flex"
-                :class="isCopied(account.number, 'all') ? 'pi-check-circle' : 'pi-copy'"
+                class="pi hidden text-lg text-white sm:flex"
+                :class="isCopied(account.number, 'all') ? 'pi-check' : 'pi-clipboard'"
               ></i>
             </button>
           </div>
