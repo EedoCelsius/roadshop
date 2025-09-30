@@ -75,7 +75,7 @@ const onReopen = () => {
         <button
           v-else
           type="button"
-          class="text-sm font-semibold text-roadshop-primary underline underline-offset-2"
+          class="font-semibold text-roadshop-primary underline underline-offset-2"
           @click="onReopen"
         >
           {{ reopenLabel }}
