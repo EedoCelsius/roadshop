@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 body {
-  @apply bg-roadshop-highlight text-roadshop-primary min-h-screen font-sans antialiased;
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--p-font-family, 'Inter', sans-serif);
+  background: var(--p-surface-ground);
+  color: var(--p-text-color);
+  -webkit-font-smoothing: antialiased;
 }

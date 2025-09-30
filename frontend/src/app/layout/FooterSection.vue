@@ -10,7 +10,7 @@ const footerCopy = computed(() => i18nStore.t('footer.message').replace('{year}'
 </script>
 
 <template>
-  <footer class="border-t border-slate-200 bg-white/90 py-6 text-center text-xs text-slate-500">
+  <footer class="surface-section border-top-1 border-200 py-5 text-center text-sm text-color-secondary">
     {{ footerCopy }}
   </footer>
 </template>

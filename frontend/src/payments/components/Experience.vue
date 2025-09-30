@@ -58,7 +58,7 @@ const onCloseTransferDialog = () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-16">
+  <div class="mx-auto flex w-full max-w-6xl flex-column gap-8 px-4 py-6 md:px-6 md:py-8">
     <Section
       v-for="(entry, index) in localizedSections"
       :key="`${entry.section.currency}-${index}`"
