@@ -62,23 +62,23 @@ const onLaunchNow = () => {
         <button
           v-if="isCountingDown"
           type="button"
-          class="w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
+          class="w-full rounded-xl border border-blue-500 bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
           @click="onLaunchNow"
         >
           <span class="flex items-center justify-center gap-2">
+            <span>{{ launchLabel }}</span>
             <span class="relative inline-flex h-6 w-6 items-center justify-center">
               <span class="absolute inset-0 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
               <span class="text-xs font-semibold leading-none text-white">
                 {{ props.countdown }}
               </span>
             </span>
-            <span>{{ launchLabel }}</span>
           </span>
         </button>
         <button
           v-else
           type="button"
-          class="w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
+          class="w-full rounded-xl border border-blue-500 bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
           @click="onReopen"
         >
           {{ reopenLabel }}
