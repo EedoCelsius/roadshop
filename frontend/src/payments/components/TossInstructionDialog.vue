@@ -62,7 +62,7 @@ const onLaunchNow = () => {
         <button
           v-if="isCountingDown"
           type="button"
-          class="w-full rounded-xl border border-blue-500 bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
+          class="w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/90"
           @click="onLaunchNow"
         >
           <span class="flex items-center justify-center gap-2">
