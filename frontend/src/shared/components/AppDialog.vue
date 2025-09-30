@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { useI18nStore } from '@/localization/store'
 
 type DialogSize = 'md' | 'lg'
+type CloseAlignment = 'full' | 'end'
 
 const props = withDefaults(
   defineProps<{
@@ -11,9 +12,12 @@ const props = withDefaults(
     title: string
     description?: string
     size?: DialogSize
+    closeAlignment?: CloseAlignment
+    closeLabel?: string
   }>(),
   {
     size: 'md' as DialogSize,
+    closeAlignment: 'full' as CloseAlignment,
   },
 )
 
@@ -23,7 +27,16 @@ const emit = defineEmits<{
 
 const i18nStore = useI18nStore()
 
-const closeLabel = computed(() => i18nStore.t('dialog.close'))
+const closeLabel = computed(() => props.closeLabel ?? i18nStore.t('dialog.close'))
+
+const footerClass = computed(() =>
+  props.closeAlignment === 'end' ? 'mt-6 flex justify-end' : 'mt-6',
+)
+
+const closeButtonClass = computed(() => [
+  'rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100',
+  { 'w-full': props.closeAlignment === 'full' },
+])
 
 const containerWidthClass = computed(() => {
   switch (props.size) {
@@ -61,12 +74,8 @@ const onClose = () => {
           <div class="mt-6">
             <slot />
           </div>
-          <footer class="mt-6">
-            <button
-              type="button"
-              class="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100"
-              @click="onClose"
-            >
+          <footer :class="footerClass">
+            <button type="button" :class="closeButtonClass" @click="onClose">
               {{ closeLabel }}
             </button>
           </footer>

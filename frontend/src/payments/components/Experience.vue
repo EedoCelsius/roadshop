@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import AppPopup from '@/shared/components/AppPopup.vue'
+import AlertDialog from '@/shared/components/AlertDialog.vue'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
@@ -76,7 +76,7 @@ const onCloseTransferDialog = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <AppPopup
+    <AlertDialog
       v-if="popupContent"
       :visible="isPopupVisible"
       :title="popupContent.title"
