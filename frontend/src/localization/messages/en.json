@@ -84,7 +84,7 @@
   "tossInstruction": {
     "title": "Send with Toss",
     "description": "We've copied the account details you need for Toss.",
-    "countdown": "Opening Toss in {seconds}s",
+    "launchCta": "Go to Toss",
     "launching": "Opening Toss...",
     "reopen": "Reopen Toss"
   },
