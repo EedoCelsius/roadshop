@@ -121,7 +121,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     }
 
     const amountText = new Intl.NumberFormat('ko-KR').format(tossInfo.value.amount.krw)
-    const payload = `${tossInfo.value.bankName} ${tossInfo.value.accountHolder} ${tossInfo.value.accountNo} ${amountText}원`
+    const payload = `${tossInfo.value.bankName} ${tossInfo.value.accountNo} ${tossInfo.value.accountHolder} [${amountText}원]`
     const success = await copyText(payload)
 
     hasCopiedTossAccountInfo.value = success
