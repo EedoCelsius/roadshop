@@ -83,7 +83,7 @@
   },
   "tossInstruction": {
     "title": "Send with Toss",
-    "description": "We've copied the account details you need for Toss.",
+    "description": "We've <strong>automatically copied</strong> the account details you need for your transfer.",
     "launchCta": "Go to Toss",
     "launching": "Opening Toss...",
     "reopen": "Reopen Toss"
