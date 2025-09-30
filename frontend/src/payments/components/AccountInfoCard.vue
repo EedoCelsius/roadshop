@@ -63,9 +63,21 @@ const bankMonogram = computed(() => {
           <p class="text-2xl font-semibold text-roadshop-primary">
             {{ props.bankName }}<span class="ml-2 text-lg font-medium text-roadshop-primary/80">({{ props.accountHolder }})</span>
           </p>
-          <p class="mt-3 font-mono text-lg tracking-wider text-slate-700">{{ props.accountNo }}</p>
+          <p class="account-number mt-3 font-mono text-lg tracking-wider text-slate-700">{{ props.accountNo }}</p>
         </div>
       </div>
     </div>
   </article>
 </template>
+
+<style scoped>
+.account-number {
+  text-decoration: none;
+}
+
+.account-number :deep(a),
+.account-number :deep([x-apple-data-detectors]) {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+</style>
