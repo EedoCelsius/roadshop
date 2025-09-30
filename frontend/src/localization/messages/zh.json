@@ -83,7 +83,7 @@
   },
   "tossInstruction": {
     "title": "使用 Toss 转账",
-    "description": "已为 Toss 转账复制所需的账户信息。",
+    "description": "已将转账所需的账户信息<strong>自动复制</strong>好了。",
     "launchCta": "前往 Toss",
     "launching": "正在打开 Toss...",
     "reopen": "重新打开 Toss"
