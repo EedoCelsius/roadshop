@@ -9,6 +9,7 @@ import {
   type TransferPaymentInfo,
   type TossPaymentInfo,
   type KakaoPaymentInfo,
+  type MethodUrlInfo,
 } from '@/payments/services/paymentInfoService'
 
 let pendingRequest: Promise<boolean> | null = null
@@ -54,6 +55,26 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
   const tossInfo = computed<TossPaymentInfo | null>(() => info.value?.toss ?? null)
   const kakaoInfo = computed<KakaoPaymentInfo | null>(() => info.value?.kakao ?? null)
 
+  const getMethodInfo = (methodId: string): MethodUrlInfo | null =>
+    info.value?.methods?.[methodId] ?? null
+
+  const getMethodUrl = (methodId: string, currency?: string | null): string | null => {
+    const methodInfo = getMethodInfo(methodId)
+
+    if (!methodInfo?.url) {
+      return null
+    }
+
+    const normalizedCurrency = currency?.toUpperCase() ?? null
+
+    if (normalizedCurrency && methodInfo.url[normalizedCurrency]) {
+      return methodInfo.url[normalizedCurrency]
+    }
+
+    const [firstUrl] = Object.values(methodInfo.url)
+    return firstUrl ?? null
+  }
+
   const getDeepLinkInfo = (provider: DeepLinkProvider): TossPaymentInfo | KakaoPaymentInfo | null =>
     resolveDeepLinkPayload(info.value, provider)
 
@@ -67,5 +88,7 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     ensureLoaded,
     fetchPaymentInfo,
     getDeepLinkInfo,
+    getMethodInfo,
+    getMethodUrl,
   }
 })

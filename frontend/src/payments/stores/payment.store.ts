@@ -3,44 +3,80 @@ import { defineStore } from 'pinia'
 
 import { paymentMethods } from '@/payments/data/method'
 import type { PaymentCurrency, PaymentMethod } from '@/payments/types'
+import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
+
+type PaymentMethodWithCurrencies = PaymentMethod & {
+  supportedCurrencies: string[]
+}
 
 export const usePaymentStore = defineStore('payment', () => {
+  const paymentInfoStore = usePaymentInfoStore()
+  void paymentInfoStore.ensureLoaded()
+
   const methods = ref<PaymentMethod[]>([...paymentMethods])
 
-  const methodsByCurrency = computed(() => {
-    const grouped: Record<PaymentCurrency, PaymentMethod[]> = {
+  const resolveSupportedCurrencies = (method: PaymentMethod): string[] => {
+    if (method.currency !== 'GLOBAL') {
+      return [method.currency]
+    }
+
+    const methodInfo = paymentInfoStore.getMethodInfo(method.id)
+
+    if (!methodInfo?.url) {
+      return []
+    }
+
+    return Object.keys(methodInfo.url)
+  }
+
+  const methodsByCurrency = computed<Record<PaymentCurrency, PaymentMethodWithCurrencies[]>>(() => {
+    const grouped: Record<PaymentCurrency, PaymentMethodWithCurrencies[]> = {
       KRW: [],
       GLOBAL: [],
     }
 
     methods.value.forEach((method) => {
-      grouped[method.currency].push(method)
+      const supportedCurrencies = resolveSupportedCurrencies(method)
+
+      if (method.currency === 'GLOBAL' && supportedCurrencies.length === 0) {
+        return
+      }
+
+      grouped[method.currency].push({
+        ...method,
+        supportedCurrencies,
+      })
     })
 
     return grouped
   })
 
-  const getUrlForMethod = (methodId: string, currency?: string | null): string | null => {
-    const method = methods.value.find((item) => item.id === methodId)
+  const selectedMethodId = ref<string | null>(null)
+  const selectedCurrency = ref<string | null>(null)
+  const isCurrencySelectorOpen = ref(false)
+
+  const selectedMethod = computed<PaymentMethodWithCurrencies | null>(() => {
+    if (!selectedMethodId.value) {
+      return null
+    }
+
+    const method = methods.value.find((item) => item.id === selectedMethodId.value)
 
     if (!method) {
       return null
     }
 
-    if (currency && method.urlsByCurrency?.[currency]) {
-      return method.urlsByCurrency[currency]
+    const supportedCurrencies = resolveSupportedCurrencies(method)
+
+    if (method.currency === 'GLOBAL' && supportedCurrencies.length === 0) {
+      return null
     }
 
-    return method.url ?? null
-  }
-
-  const selectedMethodId = ref<string | null>(null)
-  const selectedCurrency = ref<string | null>(null)
-  const isCurrencySelectorOpen = ref(false)
-
-  const selectedMethod = computed(() =>
-    selectedMethodId.value ? methods.value.find((method) => method.id === selectedMethodId.value) ?? null : null,
-  )
+    return {
+      ...method,
+      supportedCurrencies,
+    }
+  })
 
   const selectMethod = (methodId: string): void => {
     const method = methods.value.find((item) => item.id === methodId)
@@ -51,8 +87,10 @@ export const usePaymentStore = defineStore('payment', () => {
 
     selectedMethodId.value = methodId
 
-    if (method.supportedCurrencies.length <= 1) {
-      const currency = method.supportedCurrencies[0] ?? null
+    const supportedCurrencies = resolveSupportedCurrencies(method)
+
+    if (supportedCurrencies.length <= 1) {
+      const currency = supportedCurrencies[0] ?? null
       selectedCurrency.value = currency
       isCurrencySelectorOpen.value = false
       return
@@ -80,6 +118,12 @@ export const usePaymentStore = defineStore('payment', () => {
   const getMethodById = (methodId: string): PaymentMethod | null =>
     methods.value.find((method) => method.id === methodId) ?? null
 
+  const getSupportedCurrencies = (methodId: string): string[] => {
+    const method = methods.value.find((item) => item.id === methodId)
+
+    return method ? resolveSupportedCurrencies(method) : []
+  }
+
   return {
     methods,
     methodsByCurrency,
@@ -90,7 +134,7 @@ export const usePaymentStore = defineStore('payment', () => {
     selectMethod,
     chooseCurrency,
     closeCurrencySelector,
-    getUrlForMethod,
     getMethodById,
+    getSupportedCurrencies,
   }
 })

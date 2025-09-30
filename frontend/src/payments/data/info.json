@@ -29,5 +29,20 @@
         "holder": "강일준"
       }
     ]
+  },
+  "methods": {
+    "alipay": {
+      "url": {
+        "CNY": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01"
+      }
+    },
+    "card": {
+      "url": {
+        "USD": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01",
+        "EUR": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01",
+        "JPY": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01",
+        "KRW": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01"
+      }
+    }
   }
 }

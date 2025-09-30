@@ -10,6 +10,7 @@ export type LocalizedPaymentMethod = PaymentMethod & {
   name: string
   description: string
   provider: string
+  supportedCurrencies: string[]
   isSelected: boolean
 }
 
@@ -43,13 +44,15 @@ export const useLocalizedSections = () => {
 
       return {
         currency,
-        methods: methods.map((method) => ({
-          ...method,
-          name: i18nStore.t(`payment.${method.id}.name`, method.name),
-          description: i18nStore.t(`payment.${method.id}.description`, method.description),
-          provider: i18nStore.t(`payment.${method.id}.provider`, method.provider),
-          isSelected: method.id === selectedMethodId.value,
-        })),
+        methods: methods
+          .map((method) => ({
+            ...method,
+            name: i18nStore.t(`payment.${method.id}.name`),
+            description: i18nStore.t(`payment.${method.id}.description`),
+            provider: i18nStore.t(`payment.${method.id}.provider`),
+            isSelected: method.id === selectedMethodId.value,
+          }))
+          .filter((method) => method.name),
       }
     })
   })

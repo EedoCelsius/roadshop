@@ -27,7 +27,7 @@ const buildWorkflowContext = (
 ): PaymentActionContext => ({
   openTransferDialog,
   openMethodUrl: (method: PaymentMethod, currency: string | null) => {
-    const url = paymentStore.getUrlForMethod(method.id, currency ?? undefined)
+    const url = paymentInfoStore.getMethodUrl(method.id, currency ?? undefined)
     openUrlInNewTab(url)
   },
   ensurePaymentInfoLoaded: paymentInfoStore.ensureLoaded,
@@ -264,7 +264,11 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
     paymentStore.selectMethod(methodId)
 
-    if (!method || method.status !== 'available') {
+    if (!method) {
+      return
+    }
+
+    if (!selectedMethod.value) {
       return
     }
 
@@ -285,7 +289,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
     paymentStore.chooseCurrency(currency)
 
-    if (method.status !== 'available') {
+    if (!selectedMethod.value) {
       return
     }
 

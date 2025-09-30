@@ -27,10 +27,15 @@ export type KakaoPaymentInfo = {
   personalCode: string
 }
 
+export type MethodUrlInfo = {
+  url: Record<string, string>
+}
+
 export type PaymentInfo = {
   transfer: TransferPaymentInfo
   toss: TossPaymentInfo
   kakao: KakaoPaymentInfo
+  methods?: Record<string, MethodUrlInfo>
 }
 
 export const loadPaymentInfo = async (): Promise<PaymentInfo> => {

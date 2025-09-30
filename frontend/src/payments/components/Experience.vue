@@ -40,6 +40,12 @@ const localizedSections = computed(() =>
   })),
 )
 
+const selectedMethodName = computed(() =>
+  selectedMethod.value ? i18nStore.t(`payment.${selectedMethod.value.id}.name`) : '',
+)
+
+const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
+
 const onSelectMethod = (methodId: string) => {
   void paymentInteractionStore.handleMethodSelection(methodId)
 }
@@ -95,8 +101,8 @@ const onLaunchTossInstructionDialog = () => {
     <CurrencySelectorDialog
       v-if="selectedMethod"
       :visible="isCurrencySelectorOpen"
-      :method-name="selectedMethod.name"
-      :currencies="selectedMethod.supportedCurrencies"
+      :method-name="selectedMethodName"
+      :currencies="selectedMethodCurrencies"
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
