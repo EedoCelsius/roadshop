@@ -183,7 +183,7 @@ watch(
                 <i
                   v-if="isCopied(account.number, 'all')"
                   aria-hidden="true"
-                  class="pi pi-check-circle text-white"
+                  class="pi pi-check text-white"
                 ></i>
               </span>
               <i
