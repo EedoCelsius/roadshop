@@ -96,34 +96,27 @@
   },
   "payment": {
     "transfer": {
-      "name": "계좌이체",
-      "description": "원화 금액은 계좌이체로 보내 결제를 마무리해 주세요."
+      "name": "계좌이체"
     },
     "kakao": {
       "name": "카카오송금",
-      "description": "카카오톡으로 QR을 스캔해 빠르게 결제하세요.",
       "cta": "카카오송금 열기"
     },
     "toss": {
       "name": "토스송금",
-      "description": "토스송금으로 바로 결제하고 즉시 확인하세요.",
       "cta": "토스송금 열기"
     },
     "naver": {
-      "name": "네이버페이",
-      "description": "현장에서도 네이버페이 포인트로 간편하게 결제하실 수 있도록 준비 중이에요."
+      "name": "네이버페이"
     },
     "alipay": {
-      "name": "알리페이",
-      "description": "알리페이와 연동해 주요 글로벌 전자지갑을 연결하고, 여행 중에도 익숙한 지갑으로 결제하실 수 있도록 준비하고 있어요."
+      "name": "알리페이"
     },
     "paypal": {
-      "name": "페이팔",
-      "description": "글로벌 고객이 익숙한 PayPal 계정으로 손쉽게 결제하실 수 있도록 준비하고 있어요."
+      "name": "페이팔"
     },
     "card": {
-      "name": "신용카드",
-      "description": "Visa, Mastercard, UnionPay, Amex, JCB 등 주요 카드 결제를 곧 지원할 예정이에요."
+      "name": "신용카드"
     }
   }
 }

@@ -6,7 +6,6 @@ import type { PaymentCategory } from '@/payments/types'
 
 interface Props {
   name: string
-  description: string
   supportedCurrencies: string[]
   icons?: Array<{
     src: string
@@ -102,10 +101,6 @@ onBeforeUnmount(() => {
         {{ currency }}
       </span>
     </div>
-
-    <p class="flex-1 text-sm leading-relaxed text-slate-600">
-      {{ props.description }}
-    </p>
 
     <p
       v-if="props.isSelected && props.supportedCurrencies.length > 1"

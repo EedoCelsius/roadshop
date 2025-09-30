@@ -96,34 +96,27 @@
   },
   "payment": {
     "transfer": {
-      "name": "Bank Transfer",
-      "description": "Pay the KRW amount via bank transfer."
+      "name": "Bank Transfer"
     },
     "kakao": {
       "name": "Kakao Transfer",
-      "description": "Scan the QR code with KakaoTalk and finish checkout in seconds.",
       "cta": "Open Kakao Transfer"
     },
     "toss": {
       "name": "Toss Transfer",
-      "description": "Send your payment instantly with Toss and see the confirmation right away.",
       "cta": "Open Toss"
     },
     "naver": {
-      "name": "Naver Pay",
-      "description": "We're preparing Naver Pay so you can use your points right at checkout."
+      "name": "Naver Pay"
     },
     "alipay": {
-      "name": "Alipay",
-      "description": "We're partnering with Alipay to connect major global e-wallets, letting travelers pay with the wallet they already use."
+      "name": "Alipay"
     },
     "paypal": {
-      "name": "PayPal",
-      "description": "Soon you'll be able to check out with the PayPal account you already trust."
+      "name": "PayPal"
     },
     "card": {
-      "name": "Credit Card",
-      "description": "Visa, Mastercard, UnionPay, Amex, and JCB are on the roadmap, so you can use a familiar card checkout wherever you are."
+      "name": "Credit Card"
     }
   }
 }
