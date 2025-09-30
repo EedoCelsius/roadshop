@@ -4,12 +4,6 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18nStore } from '@/localization/store'
 import type { PaymentCurrency } from '@/payments/types'
 
-import Card from 'primevue/card'
-import Tag from 'primevue/tag'
-import Chip from 'primevue/chip'
-import InlineMessage from 'primevue/inlinemessage'
-import Avatar from 'primevue/avatar'
-
 interface Props {
   name: string
   description: string
@@ -35,11 +29,11 @@ const i18nStore = useI18nStore()
 const statusMeta = computed(() => ({
   available: {
     label: i18nStore.t('status.available'),
-    severity: 'success' as const,
+    classes: 'bg-green-100 text-green-700',
   },
   'coming-soon': {
     label: i18nStore.t('status.comingSoon'),
-    severity: 'warning' as const,
+    classes: 'bg-amber-100 text-amber-700',
   },
 }))
 
@@ -47,8 +41,6 @@ const preparingCopy = computed(() => i18nStore.t('card.preparing'))
 const selectCurrencyPrompt = computed(() => i18nStore.t('card.selectCurrencyPrompt'))
 
 const activeIconIndex = ref(0)
-
-const activeIcon = computed(() => props.icons?.[activeIconIndex.value])
 
 let rotationTimer: ReturnType<typeof setInterval> | undefined
 
@@ -77,88 +69,102 @@ watch(
 onBeforeUnmount(() => {
   stopRotation()
 })
-
-const cardPt = computed(() => ({
-  root: {
-    class: [
-      'h-full border-round-2xl surface-card transition-all transition-duration-200 shadow-1',
-      props.isSelected ? 'border-2 border-primary shadow-4' : 'border-1 border-transparent',
-    ],
-  },
-  body: {
-    class: 'flex flex-column gap-4 h-full',
-  },
-}))
-
-const onSelect = () => {
-  emit('select')
-}
 </script>
 
 <template>
-  <div
-    class="card-trigger h-full border-round-2xl cursor-pointer outline-none"
+  <article
+    class="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg focus:outline-none cursor-pointer"
+    :class="props.isSelected ? 'ring-2 ring-roadshop-accent' : ''"
     role="button"
     tabindex="0"
-    v-ripple
-    @click="onSelect"
-    @keydown.enter.prevent="onSelect"
-    @keydown.space.prevent="onSelect"
+    @click="emit('select')"
+    @keydown.enter.prevent="emit('select')"
+    @keydown.space.prevent="emit('select')"
   >
-    <Card :pt="cardPt">
-      <template #content>
-        <div class="flex flex-column gap-4 h-full">
-          <div class="flex align-items-start justify-content-between gap-3">
-            <div class="flex align-items-start gap-3">
-              <Avatar
-                v-if="activeIcon"
-                shape="circle"
-                size="large"
-                class="shadow-2"
-                :image="activeIcon.src"
-                :label="activeIcon.alt"
-                :pt="{ image: { alt: activeIcon.alt } }"
-              />
-              <div class="flex flex-column gap-1">
-                <span class="text-xl font-semibold text-primary">{{ props.name }}</span>
-                <small class="text-color-secondary">{{ props.provider }}</small>
-              </div>
-            </div>
-            <Tag :value="statusMeta[props.status].label" :severity="statusMeta[props.status].severity" />
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex flex-1 items-start gap-4">
+        <div v-if="props.icons?.length" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 shadow-inner">
+          <div class="icon-wrapper">
+            <img
+              v-for="(icon, index) in props.icons"
+              :key="icon.src"
+              :src="icon.src"
+              :alt="index === activeIconIndex ? icon.alt : ''"
+              :aria-hidden="index === activeIconIndex ? 'false' : 'true'"
+              class="icon-image"
+              :class="index === activeIconIndex ? 'icon-visible' : 'icon-hidden'"
+            >
           </div>
-
-          <div v-if="props.currency !== 'KRW' && props.supportedCurrencies.length" class="flex flex-wrap gap-2">
-            <Chip
-              v-for="currency in props.supportedCurrencies"
-              :key="currency"
-              :label="currency"
-              class="surface-100 text-primary font-semibold"
-            />
-          </div>
-
-          <p class="m-0 flex-1 text-sm line-height-3 text-color-secondary">
-            {{ props.description }}
-          </p>
-
-          <InlineMessage
-            v-if="props.status === 'available' && props.isSelected && props.supportedCurrencies.length > 1"
-            severity="info"
-            class="w-full"
-          >
-            {{ selectCurrencyPrompt }}
-          </InlineMessage>
-          <InlineMessage v-else-if="props.status === 'coming-soon'" severity="warn" class="w-full">
-            {{ preparingCopy }}
-          </InlineMessage>
         </div>
-      </template>
-    </Card>
-  </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-roadshop-primary">
+            {{ props.name }}
+          </h3>
+          <p class="text-sm text-slate-500">{{ props.provider }}</p>
+        </div>
+      </div>
+      <span
+        class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
+        :class="statusMeta[props.status].classes"
+      >
+        {{ statusMeta[props.status].label }}
+      </span>
+    </div>
+
+    <div
+      v-if="props.currency !== 'KRW' && props.supportedCurrencies.length"
+      class="flex flex-wrap gap-2 text-xs text-roadshop-primary"
+    >
+      <span
+        v-for="currency in props.supportedCurrencies"
+        :key="currency"
+        class="inline-flex items-center gap-1 rounded-full border border-roadshop-primary/20 bg-roadshop-highlight/60 px-3 py-1 font-semibold"
+      >
+        {{ currency }}
+      </span>
+    </div>
+
+    <p class="flex-1 text-sm leading-relaxed text-slate-600">
+      {{ props.description }}
+    </p>
+
+    <template v-if="props.status === 'available'">
+      <p
+        v-if="props.isSelected && props.supportedCurrencies.length > 1"
+        class="text-xs text-roadshop-accent"
+      >
+        {{ selectCurrencyPrompt }}
+      </p>
+    </template>
+    <template v-else>
+      <p class="text-xs text-slate-400">{{ preparingCopy }}</p>
+    </template>
+  </article>
 </template>
 
 <style scoped>
-.card-trigger:focus-visible {
-  outline: 2px solid var(--p-primary-color);
-  outline-offset: 2px;
+.icon-wrapper {
+  position: relative;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.icon-image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.icon-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.icon-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
 }
 </style>
