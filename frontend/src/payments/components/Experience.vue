@@ -79,7 +79,7 @@ const onLaunchTossInstructionDialog = () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-16">
+  <div class="flex flex-col gap-8">
     <Section
       v-for="(entry, index) in localizedSections"
       :key="`${entry.section.category}-${index}`"
