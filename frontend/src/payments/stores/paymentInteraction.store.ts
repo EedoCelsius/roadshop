@@ -23,9 +23,9 @@ const buildWorkflowContext = (
   paymentInfoStore: ReturnType<typeof usePaymentInfoStore>,
   showPopup: (state: PopupState) => void,
   setDeepLinkChecking: (value: boolean) => void,
-  openTransferPopup: () => void,
+  openTransferDialog: () => void,
 ): PaymentActionContext => ({
-  openTransferPopup,
+  openTransferDialog,
   openMethodUrl: (method: PaymentMethod, currency: string | null) => {
     const url = paymentStore.getUrlForMethod(method.id, currency ?? undefined)
     openUrlInNewTab(url)
@@ -60,7 +60,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
   const popupState = ref<PopupState | null>(null)
   const isDeepLinkChecking = ref(false)
-  const isTransferPopupVisible = ref(false)
+  const isTransferDialogVisible = ref(false)
 
   const transferAmount = computed(() => paymentInfoStore.transferInfo?.amount.krw ?? 0)
   const transferAccounts = computed(() => paymentInfoStore.transferInfo?.account ?? [])
@@ -98,12 +98,12 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     popupState.value = state
   }
 
-  const openTransferPopup = () => {
-    isTransferPopupVisible.value = true
+  const openTransferDialog = () => {
+    isTransferDialogVisible.value = true
   }
 
-  const closeTransferPopup = () => {
-    isTransferPopupVisible.value = false
+  const closeTransferDialog = () => {
+    isTransferDialogVisible.value = false
   }
 
   const setDeepLinkChecking = (value: boolean) => {
@@ -115,7 +115,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     paymentInfoStore,
     showPopup,
     setDeepLinkChecking,
-    openTransferPopup,
+    openTransferDialog,
   )
 
   const resolveAction = createPaymentActionResolver(workflowContext)
@@ -158,11 +158,11 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     isPopupVisible,
     popupContent,
     isDeepLinkChecking,
-    isTransferPopupVisible,
+    isTransferDialogVisible,
     transferAmount,
     transferAccounts,
     closePopup,
-    closeTransferPopup,
+    closeTransferDialog,
     handleMethodSelection,
     handleCurrencySelection,
   }

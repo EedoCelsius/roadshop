@@ -19,7 +19,7 @@ const runTransferWorkflow = async (context: PaymentActionContext) => {
     return
   }
 
-  context.openTransferPopup()
+  context.openTransferDialog()
 }
 
 export const createTransferAction = (context: PaymentActionContext): PaymentMethodAction => ({

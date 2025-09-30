@@ -2,7 +2,7 @@ import type { PaymentMethod, DeepLinkProvider } from '@/payments/types'
 import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
 export type PaymentActionContext = {
-  openTransferPopup: () => void
+  openTransferDialog: () => void
   openMethodUrl: (method: PaymentMethod, currency: string | null) => void
   ensurePaymentInfoLoaded: () => Promise<boolean>
   getDeepLinkInfo: (provider: DeepLinkProvider) => TossPaymentInfo | KakaoPaymentInfo | null
