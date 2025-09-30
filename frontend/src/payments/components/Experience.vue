@@ -81,14 +81,6 @@ const onReopenTossInstructionDialog = () => {
       @select="onSelectMethod"
     />
 
-    <CurrencySelectorDialog
-      v-if="selectedMethod"
-      :visible="isCurrencySelectorOpen"
-      :method-name="selectedMethod.name"
-      :currencies="selectedMethod.supportedCurrencies"
-      @select="onCurrencySelect"
-      @close="onCloseCurrencySelector"
-    />
     <AlertDialog
       v-if="popupContent"
       :visible="isPopupVisible"
@@ -96,6 +88,14 @@ const onReopenTossInstructionDialog = () => {
       :message="popupContent.message"
       :confirm-label="popupContent.confirmLabel"
       @confirm="onPopupConfirm"
+    />
+    <CurrencySelectorDialog
+      v-if="selectedMethod"
+      :visible="isCurrencySelectorOpen"
+      :method-name="selectedMethod.name"
+      :currencies="selectedMethod.supportedCurrencies"
+      @select="onCurrencySelect"
+      @close="onCloseCurrencySelector"
     />
     <TransferAccountsDialog
       :visible="isTransferDialogVisible"
