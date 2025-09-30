@@ -3,6 +3,7 @@ import type { Pinia } from 'pinia'
 
 import App from '@/app/App.vue'
 import { createAppPinia } from '@/app/providers/createPinia'
+import { installPrimeVue } from '@/app/plugins/primevue'
 import { useI18nStore } from '@/localization/store'
 
 const initializeLocalization = async (pinia: Pinia) => {
@@ -15,6 +16,7 @@ export const bootstrapApp = async () => {
   const pinia = createAppPinia()
 
   app.use(pinia)
+  installPrimeVue(app)
 
   await initializeLocalization(pinia)
 
