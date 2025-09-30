@@ -21,7 +21,7 @@ const {
   isPopupVisible,
   popupContent,
   isDeepLinkChecking,
-  isTransferPopupVisible,
+  isTransferDialogVisible,
   transferAmount,
   transferAccounts,
 } = storeToRefs(paymentInteractionStore)
@@ -52,8 +52,8 @@ const onPopupConfirm = () => {
   paymentInteractionStore.closePopup()
 }
 
-const onCloseTransferPopup = () => {
-  paymentInteractionStore.closeTransferPopup()
+const onCloseTransferDialog = () => {
+  paymentInteractionStore.closeTransferDialog()
 }
 </script>
 
@@ -85,10 +85,10 @@ const onCloseTransferPopup = () => {
       @confirm="onPopupConfirm"
     />
     <TransferAccountsDialog
-      :visible="isTransferPopupVisible"
+      :visible="isTransferDialogVisible"
       :accounts="transferAccounts"
       :amount="transferAmount"
-      @close="onCloseTransferPopup"
+      @close="onCloseTransferDialog"
     />
     <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
   </div>
