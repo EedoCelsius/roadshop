@@ -70,23 +70,22 @@ export const launchDeepLink = async (
     onNotMobile,
   }: LaunchDeepLinkOptions,
 ) => {
-  const isMobile = isMobileDevice()
-  if (!isMobile) {
-    onNotMobile?.()
-    window.location.href = url
-    return
-  }
-
-  isDeepLinkChecking.value = true
   const loadDelay = new Promise<void>((resolve) => {
     window.setTimeout(resolve, timeoutMs)
   })
-
+  
   try {
     deepLinkLaunched = false
     window.location.href = url
 
+    if (!isMobileDevice()) {
+      onNotMobile?.()
+      return
+    }
+    
+    isDeepLinkChecking.value = true
     await loadDelay
+    
     if (!deepLinkLaunched) {
       onNotInstalled?.()
     }
