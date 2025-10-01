@@ -61,32 +61,16 @@ const popupQrHint = computed(() => {
 
   return translation === key ? null : translation
 })
-const deepLinkProviderIcons = paymentMethods.reduce<Partial<Record<DeepLinkProvider, PaymentIcon[]>>>(
-  (map, method) => {
-    if (method.deepLinkProvider && method.icons?.length) {
-      map[method.deepLinkProvider] = method.icons
-    }
+const deepLinkProviderIcons = paymentMethods.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
+  if (method.deepLinkProvider && method.icons?.[0]) {
+    map[method.deepLinkProvider] = method.icons[0]
+  }
 
-    return map
-  },
-  {},
+  return map
+}, {})
+const popupQrIcon = computed(() =>
+  popupContent.value ? deepLinkProviderIcons[popupContent.value.provider] ?? null : null,
 )
-const bankTransferIcon = paymentMethods.find((method) => method.id === 'transfer')?.icons?.[0] ?? null
-const popupQrIcons = computed(() => {
-  if (!popupContent.value) {
-    return null
-  }
-
-  const provider = popupContent.value.provider
-  const icons = deepLinkProviderIcons[provider]?.slice() ?? []
-
-  if (provider === 'toss' && bankTransferIcon) {
-    icons.push(bankTransferIcon)
-  }
-
-  return icons
-})
-const popupIconInterval = computed(() => (popupContent.value?.provider === 'toss' ? 2000 : undefined))
 
 const onSelectMethod = (methodId: string) => {
   void paymentInteractionStore.handleMethodSelection(methodId)
@@ -143,11 +127,7 @@ const onLaunchTossInstructionDialog = () => {
         v-if="popupQrValue"
         class="mt-6 flex flex-col items-center gap-3"
       >
-        <QrCodeDisplay
-          :value="popupQrValue"
-          :icon="popupQrIcons ?? undefined"
-          :icon-interval="popupIconInterval"
-        />
+        <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
         <p v-if="popupQrHint" class="text-center text-xs text-slate-500">
           {{ popupQrHint }}
         </p>
