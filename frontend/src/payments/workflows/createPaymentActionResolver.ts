@@ -46,4 +46,5 @@ export type {
   PaymentSelectionPayload,
   PaymentCurrencySelectionPayload,
   DeepLinkPopupType,
+  DeepLinkPopupOptions,
 } from '@/payments/workflows/types'
