@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 import type { DeepLinkProvider } from '@/payments/types'
 import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
@@ -47,7 +49,7 @@ export const resolveDeepLink = (
   return createKakaoDeepLink(info)
 }
 
-let deepLinkPromiseResolver = () => {}
+let deepLinkPromiseResolver: (value: boolean) => void = () => {}
 window.addEventListener('blur', () => { deepLinkPromiseResolver(true) })
 document.addEventListener('visibilitychange', () => { if (document.hidden) { deepLinkPromiseResolver(true) } })
 
@@ -58,22 +60,14 @@ export const waitForDeepLinkLaunch = (timeoutMs = 1500): Promise<boolean> => {
   })
 }
 
+export const isDeepLinkChecking = ref(false)
+
 interface LaunchDeepLinkOptions {
   timeoutMs: number
   waitForDeepLinkResult: (timeoutMs: number) => Promise<boolean>
-  onCheckingChange?: (isChecking: boolean) => void
   onNotInstalled?: () => void
   onNotMobile?: () => void
   isMobileDevice: () => boolean
-}
-
-const navigateToDeepLink = (url: string): boolean => {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    return false
-  }
-
-  window.location.href = url
-  return true
 }
 
 export const launchDeepLink = async (
@@ -81,7 +75,6 @@ export const launchDeepLink = async (
   {
     timeoutMs,
     waitForDeepLinkResult,
-    onCheckingChange,
     onNotInstalled,
     onNotMobile,
     isMobileDevice,
@@ -93,17 +86,22 @@ export const launchDeepLink = async (
     onNotMobile?.()
   }
 
-  onCheckingChange?.(true)
+  isDeepLinkChecking.value = true
+  const overlayDelay = new Promise<void>((resolve) => {
+    window.setTimeout(resolve, timeoutMs)
+  })
 
   try {
     const launchMonitor = waitForDeepLinkResult(timeoutMs)
     window.location.href = url
-    
+
     const didLaunch = await launchMonitor
+    await overlayDelay
     if (!didLaunch) {
       onNotInstalled?.()
     }
   } finally {
-    onCheckingChange?.(false)
+    await overlayDelay
+    isDeepLinkChecking.value = false
   }
 }

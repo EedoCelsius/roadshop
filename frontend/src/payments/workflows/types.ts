@@ -15,7 +15,6 @@ export type PaymentActionContext = {
     provider: DeepLinkProvider,
     options?: DeepLinkPopupOptions,
   ) => void
-  setDeepLinkChecking: (value: boolean) => void
   waitForDeepLinkResult: (timeoutMs?: number) => Promise<boolean>
   isMobileDevice: () => boolean
   openUrlInNewTab: (url: string | null) => void

@@ -2,7 +2,11 @@ import { computed, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
-import { launchDeepLink, waitForDeepLinkLaunch } from '@/payments/services/deepLinkService'
+import {
+  isDeepLinkChecking as deepLinkChecking,
+  launchDeepLink,
+  waitForDeepLinkLaunch,
+} from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { createCountdownManager } from '@/payments/stores/utils/createCountdownManager'
@@ -25,7 +29,6 @@ const buildWorkflowContext = (
     provider: DeepLinkProvider,
     options?: DeepLinkPopupOptions,
   ) => void,
-  setDeepLinkChecking: (value: boolean) => void,
   openTransferDialog: () => void,
   copyTossAccountInfo: () => Promise<boolean>,
   showTossInstructionDialog: (seconds: number) => Promise<boolean>,
@@ -40,7 +43,6 @@ const buildWorkflowContext = (
   ensurePaymentInfoLoaded: paymentInfoStore.ensureLoaded,
   getDeepLinkInfo: paymentInfoStore.getDeepLinkInfo,
   showDeepLinkPopup: showPopup,
-  setDeepLinkChecking,
   waitForDeepLinkResult: waitForDeepLinkLaunch,
   isMobileDevice,
   openUrlInNewTab,
@@ -67,7 +69,6 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     confirmLabel: string
     deepLinkUrl: string | null
   } | null>(null)
-  const isDeepLinkChecking = ref(false)
   const isTransferDialogVisible = ref(false)
   const isTossInstructionDialogVisible = ref(false)
   const tossInstructionCountdown = ref(0)
@@ -111,10 +112,6 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
   const closeTransferDialog = () => {
     isTransferDialogVisible.value = false
-  }
-
-  const setDeepLinkChecking = (value: boolean) => {
-    isDeepLinkChecking.value = value
   }
 
   const copyTossAccountInfo = async (): Promise<boolean> => {
@@ -172,7 +169,6 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     await launchDeepLink(deepLink, {
       timeoutMs: 2000,
       waitForDeepLinkResult: waitForDeepLinkLaunch,
-      onCheckingChange: setDeepLinkChecking,
       onNotInstalled: () => showPopup('not-installed', 'toss'),
       onNotMobile: () => showPopup('not-mobile', 'toss', { deepLinkUrl: deepLink }),
       isMobileDevice,
@@ -183,7 +179,6 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     paymentStore,
     paymentInfoStore,
     showPopup,
-    setDeepLinkChecking,
     openTransferDialog,
     copyTossAccountInfo,
     showTossInstructionDialog,
@@ -226,7 +221,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   return {
     isPopupVisible,
     popupContent,
-    isDeepLinkChecking,
+    isDeepLinkChecking: deepLinkChecking,
     isTransferDialogVisible,
     transferAmount,
     transferAccounts,

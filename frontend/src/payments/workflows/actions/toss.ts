@@ -46,7 +46,6 @@ const runTossWorkflow = async (context: PaymentActionContext) => {
     await launchDeepLink(deepLink, {
       timeoutMs: 2000,
       waitForDeepLinkResult: context.waitForDeepLinkResult,
-      onCheckingChange: context.setDeepLinkChecking,
       onNotInstalled: () => context.showDeepLinkPopup('not-installed', 'toss'),
       onNotMobile: () => context.showDeepLinkPopup('not-mobile', 'toss', { deepLinkUrl: deepLink }),
       isMobileDevice: context.isMobileDevice,
