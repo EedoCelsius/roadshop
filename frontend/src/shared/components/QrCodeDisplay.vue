@@ -58,7 +58,7 @@ watch(
       v-if="props.icon"
       :src="props.icon.src"
       :alt="props.icon.alt"
-      class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white/95 p-1 shadow-sm"
+      class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-1 shadow-sm"
       :style="iconStyle"
     />
   </div>
