@@ -57,11 +57,13 @@
       "providers": {
         "kakao": {
           "notMobile": "Kakao 汇款链接只能在手机上的 KakaoTalk 应用中打开。请在手机上重试。",
-          "notInstalled": "如果没有跳转到 KakaoTalk，请确认已安装 KakaoTalk 后再试一次。"
+          "notInstalled": "如果没有跳转到 KakaoTalk，请确认已安装 KakaoTalk 后再试一次。",
+          "qrHint": "扫描二维码前往 KakaoTalk 应用"
         },
         "toss": {
-          "notMobile": "Toss 转账链接只能在手机上的 Toss 应用中打开。请在手机上重试。",
-          "notInstalled": "如果没有跳转到 Toss，请确认已安装 Toss 后再试一次。"
+          "notMobile": "Toss 转账链接只能在移动设备上打开。请在手机上重试。",
+          "notInstalled": "如果没有跳转到 Toss，请确认已安装 Toss 后再试一次。",
+          "qrHint": "扫描二维码前往 Toss 应用"
         }
       }
     }

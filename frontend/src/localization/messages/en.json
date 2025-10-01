@@ -57,11 +57,13 @@
       "providers": {
         "kakao": {
           "notMobile": "The Kakao Transfer link only opens in the KakaoTalk mobile app. Please continue on your phone.",
-          "notInstalled": "If KakaoTalk didn't open, please make sure it's installed and try again."
+          "notInstalled": "If KakaoTalk didn't open, please make sure it's installed and try again.",
+          "qrHint": "Scan to open the KakaoTalk app"
         },
         "toss": {
-          "notMobile": "The Toss Transfer link only opens in the Toss mobile app. Please continue on your phone.",
-          "notInstalled": "If Toss didn't open, please make sure it's installed and try again."
+          "notMobile": "The Toss Transfer link only opens on mobile. Please continue on your phone.",
+          "notInstalled": "If Toss didn't open, please make sure it's installed and try again.",
+          "qrHint": "Scan to open the Toss app"
         }
       }
     }

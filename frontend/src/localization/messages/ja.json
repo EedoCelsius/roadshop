@@ -57,11 +57,13 @@
       "providers": {
         "kakao": {
           "notMobile": "Kakao送金リンクはモバイル版KakaoTalkアプリでのみ開けます。スマートフォンで再度お試しください。",
-          "notInstalled": "KakaoTalkに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。"
+          "notInstalled": "KakaoTalkに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。",
+          "qrHint": "QRコードをスキャンしてKakaoTalkアプリに移動します"
         },
         "toss": {
-          "notMobile": "Toss送金リンクはモバイル版Tossアプリでのみ開けます。スマートフォンで再度お試しください。",
-          "notInstalled": "Tossに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。"
+          "notMobile": "Toss送金リンクはモバイルでのみ開けます。スマートフォンで再度お試しください。",
+          "notInstalled": "Tossに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。",
+          "qrHint": "QRコードをスキャンしてTossアプリに移動します"
         }
       }
     }

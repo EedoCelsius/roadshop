@@ -51,6 +51,16 @@ const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedC
 
 const isNotMobilePopup = computed(() => popupContent.value?.type === 'not-mobile')
 const popupQrValue = computed(() => popupContent.value?.deepLinkUrl ?? null)
+const popupQrHint = computed(() => {
+  if (!popupContent.value) {
+    return null
+  }
+
+  const key = `popups.deepLink.providers.${popupContent.value.provider}.qrHint`
+  const translation = i18nStore.t(key)
+
+  return translation === key ? null : translation
+})
 const deepLinkProviderIcons = paymentMethods.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
   if (method.deepLinkProvider && method.icons?.[0]) {
     map[method.deepLinkProvider] = method.icons[0]
@@ -118,6 +128,9 @@ const onLaunchTossInstructionDialog = () => {
         class="mt-6 flex flex-col items-center gap-3"
       >
         <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
+        <p v-if="popupQrHint" class="text-center text-xs text-slate-500">
+          {{ popupQrHint }}
+        </p>
       </div>
     </DialogCloseFull>
     <DialogCloseEnd
