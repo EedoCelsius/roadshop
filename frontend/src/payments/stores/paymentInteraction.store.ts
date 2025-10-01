@@ -2,11 +2,7 @@ import { computed, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
-import {
-  isDeepLinkChecking as deepLinkChecking,
-  launchDeepLink,
-  waitForDeepLinkLaunch,
-} from '@/payments/services/deepLinkService'
+import { isDeepLinkChecking as deepLinkChecking, launchDeepLink } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { createCountdownManager } from '@/payments/stores/utils/createCountdownManager'
@@ -17,7 +13,6 @@ import type {
   DeepLinkPopupType,
   PaymentActionContext,
 } from '@/payments/workflows/types'
-import { isMobileDevice } from '@/shared/utils/device'
 import { openUrlInNewTab } from '@/shared/utils/navigation'
 import { copyText } from '@/shared/utils/clipboard'
 
@@ -43,8 +38,6 @@ const buildWorkflowContext = (
   ensurePaymentInfoLoaded: paymentInfoStore.ensureLoaded,
   getDeepLinkInfo: paymentInfoStore.getDeepLinkInfo,
   showDeepLinkPopup: showPopup,
-  waitForDeepLinkResult: waitForDeepLinkLaunch,
-  isMobileDevice,
   openUrlInNewTab,
   copyTossAccountInfo,
   showTossInstructionDialog,
@@ -168,10 +161,8 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     const deepLink = tossDeepLinkUrl.value
     await launchDeepLink(deepLink, {
       timeoutMs: 2000,
-      waitForDeepLinkResult: waitForDeepLinkLaunch,
       onNotInstalled: () => showPopup('not-installed', 'toss'),
       onNotMobile: () => showPopup('not-mobile', 'toss', { deepLinkUrl: deepLink }),
-      isMobileDevice,
     })
   }
 
