@@ -33,7 +33,6 @@ const runKakaoWorkflow = async (context: PaymentActionContext) => {
   await launchDeepLink(deepLink, {
     timeoutMs: 1500,
     waitForDeepLinkResult: context.waitForDeepLinkResult,
-    onCheckingChange: context.setDeepLinkChecking,
     onNotInstalled: () => context.showDeepLinkPopup('not-installed', 'kakao'),
     onNotMobile: () => context.showDeepLinkPopup('not-mobile', 'kakao', { deepLinkUrl: deepLink }),
     isMobileDevice: context.isMobileDevice,

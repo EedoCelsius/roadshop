@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 import type { DeepLinkProvider } from '@/payments/types'
 import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
@@ -47,33 +49,18 @@ export const resolveDeepLink = (
   return createKakaoDeepLink(info)
 }
 
-let deepLinkPromiseResolver = () => {}
-window.addEventListener('blur', () => { deepLinkPromiseResolver(true) })
-document.addEventListener('visibilitychange', () => { if (document.hidden) { deepLinkPromiseResolver(true) } })
+let deepLinkLaunched = false
+window.addEventListener('blur', () => { deepLinkLaunched = true })
+document.addEventListener('visibilitychange', () => { if (document.hidden) { deepLinkLaunched = true } })
 
-export const waitForDeepLinkLaunch = (timeoutMs = 1500): Promise<boolean> => {
-  return new Promise<boolean>((resolve) => {
-    deepLinkPromiseResolver = resolve
-    window.setTimeout(() => { resolve(false) }, timeoutMs)
-  })
-}
+export const isDeepLinkChecking = ref(false)
 
 interface LaunchDeepLinkOptions {
   timeoutMs: number
   waitForDeepLinkResult: (timeoutMs: number) => Promise<boolean>
-  onCheckingChange?: (isChecking: boolean) => void
   onNotInstalled?: () => void
   onNotMobile?: () => void
   isMobileDevice: () => boolean
-}
-
-const navigateToDeepLink = (url: string): boolean => {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    return false
-  }
-
-  window.location.href = url
-  return true
 }
 
 export const launchDeepLink = async (
@@ -81,7 +68,6 @@ export const launchDeepLink = async (
   {
     timeoutMs,
     waitForDeepLinkResult,
-    onCheckingChange,
     onNotInstalled,
     onNotMobile,
     isMobileDevice,
@@ -93,17 +79,21 @@ export const launchDeepLink = async (
     onNotMobile?.()
   }
 
-  onCheckingChange?.(true)
+  isDeepLinkChecking.value = true
+  const loadDelay = new Promise<void>((resolve) => {
+    window.setTimeout(resolve, timeoutMs)
+  })
 
   try {
-    const launchMonitor = waitForDeepLinkResult(timeoutMs)
+    deepLinkLaunched = false
     window.location.href = url
-    
-    const didLaunch = await launchMonitor
-    if (!didLaunch) {
+
+    await loadDelay
+    if (!deepLinkLaunched) {
       onNotInstalled?.()
     }
   } finally {
-    onCheckingChange?.(false)
+    await loadDelay
+    isDeepLinkChecking.value = false
   }
 }
