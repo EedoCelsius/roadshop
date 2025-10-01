@@ -15,8 +15,6 @@ export type PaymentActionContext = {
     provider: DeepLinkProvider,
     options?: DeepLinkPopupOptions,
   ) => void
-  waitForDeepLinkResult: (timeoutMs?: number) => Promise<boolean>
-  isMobileDevice: () => boolean
   openUrlInNewTab: (url: string | null) => void
   copyTossAccountInfo: () => Promise<boolean>
   showTossInstructionDialog: (seconds: number) => Promise<boolean>
