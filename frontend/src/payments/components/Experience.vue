@@ -118,9 +118,6 @@ const onLaunchTossInstructionDialog = () => {
         class="mt-6 flex flex-col items-center gap-3"
       >
         <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
-        <p class="break-all text-center text-xs text-slate-500">
-          {{ popupQrValue }}
-        </p>
       </div>
     </DialogCloseFull>
     <DialogCloseEnd
