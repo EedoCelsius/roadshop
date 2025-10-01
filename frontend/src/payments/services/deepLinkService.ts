@@ -47,42 +47,14 @@ export const resolveDeepLink = (
   return createKakaoDeepLink(info)
 }
 
+let deepLinkPromiseResolver = () => {}
+window.addEventListener('blur', () => { deepLinkPromiseResolver(true) })
+document.addEventListener('visibilitychange', () => { if (document.hidden) { deepLinkPromiseResolver(true) } })
+
 export const waitForDeepLinkLaunch = (timeoutMs = 1500): Promise<boolean> => {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    return Promise.resolve(true)
-  }
-
   return new Promise<boolean>((resolve) => {
-    let resolved = false
-
-    const finalize = (didLaunch: boolean) => {
-      if (resolved) {
-        return
-      }
-
-      resolved = true
-      window.clearTimeout(timerId)
-      window.removeEventListener('blur', handleBlur)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      resolve(didLaunch)
-    }
-
-    const handleBlur = () => {
-      finalize(true)
-    }
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        finalize(true)
-      }
-    }
-
-    const timerId = window.setTimeout(() => {
-      finalize(false)
-    }, timeoutMs)
-
-    window.addEventListener('blur', handleBlur)
-    document.addEventListener('visibilitychange', handleVisibilityChange)
+    deepLinkPromiseResolver = resolve
+    window.setTimeout(() => { resolve(false) }, timeoutMs)
   })
 }
 
@@ -119,22 +91,15 @@ export const launchDeepLink = async (
 
   if (!isMobile) {
     onNotMobile?.()
-    return
   }
 
   onCheckingChange?.(true)
 
   try {
     const launchMonitor = waitForDeepLinkResult(timeoutMs)
-    const didNavigate = navigateToDeepLink(url)
-
-    if (!didNavigate) {
-      await launchMonitor
-      return
-    }
-
+    window.location.href = url
+    
     const didLaunch = await launchMonitor
-
     if (!didLaunch) {
       onNotInstalled?.()
     }
