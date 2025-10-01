@@ -73,6 +73,8 @@ export const launchDeepLink = async (
   const isMobile = isMobileDevice()
   if (!isMobile) {
     onNotMobile?.()
+    window.location.href = url
+    return
   }
 
   isDeepLinkChecking.value = true
@@ -85,7 +87,7 @@ export const launchDeepLink = async (
     window.location.href = url
 
     await loadDelay
-    if (isMobile && !deepLinkLaunched) {
+    if (!deepLinkLaunched) {
       onNotInstalled?.()
     }
   } finally {
