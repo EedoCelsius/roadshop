@@ -129,8 +129,8 @@ const onLaunchTossInstructionDialog = () => {
       >
         <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
         <p v-if="popupQrHint" class="text-center text-xs text-slate-500">
-          <i class="pi-camera"></i>
           {{ popupQrHint }}
+          <i class="pi pi-camera"></i>
         </p>
       </div>
     </DialogCloseFull>
