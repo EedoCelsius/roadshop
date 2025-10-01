@@ -71,7 +71,7 @@ const runTossWorkflow = async (context: PaymentActionContext) => {
   const isMobile = context.isMobileDevice()
 
   if (!isMobile) {
-    context.showDeepLinkPopup('not-mobile', 'toss')
+    context.showDeepLinkPopup('not-mobile', 'toss', { deepLinkUrl: deepLink })
   }
 
   try {

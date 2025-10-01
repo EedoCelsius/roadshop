@@ -3,15 +3,19 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import DialogCloseEnd from '@/shared/components/DialogCloseEnd.vue'
+import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
 import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
 import TossInstructionDialog from '@/payments/components/TossInstructionDialog.vue'
+import QrCodeDisplay from '@/shared/components/QrCodeDisplay.vue'
 import { useLocalizedSections } from '@/payments/composables/useLocalizedSections'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
 import { useI18nStore } from '@/localization/store'
+import { paymentMethods } from '@/payments/data/method'
+import type { DeepLinkProvider, PaymentIcon } from '@/payments/types'
 
 const paymentStore = usePaymentStore()
 const paymentInteractionStore = usePaymentInteractionStore()
@@ -44,6 +48,19 @@ const selectedMethodName = computed(() =>
 )
 
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
+
+const isNotMobilePopup = computed(() => popupContent.value?.type === 'not-mobile')
+const popupQrValue = computed(() => popupContent.value?.deepLinkUrl ?? null)
+const deepLinkProviderIcons = paymentMethods.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
+  if (method.deepLinkProvider && method.icons?.[0]) {
+    map[method.deepLinkProvider] = method.icons[0]
+  }
+
+  return map
+}, {})
+const popupQrIcon = computed(() =>
+  popupContent.value ? deepLinkProviderIcons[popupContent.value.provider] ?? null : null,
+)
 
 const onSelectMethod = (methodId: string) => {
   void paymentInteractionStore.handleMethodSelection(methodId)
@@ -88,8 +105,26 @@ const onLaunchTossInstructionDialog = () => {
       @select="onSelectMethod"
     />
 
+    <DialogCloseFull
+      v-if="popupContent && isNotMobilePopup"
+      :visible="isPopupVisible"
+      :title="popupContent.title"
+      :description="popupContent.message"
+      :close-label="popupContent.confirmLabel"
+      @close="onPopupConfirm"
+    >
+      <div
+        v-if="popupQrValue"
+        class="mt-6 flex flex-col items-center gap-3"
+      >
+        <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
+        <p class="break-all text-center text-xs text-slate-500">
+          {{ popupQrValue }}
+        </p>
+      </div>
+    </DialogCloseFull>
     <DialogCloseEnd
-      v-if="popupContent"
+      v-else-if="popupContent"
       :visible="isPopupVisible"
       :title="popupContent.title"
       :description="popupContent.message"

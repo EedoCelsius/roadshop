@@ -8,17 +8,23 @@ import { usePaymentStore } from '@/payments/stores/payment.store'
 import { createCountdownManager } from '@/payments/stores/utils/createCountdownManager'
 import type { DeepLinkProvider, PaymentMethod } from '@/payments/types'
 import { createPaymentActionResolver } from '@/payments/workflows/createPaymentActionResolver'
-import type { PaymentActionContext } from '@/payments/workflows/types'
+import type {
+  DeepLinkPopupOptions,
+  DeepLinkPopupType,
+  PaymentActionContext,
+} from '@/payments/workflows/types'
 import { isMobileDevice } from '@/shared/utils/device'
 import { openUrlInNewTab } from '@/shared/utils/navigation'
 import { copyText } from '@/shared/utils/clipboard'
 
-type PopupType = 'not-mobile' | 'not-installed'
-
 const buildWorkflowContext = (
   paymentStore: ReturnType<typeof usePaymentStore>,
   paymentInfoStore: ReturnType<typeof usePaymentInfoStore>,
-  showPopup: (type: PopupType, provider: DeepLinkProvider) => void,
+  showPopup: (
+    type: DeepLinkPopupType,
+    provider: DeepLinkProvider,
+    options?: DeepLinkPopupOptions,
+  ) => void,
   setDeepLinkChecking: (value: boolean) => void,
   openTransferDialog: () => void,
   copyTossAccountInfo: () => Promise<boolean>,
@@ -63,9 +69,12 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   void paymentInfoStore.ensureLoaded()
 
   const popupContent = ref<{
+    type: DeepLinkPopupType
+    provider: DeepLinkProvider
     title: string
     message: string
     confirmLabel: string
+    deepLinkUrl: string | null
   } | null>(null)
   const isDeepLinkChecking = ref(false)
   const isTransferDialogVisible = ref(false)
@@ -87,14 +96,21 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     popupContent.value = null
   }
 
-  const showPopup = (type: PopupType, provider: DeepLinkProvider) => {
+  const showPopup = (
+    type: DeepLinkPopupType,
+    provider: DeepLinkProvider,
+    options: DeepLinkPopupOptions = {},
+  ) => {
     const baseKey = 'popups.deepLink'
     const keySuffix = type === 'not-mobile' ? 'notMobile' : 'notInstalled'
 
     popupContent.value = {
+      type,
+      provider,
       title: i18nStore.t(`${baseKey}.titles.${keySuffix}`),
       message: i18nStore.t(`${baseKey}.providers.${provider}.${keySuffix}`),
       confirmLabel: i18nStore.t(`${baseKey}.confirms.${keySuffix}`),
+      deepLinkUrl: options.deepLinkUrl ?? null,
     }
   }
 

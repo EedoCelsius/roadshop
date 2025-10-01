@@ -59,7 +59,7 @@ const runKakaoWorkflow = async (context: PaymentActionContext) => {
   const isMobile = context.isMobileDevice()
 
   if (!isMobile) {
-    context.showDeepLinkPopup('not-mobile', 'kakao')
+    context.showDeepLinkPopup('not-mobile', 'kakao', { deepLinkUrl: deepLink })
   }
 
   await launchKakaoDeepLink(context, deepLink, { checkInstallation: isMobile })
