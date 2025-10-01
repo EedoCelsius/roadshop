@@ -17,7 +17,6 @@ export type PaymentActionContext = {
   ) => void
   setDeepLinkChecking: (value: boolean) => void
   waitForDeepLinkResult: (timeoutMs?: number) => Promise<boolean>
-  navigateToDeepLink: (url: string) => boolean
   isMobileDevice: () => boolean
   openUrlInNewTab: (url: string | null) => void
   copyTossAccountInfo: () => Promise<boolean>

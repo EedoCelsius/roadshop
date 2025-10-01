@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
-import { waitForDeepLinkLaunch } from '@/payments/services/deepLinkService'
+import { launchDeepLink, waitForDeepLinkLaunch } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { createCountdownManager } from '@/payments/stores/utils/createCountdownManager'
@@ -42,15 +42,6 @@ const buildWorkflowContext = (
   showDeepLinkPopup: showPopup,
   setDeepLinkChecking,
   waitForDeepLinkResult: waitForDeepLinkLaunch,
-  navigateToDeepLink: (url: string) => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      openUrlInNewTab(url)
-      return false
-    }
-
-    window.location.href = url
-    return true
-  },
   isMobileDevice,
   openUrlInNewTab,
   copyTossAccountInfo,
@@ -178,34 +169,14 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     }
 
     const deepLink = tossDeepLinkUrl.value
-    const isMobile = isMobileDevice()
-
-    if (!isMobile) {
-      openUrlInNewTab(deepLink)
-      return
-    }
-
-    setDeepLinkChecking(true)
-
-    try {
-      const launchMonitor = waitForDeepLinkLaunch(2000)
-
-      if (typeof window === 'undefined' || typeof document === 'undefined') {
-        openUrlInNewTab(deepLink)
-        await launchMonitor
-        return
-      }
-
-      window.location.href = deepLink
-
-      const didLaunch = await launchMonitor
-
-      if (!didLaunch) {
-        showPopup('not-installed', 'toss')
-      }
-    } finally {
-      setDeepLinkChecking(false)
-    }
+    await launchDeepLink(deepLink, {
+      timeoutMs: 2000,
+      waitForDeepLinkResult: waitForDeepLinkLaunch,
+      onCheckingChange: setDeepLinkChecking,
+      onNotInstalled: () => showPopup('not-installed', 'toss'),
+      onNotMobile: () => showPopup('not-mobile', 'toss', { deepLinkUrl: deepLink }),
+      isMobileDevice,
+    })
   }
 
   const workflowContext = buildWorkflowContext(
