@@ -49,16 +49,9 @@ export const resolveDeepLink = (
   return createKakaoDeepLink(info)
 }
 
-let deepLinkPromiseResolver: (value: boolean) => void = () => {}
-window.addEventListener('blur', () => { deepLinkPromiseResolver(true) })
-document.addEventListener('visibilitychange', () => { if (document.hidden) { deepLinkPromiseResolver(true) } })
-
-export const waitForDeepLinkLaunch = (timeoutMs = 1500): Promise<boolean> => {
-  return new Promise<boolean>((resolve) => {
-    deepLinkPromiseResolver = resolve
-    window.setTimeout(() => { resolve(false) }, timeoutMs)
-  })
-}
+let deepLinkLaunched = false
+window.addEventListener('blur', () => { deepLinkLaunched = true })
+document.addEventListener('visibilitychange', () => { if (document.hidden) { deepLinkLaunched = true } })
 
 export const isDeepLinkChecking = ref(false)
 
@@ -87,21 +80,20 @@ export const launchDeepLink = async (
   }
 
   isDeepLinkChecking.value = true
-  const overlayDelay = new Promise<void>((resolve) => {
+  const loadDelay = new Promise<void>((resolve) => {
     window.setTimeout(resolve, timeoutMs)
   })
 
   try {
-    const launchMonitor = waitForDeepLinkResult(timeoutMs)
+    deepLinkLaunched = false
     window.location.href = url
 
-    const didLaunch = await launchMonitor
-    await overlayDelay
-    if (!didLaunch) {
+    await loadDelay
+    if (!deepLinkLaunched) {
       onNotInstalled?.()
     }
   } finally {
-    await overlayDelay
+    await loadDelay
     isDeepLinkChecking.value = false
   }
 }
