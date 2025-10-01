@@ -51,7 +51,7 @@ watch(
 <template>
   <div
     v-if="qrCodeDataUrl"
-    class="relative flex w-full max-w-[220px] items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+    class="relative flex w-full max-w-[220px] items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 shadow-md"
   >
     <img :src="qrCodeDataUrl" alt="QR code" class="h-auto w-full" />
     <img
