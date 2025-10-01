@@ -127,7 +127,7 @@ const onLaunchTossInstructionDialog = () => {
         v-if="popupQrValue"
         class="mt-6 flex flex-col items-center gap-3"
       >
-        <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined"/>
+        <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
         <p v-if="popupQrHint" class="text-center text-xs text-slate-500">
           {{ popupQrHint }}
         </p>
