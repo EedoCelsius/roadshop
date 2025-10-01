@@ -1,4 +1,4 @@
-import { resolveDeepLink } from '@/payments/services/deepLinkService'
+import { launchDeepLink, resolveDeepLink } from '@/payments/services/deepLinkService'
 import type { PaymentActionContext, PaymentMethodAction } from '@/payments/workflows/types'
 
 const ensureKakaoDeepLink = async (context: PaymentActionContext): Promise<string | null> => {
@@ -23,32 +23,6 @@ const ensureKakaoDeepLink = async (context: PaymentActionContext): Promise<strin
   }
 }
 
-const launchKakaoDeepLink = async (
-  context: PaymentActionContext,
-  url: string,
-  { checkInstallation = true }: { checkInstallation?: boolean } = {},
-) => {
-  context.setDeepLinkChecking(true)
-
-  try {
-    const launchMonitor = context.waitForDeepLinkResult(1500)
-    const didNavigate = context.navigateToDeepLink(url)
-
-    if (!didNavigate) {
-      await launchMonitor
-      return
-    }
-
-    const didLaunch = await launchMonitor
-
-    if (!didLaunch && checkInstallation) {
-      context.showDeepLinkPopup('not-installed', 'kakao')
-    }
-  } finally {
-    context.setDeepLinkChecking(false)
-  }
-}
-
 const runKakaoWorkflow = async (context: PaymentActionContext) => {
   const deepLink = await ensureKakaoDeepLink(context)
 
@@ -56,13 +30,14 @@ const runKakaoWorkflow = async (context: PaymentActionContext) => {
     return
   }
 
-  const isMobile = context.isMobileDevice()
-
-  if (!isMobile) {
-    context.showDeepLinkPopup('not-mobile', 'kakao', { deepLinkUrl: deepLink })
-  }
-
-  await launchKakaoDeepLink(context, deepLink, { checkInstallation: isMobile })
+  await launchDeepLink(deepLink, {
+    timeoutMs: 1500,
+    waitForDeepLinkResult: context.waitForDeepLinkResult,
+    onCheckingChange: context.setDeepLinkChecking,
+    onNotInstalled: () => context.showDeepLinkPopup('not-installed', 'kakao'),
+    onNotMobile: () => context.showDeepLinkPopup('not-mobile', 'kakao', { deepLinkUrl: deepLink }),
+    isMobileDevice: context.isMobileDevice,
+  })
 }
 
 export const createKakaoAction = (context: PaymentActionContext): PaymentMethodAction => ({

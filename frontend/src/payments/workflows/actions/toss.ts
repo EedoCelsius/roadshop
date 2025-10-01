@@ -1,4 +1,4 @@
-import { resolveDeepLink } from '@/payments/services/deepLinkService'
+import { launchDeepLink, resolveDeepLink } from '@/payments/services/deepLinkService'
 import type { PaymentActionContext, PaymentMethodAction } from '@/payments/workflows/types'
 
 const ensureTossDeepLink = async (context: PaymentActionContext): Promise<string | null> => {
@@ -23,32 +23,6 @@ const ensureTossDeepLink = async (context: PaymentActionContext): Promise<string
   }
 }
 
-const launchTossDeepLink = async (
-  context: PaymentActionContext,
-  url: string,
-  { checkInstallation = true }: { checkInstallation?: boolean } = {},
-) => {
-  context.setDeepLinkChecking(true)
-
-  try {
-    const launchMonitor = context.waitForDeepLinkResult(2000)
-    const didNavigate = context.navigateToDeepLink(url)
-
-    if (!didNavigate) {
-      await launchMonitor
-      return
-    }
-
-    const didLaunch = await launchMonitor
-
-    if (!didLaunch && checkInstallation) {
-      context.showDeepLinkPopup('not-installed', 'toss')
-    }
-  } finally {
-    context.setDeepLinkChecking(false)
-  }
-}
-
 const runTossWorkflow = async (context: PaymentActionContext) => {
   const deepLink = await ensureTossDeepLink(context)
 
@@ -68,20 +42,17 @@ const runTossWorkflow = async (context: PaymentActionContext) => {
     return
   }
 
-  const isMobile = context.isMobileDevice()
-
-  if (!isMobile) {
-    context.showDeepLinkPopup('not-mobile', 'toss', { deepLinkUrl: deepLink })
-  }
-
   try {
-    await launchTossDeepLink(context, deepLink, { checkInstallation: isMobile })
+    await launchDeepLink(deepLink, {
+      timeoutMs: 2000,
+      waitForDeepLinkResult: context.waitForDeepLinkResult,
+      onCheckingChange: context.setDeepLinkChecking,
+      onNotInstalled: () => context.showDeepLinkPopup('not-installed', 'toss'),
+      onNotMobile: () => context.showDeepLinkPopup('not-mobile', 'toss', { deepLinkUrl: deepLink }),
+      isMobileDevice: context.isMobileDevice,
+    })
   } finally {
     context.completeTossInstructionDialog()
-  }
-
-  if (!isMobile) {
-    context.openUrlInNewTab(deepLink)
   }
 }
 

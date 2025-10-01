@@ -47,44 +47,63 @@ export const resolveDeepLink = (
   return createKakaoDeepLink(info)
 }
 
+let deepLinkPromiseResolver = () => {}
+window.addEventListener('blur', () => { deepLinkPromiseResolver(true) })
+document.addEventListener('visibilitychange', () => { if (document.hidden) { deepLinkPromiseResolver(true) } })
+
 export const waitForDeepLinkLaunch = (timeoutMs = 1500): Promise<boolean> => {
+  return new Promise<boolean>((resolve) => {
+    deepLinkPromiseResolver = resolve
+    window.setTimeout(() => { resolve(false) }, timeoutMs)
+  })
+}
+
+interface LaunchDeepLinkOptions {
+  timeoutMs: number
+  waitForDeepLinkResult: (timeoutMs: number) => Promise<boolean>
+  onCheckingChange?: (isChecking: boolean) => void
+  onNotInstalled?: () => void
+  onNotMobile?: () => void
+  isMobileDevice: () => boolean
+}
+
+const navigateToDeepLink = (url: string): boolean => {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
-    return Promise.resolve(true)
+    return false
   }
 
-  return new Promise<boolean>((resolve) => {
-    let resolved = false
-    let timerId: number | undefined
+  window.location.href = url
+  return true
+}
 
-    const finalize = (didLaunch: boolean) => {
-      if (resolved) {
-        return
-      }
+export const launchDeepLink = async (
+  url: string,
+  {
+    timeoutMs,
+    waitForDeepLinkResult,
+    onCheckingChange,
+    onNotInstalled,
+    onNotMobile,
+    isMobileDevice,
+  }: LaunchDeepLinkOptions,
+) => {
+  const isMobile = isMobileDevice()
 
-      resolved = true
-      if (timerId) {
-        window.clearTimeout(timerId)
-      }
-      window.removeEventListener('blur', handleBlur)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      resolve(didLaunch)
+  if (!isMobile) {
+    onNotMobile?.()
+  }
+
+  onCheckingChange?.(true)
+
+  try {
+    const launchMonitor = waitForDeepLinkResult(timeoutMs)
+    window.location.href = url
+    
+    const didLaunch = await launchMonitor
+    if (!didLaunch) {
+      onNotInstalled?.()
     }
-
-    const handleBlur = () => {
-      finalize(true)
-    }
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        finalize(true)
-      }
-    }
-
-    timerId = window.setTimeout(() => {
-      finalize(false)
-    }, timeoutMs)
-
-    window.addEventListener('blur', handleBlur)
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-  })
+  } finally {
+    onCheckingChange?.(false)
+  }
 }
