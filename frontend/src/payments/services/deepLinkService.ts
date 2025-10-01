@@ -2,6 +2,7 @@ import { ref } from 'vue'
 
 import type { DeepLinkProvider } from '@/payments/types'
 import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paymentInfoService'
+import { isMobileDevice } from '@/shared/utils/device'
 
 export const createTossDeepLink = (info: TossPaymentInfo): string => {
   const params = new URLSearchParams({
@@ -57,25 +58,19 @@ export const isDeepLinkChecking = ref(false)
 
 interface LaunchDeepLinkOptions {
   timeoutMs: number
-  waitForDeepLinkResult: (timeoutMs: number) => Promise<boolean>
   onNotInstalled?: () => void
   onNotMobile?: () => void
-  isMobileDevice: () => boolean
 }
 
 export const launchDeepLink = async (
   url: string,
   {
     timeoutMs,
-    waitForDeepLinkResult,
     onNotInstalled,
     onNotMobile,
-    isMobileDevice,
   }: LaunchDeepLinkOptions,
 ) => {
-  const isMobile = isMobileDevice()
-
-  if (!isMobile) {
+  if (!isMobileDevice()) {
     onNotMobile?.()
   }
 
