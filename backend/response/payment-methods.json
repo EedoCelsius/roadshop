@@ -1,0 +1,26 @@
+{
+  "methods": [
+    {
+      "id": "transfer",
+      "supportedCurrencies": ["KRW"]
+    },
+    {
+      "id": "toss",
+      "supportedCurrencies": ["KRW"],
+      "deepLinkProvider": "toss"
+    },
+    {
+      "id": "kakao",
+      "supportedCurrencies": ["KRW"],
+      "deepLinkProvider": "kakao"
+    },
+    {
+      "id": "alipay",
+      "supportedCurrencies": ["CNY"]
+    },
+    {
+      "id": "card",
+      "supportedCurrencies": ["KRW", "USD", "EUR", "CNY", "JPY"]
+    }
+  ]
+}

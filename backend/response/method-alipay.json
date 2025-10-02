@@ -1,0 +1,9 @@
+{
+  "id": "alipay",
+  "type": "url",
+  "payload": {
+    "url": {
+      "CNY": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01"
+    }
+  }
+}

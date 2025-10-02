@@ -3,7 +3,7 @@ import type { PaymentActionContext, PaymentMethodAction } from '@/payments/workf
 const ensureTransferInfoReady = async (
   context: PaymentActionContext,
 ): Promise<boolean> => {
-  const loaded = await context.ensurePaymentInfoLoaded()
+  const loaded = await context.ensureMethodInfoLoaded('transfer')
 
   if (!loaded) {
     return false

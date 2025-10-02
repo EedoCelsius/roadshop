@@ -3,83 +3,93 @@ import { defineStore } from 'pinia'
 
 import type { DeepLinkProvider } from '@/payments/types'
 import {
-  loadPaymentInfo,
-  resolveDeepLinkPayload,
-  type PaymentInfo,
-  type TransferPaymentInfo,
-  type TossPaymentInfo,
+  fetchPaymentMethodDetail,
   type KakaoPaymentInfo,
   type MethodUrlInfo,
+  type PaymentMethodDetail,
+  type TossPaymentInfo,
+  type TransferPaymentInfo,
 } from '@/payments/services/paymentInfoService'
 
-let pendingRequest: Promise<boolean> | null = null
+const pendingRequests = new Map<string, Promise<boolean>>()
+
+const cloneRecord = <T>(record: Record<string, T>, key: string, value: T): Record<string, T> => ({
+  ...record,
+  [key]: value,
+})
 
 export const usePaymentInfoStore = defineStore('payment-info', () => {
-  const info = ref<PaymentInfo | null>(null)
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
+  const details = ref<Record<string, PaymentMethodDetail | undefined>>({})
+  const loadingState = ref<Record<string, boolean>>({})
+  const errors = ref<Record<string, string | null>>({})
 
-  const fetchPaymentInfo = async (): Promise<boolean> => {
-    if (pendingRequest) {
-      return pendingRequest
+  const setLoading = (methodId: string, value: boolean) => {
+    loadingState.value = cloneRecord(loadingState.value, methodId, value)
+  }
+
+  const setError = (methodId: string, value: string | null) => {
+    errors.value = cloneRecord(errors.value, methodId, value)
+  }
+
+  const setDetail = (methodId: string, detail: PaymentMethodDetail | undefined) => {
+    details.value = cloneRecord(details.value, methodId, detail)
+  }
+
+  const fetchMethodInfo = async (methodId: string): Promise<boolean> => {
+    if (pendingRequests.has(methodId)) {
+      return pendingRequests.get(methodId) as Promise<boolean>
     }
 
-    pendingRequest = (async () => {
-      isLoading.value = true
-      error.value = null
+    const request = (async () => {
+      setLoading(methodId, true)
+      setError(methodId, null)
 
       try {
-        info.value = await loadPaymentInfo()
+        const detail = await fetchPaymentMethodDetail(methodId)
+        setDetail(methodId, detail)
         return true
       } catch (err) {
-        error.value = err instanceof Error ? err.message : 'Unknown error occurred'
+        setDetail(methodId, undefined)
+        setError(methodId, err instanceof Error ? err.message : 'Unknown error occurred')
         return false
       } finally {
-        isLoading.value = false
-        pendingRequest = null
+        setLoading(methodId, false)
+        pendingRequests.delete(methodId)
       }
     })()
 
-    return pendingRequest
+    pendingRequests.set(methodId, request)
+    return request
   }
 
-  const ensureLoaded = async (): Promise<boolean> => {
-    if (info.value) {
+  const ensureMethodInfo = async (methodId: string): Promise<boolean> => {
+    if (details.value[methodId]) {
       return true
     }
 
-    return fetchPaymentInfo()
+    return fetchMethodInfo(methodId)
   }
 
+  const getDetail = (methodId: string): PaymentMethodDetail | null => details.value[methodId] ?? null
+
   const transferInfo = computed<TransferPaymentInfo | null>(() => {
-    const payload = info.value?.transfer
-    return payload ? (payload as TransferPaymentInfo) : null
+    const detail = details.value.transfer
+    return detail && detail.type === 'transfer' ? detail.data : null
   })
 
   const tossInfo = computed<TossPaymentInfo | null>(() => {
-    const payload = info.value?.toss
-    return payload ? (payload as TossPaymentInfo) : null
+    const detail = details.value.toss
+    return detail && detail.type === 'toss' ? detail.data : null
   })
 
   const kakaoInfo = computed<KakaoPaymentInfo | null>(() => {
-    const payload = info.value?.kakao
-    return payload ? (payload as KakaoPaymentInfo) : null
+    const detail = details.value.kakao
+    return detail && detail.type === 'kakao' ? detail.data : null
   })
 
-  const getPayload = (methodId: string): unknown => info.value?.[methodId] ?? null
-
-  const isMethodUrlInfo = (payload: unknown): payload is MethodUrlInfo =>
-    typeof payload === 'object' &&
-    payload !== null &&
-    'url' in payload &&
-    typeof (payload as { url?: unknown }).url === 'object' &&
-    (payload as { url?: unknown }).url !== null
-
-  const hasMethodPayload = (methodId: string): boolean => getPayload(methodId) !== null
-
   const getMethodInfo = (methodId: string): MethodUrlInfo | null => {
-    const payload = getPayload(methodId)
-    return isMethodUrlInfo(payload) ? payload : null
+    const detail = getDetail(methodId)
+    return detail && detail.type === 'url' ? detail.data : null
   }
 
   const getMethodUrl = (methodId: string, currency?: string | null): string | null => {
@@ -99,21 +109,33 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     return firstUrl ?? null
   }
 
-  const getDeepLinkInfo = (provider: DeepLinkProvider): TossPaymentInfo | KakaoPaymentInfo | null =>
-    resolveDeepLinkPayload(info.value, provider)
+  const getDeepLinkInfo = (provider: DeepLinkProvider): TossPaymentInfo | KakaoPaymentInfo | null => {
+    if (provider === 'toss') {
+      return tossInfo.value
+    }
+
+    if (provider === 'kakao') {
+      return kakaoInfo.value
+    }
+
+    return null
+  }
+
+  const isMethodLoading = (methodId: string): boolean => Boolean(loadingState.value[methodId])
 
   return {
-    info,
-    isLoading,
-    error,
+    details,
+    loadingState,
+    errors,
     transferInfo,
     tossInfo,
     kakaoInfo,
-    ensureLoaded,
-    fetchPaymentInfo,
+    ensureMethodInfo,
+    fetchMethodInfo,
     getDeepLinkInfo,
     getMethodInfo,
     getMethodUrl,
-    hasMethodPayload,
+    isMethodLoading,
+    getDetail,
   }
 })

@@ -1,48 +1,27 @@
 {
-  "hero": {
-    "kicker": "スティッチモン ロードショップ",
-    "title": "スティッチモンのご注文をお好みの方法でお支払いください",
-    "badge": "公式オンライン決済",
-    "description": "ここはスティッチモン ロードショップの公式オンライン決済ページです。現在は韓国ウォン決済にKakao送金をご利用いただけます。海外のファン向けの手段も順次追加していきます。"
-  },
-  "highlights": {
-    "instant": {
-      "title": "即時確認",
-      "description": "Kakao送金でスティッチモンのご注文を数秒で決済し、その場で確認できます。"
-    },
-    "guidance": {
-      "title": "わかりやすい案内",
-      "description": "利用可能な各決済方法をステップごとにご案内します。"
-    },
-    "coverage": {
-      "title": "グローバル展開",
-      "description": "海外電子ウォレットやカード決済を順次追加し、世界のスティッチモンファンが安心して決済できるようにします。"
-    }
-  },
   "sections": {
     "krw": {
-      "title": "KRW 決済",
-      "description": "スティッチモン ロードショップのKRW注文向けの即時決済です。"
+      "title": "KRW 決済"
     },
     "global": {
-      "title": "グローバル決済",
-      "description": "海外のスティッチモンファン向けのオプションをさらに充実させています。"
+      "title": "グローバル決済"
     }
   },
   "status": {
-    "available": "利用可能",
-    "comingSoon": "近日公開"
+    "empty": "現在利用できる決済方法はありません。"
   },
   "card": {
-    "preparing": "まもなくご利用いただけるよう準備を進めています。",
-    "selectedCurrency": "選択した通貨: {currency}",
     "selectCurrencyPrompt": "続行するには通貨を選択してください。"
   },
   "footer": {
-    "message": "© {year} スティッチモン ロードショップ。公式オンライン決済センターです。"
+    "message": "© {year} 決済センター。どこからでもシームレスなお支払いを。"
   },
   "loading": {
-    "deepLink": "お支払いアプリを開いています…"
+    "deepLink": "お支払いアプリを開いています…",
+    "methods": "決済方法を読み込み中です…"
+  },
+  "errors": {
+    "loadMethods": "決済方法を読み込めませんでした。再度お試しください。"
   },
   "popups": {
     "deepLink": {
@@ -75,16 +54,10 @@
   "dialog": {
     "close": "閉じる"
   },
-  "accountInfo": {
-    "bank": "銀行",
-    "account": "口座番号",
-    "holder": "口座名義"
-  },
   "tossInstruction": {
     "title": "Tossで送金",
     "description": "送金に必要な口座情報を<strong>自動でコピー</strong>しました。",
     "launchCta": "Tossへ移動",
-    "launching": "Tossを起動しています...",
     "reopen": "Tossをもう一度開く"
   },
   "transferPopup": {
@@ -108,14 +81,8 @@
       "name": "Toss送金",
       "cta": "Toss送金を開く"
     },
-    "naver": {
-      "name": "Naver Pay"
-    },
     "alipay": {
       "name": "Alipay（アリペイ）"
-    },
-    "paypal": {
-      "name": "PayPal（ペイパル）"
     },
     "card": {
       "name": "クレジットカード"

@@ -2,56 +2,52 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import { getMethodIcons } from '@icons/methods'
-import type { PaymentMethod, PaymentMethodWithCurrencies } from '@/payments/types'
-import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
-
-const basePaymentMethods: PaymentMethod[] = [
-  { id: 'transfer', icons: getMethodIcons('transfer') },
-  { id: 'toss', icons: getMethodIcons('toss'), deepLinkProvider: 'toss' },
-  { id: 'kakao', icons: getMethodIcons('kakao'), deepLinkProvider: 'kakao' },
-  { id: 'naver', icons: getMethodIcons('naver') },
-  { id: 'alipay', icons: getMethodIcons('alipay') },
-  { id: 'paypal', icons: getMethodIcons('paypal') },
-  { id: 'card', icons: getMethodIcons('card') },
-]
+import type { PaymentMethodWithCurrencies } from '@/payments/types'
+import {
+  fetchAvailablePaymentMethods,
+  type AvailablePaymentMethod,
+} from '@/payments/services/paymentInfoService'
 
 type PaymentMethodWithState = PaymentMethodWithCurrencies
 
 export const usePaymentStore = defineStore('payment', () => {
-  const paymentInfoStore = usePaymentInfoStore()
-  void paymentInfoStore.ensureLoaded()
+  const methods = ref<PaymentMethodWithState[]>([])
+  const isLoading = ref(false)
+  const error = ref<string | null>(null)
 
-  const resolveSupportedCurrencies = (methodId: string): string[] => {
-    const methodInfo = paymentInfoStore.getMethodInfo(methodId)
-
-    if (methodInfo?.url) {
-      const currencies = Object.keys(methodInfo.url)
-      return currencies.length ? currencies : ['KRW']
+  const mapAvailableMethod = (entry: AvailablePaymentMethod): PaymentMethodWithState | null => {
+    if (!entry.supportedCurrencies.length) {
+      return null
     }
 
-    return ['KRW']
+    const icons = getMethodIcons(entry.id)
+
+    return {
+      id: entry.id,
+      icons,
+      deepLinkProvider: entry.deepLinkProvider,
+      supportedCurrencies: entry.supportedCurrencies,
+    }
   }
 
-  const methods = computed<PaymentMethodWithState[]>(() =>
-    basePaymentMethods
-      .map((method) => {
-        if (!paymentInfoStore.hasMethodPayload(method.id)) {
-          return null
-        }
+  const loadMethods = async () => {
+    isLoading.value = true
+    error.value = null
 
-        const supportedCurrencies = resolveSupportedCurrencies(method.id)
+    try {
+      const availableMethods = await fetchAvailablePaymentMethods()
+      methods.value = availableMethods
+        .map(mapAvailableMethod)
+        .filter((method): method is PaymentMethodWithState => method !== null)
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to load payment methods'
+      methods.value = []
+    } finally {
+      isLoading.value = false
+    }
+  }
 
-        if (supportedCurrencies.length === 0) {
-          return null
-        }
-
-        return {
-          ...method,
-          supportedCurrencies,
-        }
-      })
-      .filter((method): method is PaymentMethodWithState => method !== null),
-  )
+  void loadMethods()
 
   const selectedMethodId = ref<string | null>(null)
   const selectedCurrency = ref<string | null>(null)
@@ -107,6 +103,8 @@ export const usePaymentStore = defineStore('payment', () => {
 
   return {
     methods,
+    isLoading,
+    error,
     selectedMethodId,
     selectedMethod,
     selectedCurrency,
@@ -117,5 +115,6 @@ export const usePaymentStore = defineStore('payment', () => {
     getMethodById: findMethodById,
     getSupportedCurrencies: (methodId: string) =>
       findMethodById(methodId)?.supportedCurrencies ?? [],
+    reload: loadMethods,
   }
 })

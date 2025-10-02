@@ -1,48 +1,27 @@
 {
-  "hero": {
-    "kicker": "스티치몬 로드샵",
-    "title": "스티치몬 주문을 원하는 방식으로 결제해 보세요",
-    "badge": "공식 온라인 결제",
-    "description": "이곳은 스티치몬 로드샵 공식 온라인 결제 창구예요. 지금은 카카오송금으로 원화 결제를 도와드리고, 해외 고객을 위한 다양한 결제 수단도 순차적으로 준비하고 있어요."
-  },
-  "highlights": {
-    "instant": {
-      "title": "즉시 확인",
-      "description": "카카오송금으로 몇 초 만에 스티치몬 로드샵 주문을 결제하고 바로 확인하세요."
-    },
-    "guidance": {
-      "title": "친절한 안내",
-      "description": "각 결제 수단별 이용 방법을 단계별로 안내해 드려요."
-    },
-    "coverage": {
-      "title": "글로벌 준비",
-      "description": "해외 전자지갑과 카드 결제를 연동해 전 세계 스티치몬 팬도 편하게 결제하실 수 있도록 준비 중이에요."
-    }
-  },
   "sections": {
     "krw": {
-      "title": "KRW 결제",
-      "description": "스티치몬 로드샵 원화 주문을 바로 결제할 수 있는 수단이에요."
+      "title": "KRW 결제"
     },
     "global": {
-      "title": "글로벌 결제",
-      "description": "해외 스티치몬 고객을 위한 결제 옵션을 넓혀 가고 있어요."
+      "title": "글로벌 결제"
     }
   },
   "status": {
-    "available": "바로 이용 가능",
-    "comingSoon": "준비 중"
+    "empty": "현재 사용 가능한 결제 수단이 없습니다."
   },
   "card": {
-    "preparing": "곧 만나보실 수 있도록 마지막 손질을 하고 있어요.",
-    "selectedCurrency": "선택한 통화: {currency}",
     "selectCurrencyPrompt": "진행하려면 통화를 선택해 주세요."
   },
   "footer": {
-    "message": "© {year} 스티치몬 로드샵. 공식 온라인 결제 센터입니다."
+    "message": "© {year} 결제 센터. 어디서나 간편한 체크아웃을 제공합니다."
   },
   "loading": {
-    "deepLink": "결제 앱을 여는 중이에요…"
+    "deepLink": "결제 앱을 여는 중이에요…",
+    "methods": "결제 수단을 불러오는 중이에요…"
+  },
+  "errors": {
+    "loadMethods": "결제 수단을 불러오지 못했어요. 다시 시도해 주세요."
   },
   "popups": {
     "deepLink": {
@@ -75,16 +54,10 @@
   "dialog": {
     "close": "닫기"
   },
-  "accountInfo": {
-    "bank": "은행",
-    "account": "계좌번호",
-    "holder": "계좌주"
-  },
   "tossInstruction": {
     "title": "토스로 송금하기",
     "description": "송금에 필요한 계좌 정보를 <strong>자동으로 복사</strong>해 두었어요.",
     "launchCta": "토스로 이동하기",
-    "launching": "토스를 실행하는 중...",
     "reopen": "토스 다시열기"
   },
   "transferPopup": {
@@ -108,14 +81,8 @@
       "name": "토스송금",
       "cta": "토스송금 열기"
     },
-    "naver": {
-      "name": "네이버페이"
-    },
     "alipay": {
       "name": "알리페이"
-    },
-    "paypal": {
-      "name": "페이팔"
     },
     "card": {
       "name": "신용카드"

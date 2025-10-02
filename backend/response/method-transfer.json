@@ -1,0 +1,21 @@
+{
+  "id": "transfer",
+  "type": "transfer",
+  "payload": {
+    "amount": {
+      "krw": 10000
+    },
+    "account": [
+      {
+        "bank": "KB국민",
+        "number": "93800200352361",
+        "holder": "강일준"
+      },
+      {
+        "bank": "우리",
+        "number": "1002658182698",
+        "holder": "강일준"
+      }
+    ]
+  }
+}

@@ -7,8 +7,8 @@ export type DeepLinkPopupOptions = {
 
 export type PaymentActionContext = {
   openTransferDialog: () => void
-  openMethodUrl: (method: PaymentMethod, currency: string | null) => void
-  ensurePaymentInfoLoaded: () => Promise<boolean>
+  openMethodUrl: (method: PaymentMethod, currency: string | null) => Promise<void>
+  ensureMethodInfoLoaded: (methodId: string) => Promise<boolean>
   getDeepLinkInfo: (provider: DeepLinkProvider) => TossPaymentInfo | KakaoPaymentInfo | null
   showDeepLinkPopup: (
     type: DeepLinkPopupType,

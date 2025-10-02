@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const LOCALES = [
@@ -14,7 +14,7 @@ export type Messages = {
   [key: string]: string | Messages
 }
 
-const LOCALE_STORAGE_KEY = 'roadshop:locale'
+const LOCALE_QUERY_KEY = 'lang'
 
 const localeLoaders: Record<Locale, () => Promise<Messages>> = {
   en: () => import('./messages/en.json').then((module) => module.default as Messages),
@@ -29,28 +29,36 @@ let pendingLoad: Promise<Messages> | null = null
 const isSupportedLocale = (value: string): value is Locale =>
   LOCALES.some((locale) => locale.code === value)
 
-const readStoredLocale = (): Locale | undefined => {
-  if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+const readLocaleFromQuery = (): Locale | undefined => {
+  if (typeof window === 'undefined') {
     return undefined
   }
 
   try {
-    const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY)
-    return stored && isSupportedLocale(stored) ? stored : undefined
+    const url = new URL(window.location.href)
+    const queryLocale = url.searchParams.get(LOCALE_QUERY_KEY)
+
+    if (queryLocale && isSupportedLocale(queryLocale)) {
+      return queryLocale
+    }
+
+    return undefined
   } catch {
     return undefined
   }
 }
 
-const persistLocale = (value: Locale) => {
-  if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+const updateLocaleQuery = (value: Locale) => {
+  if (typeof window === 'undefined') {
     return
   }
 
   try {
-    window.localStorage.setItem(LOCALE_STORAGE_KEY, value)
+    const url = new URL(window.location.href)
+    url.searchParams.set(LOCALE_QUERY_KEY, value)
+    window.history.replaceState({}, '', url.toString())
   } catch {
-    // Ignore storage errors (e.g., quota exceeded, privacy mode)
+    // Ignore navigation errors (e.g., unsupported history API)
   }
 }
 
@@ -60,9 +68,9 @@ const matchLocale = (language: string): Locale | undefined => {
 }
 
 const resolveInitialLocale = (): Locale => {
-  const stored = readStoredLocale()
-  if (stored) {
-    return stored
+  const fromQuery = readLocaleFromQuery()
+  if (fromQuery) {
+    return fromQuery
   }
 
   if (typeof navigator === 'undefined') {
@@ -136,13 +144,6 @@ export const useI18nStore = defineStore('i18n', () => {
     }
   }
 
-  const availableLocales = computed(() =>
-    LOCALES.map((entry) => ({
-      ...entry,
-      active: entry.code === locale.value,
-    })),
-  )
-
   const initialize = async () => {
     await ensureFallbackLoaded()
     await setActiveLocale(locale.value)
@@ -154,7 +155,7 @@ export const useI18nStore = defineStore('i18n', () => {
     }
 
     locale.value = next
-    persistLocale(next)
+    updateLocaleQuery(next)
     await setActiveLocale(next)
   }
 
@@ -178,7 +179,6 @@ export const useI18nStore = defineStore('i18n', () => {
 
   return {
     locale,
-    availableLocales,
     initialize,
     setLocale,
     t,
