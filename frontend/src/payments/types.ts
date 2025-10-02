@@ -7,10 +7,12 @@ export type PaymentIcon = {
 
 export type PaymentMethod = {
   id: string
-  category: 'KRW' | 'GLOBAL'
-  url?: string
   icons?: PaymentIcon[]
   deepLinkProvider?: DeepLinkProvider
 }
 
-export type PaymentCategory = PaymentMethod['category']
+export type PaymentMethodWithCurrencies = PaymentMethod & {
+  supportedCurrencies: string[]
+}
+
+export type PaymentCategory = 'KRW' | 'GLOBAL'

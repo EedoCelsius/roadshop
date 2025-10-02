@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { getFirmIcon } from '@icons/firms'
+
 interface Props {
   bankName: string
   accountNo: string
@@ -9,29 +11,10 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const firmIcons = import.meta.glob('@icons/firms/*.svg', {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>
-
-const firmIconMap = Object.entries(firmIcons).reduce<Record<string, string>>((acc, [path, value]) => {
-  const segments = path.split('/')
-  const filename = segments[segments.length - 1] ?? ''
-  const name = filename.replace('.svg', '')
-  acc[name] = value
-  return acc
-}, {})
-
 const normalizedBankName = computed(() => props.bankName.trim())
 
 const bankIcon = computed(() => {
-  const direct = firmIconMap[normalizedBankName.value]
-  if (direct) {
-    return direct
-  }
-
-  const compact = normalizedBankName.value.replace(/\s+/g, '')
-  return firmIconMap[compact] ?? null
+  return getFirmIcon(normalizedBankName.value) ?? null
 })
 
 const bankMonogram = computed(() => {

@@ -14,14 +14,18 @@ import { useLocalizedSections } from '@/payments/composables/useLocalizedSection
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
 import { useI18nStore } from '@/localization/store'
-import { paymentMethods } from '@/payments/data/method'
-import type { DeepLinkProvider, PaymentIcon } from '@/payments/types'
+import type {
+  DeepLinkProvider,
+  PaymentCategory,
+  PaymentIcon,
+  PaymentMethodWithCurrencies,
+} from '@/payments/types'
 
 const paymentStore = usePaymentStore()
 const paymentInteractionStore = usePaymentInteractionStore()
 const i18nStore = useI18nStore()
 
-const { selectedMethod, isCurrencySelectorOpen } = storeToRefs(paymentStore)
+const { methods, selectedMethod, isCurrencySelectorOpen } = storeToRefs(paymentStore)
 const {
   isPopupVisible,
   popupContent,
@@ -34,7 +38,10 @@ const {
   tossAccountInfo,
 } = storeToRefs(paymentInteractionStore)
 
-const { sections } = useLocalizedSections()
+const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
+  method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
+
+const { sections } = useLocalizedSections(categorizeMethod)
 
 const localizedSections = computed(() =>
   sections.value.map((section) => ({
@@ -61,15 +68,17 @@ const popupQrHint = computed(() => {
 
   return translation === key ? null : translation
 })
-const deepLinkProviderIcons = paymentMethods.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
-  if (method.deepLinkProvider && method.icons?.[0]) {
-    map[method.deepLinkProvider] = method.icons[0]
-  }
+const deepLinkProviderIcons = computed(() =>
+  methods.value.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
+    if (method.deepLinkProvider && method.icons?.[0]) {
+      map[method.deepLinkProvider] = method.icons[0]
+    }
 
-  return map
-}, {})
+    return map
+  }, {}),
+)
 const popupQrIcon = computed(() =>
-  popupContent.value ? deepLinkProviderIcons[popupContent.value.provider] ?? null : null,
+  popupContent.value ? deepLinkProviderIcons.value[popupContent.value.provider] ?? null : null,
 )
 
 const onSelectMethod = (methodId: string) => {
