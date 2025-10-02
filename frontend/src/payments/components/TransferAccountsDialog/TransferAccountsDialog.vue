@@ -6,6 +6,7 @@ import { useI18nStore } from '@/localization/store'
 import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
+import { getFirmIcon } from '@icons/firms'
 import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
@@ -25,19 +26,6 @@ const { locale } = storeToRefs(i18nStore)
 
 const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
   useTransferCopyState()
-
-const firmIcons = import.meta.glob('@icons/firms/*.svg', {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>
-
-const firmIconMap = Object.entries(firmIcons).reduce<Record<string, string>>((acc, [path, value]) => {
-  const segments = path.split('/')
-  const filename = segments[segments.length - 1] ?? ''
-  const name = filename.replace('.svg', '')
-  acc[name] = value
-  return acc
-}, {})
 
 const localeNumberFormats: Record<string, string> = {
   en: 'en-US',
@@ -79,7 +67,7 @@ const copiedNumberLabel = computed(() => i18nStore.t('transferPopup.copiedNumber
 const copyAllButtonLabel = computed(() => i18nStore.t('transferPopup.copyAllButton'))
 const copiedAllButtonLabel = computed(() => i18nStore.t('transferPopup.copiedAllButton'))
 
-const getIconForBank = (bank: string) => firmIconMap[bank] ?? null
+const getIconForBank = (bank: string) => getFirmIcon(bank)
 
 const copyTransferDetails = async (account: TransferAccount) => {
   const amountText = `${formattedAmountForCopy.value}원`
