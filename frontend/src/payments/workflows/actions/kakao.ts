@@ -2,7 +2,7 @@ import { launchDeepLink, resolveDeepLink } from '@/payments/services/deepLinkSer
 import type { PaymentActionContext, PaymentMethodAction } from '@/payments/workflows/types'
 
 const ensureKakaoDeepLink = async (context: PaymentActionContext): Promise<string | null> => {
-  const loaded = await context.ensurePaymentInfoLoaded()
+  const loaded = await context.ensureMethodInfoLoaded('kakao')
 
   if (!loaded) {
     return null

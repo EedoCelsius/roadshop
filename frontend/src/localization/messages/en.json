@@ -1,37 +1,18 @@
 {
-  "hero": {
-    "kicker": "Stitchmon Roadshop",
-    "title": "Pay for your Stitchmon order however you like",
-    "badge": "Official online checkout",
-    "description": "Complete your Stitchmon Roadshop order right here. Kakao Transfer covers KRW payments today, and we're rolling out additional international options so every Stitchmon fan can check out smoothly."
-  },
-  "highlights": {
-    "instant": {
-      "title": "Instant confirmation",
-      "description": "Pay in KRW with Kakao Transfer and wrap up your Stitchmon Roadshop order in seconds."
-    },
-    "guidance": {
-      "title": "Clear guidance",
-      "description": "Follow step-by-step instructions for every payment option available for Stitchmon orders."
-    },
-    "coverage": {
-      "title": "Global expansion roadmap",
-      "description": "International wallets and cards are on the way, so Stitchmon customers abroad can pay with ease."
-    }
-  },
   "sections": {
     "krw": {
       "title": "KRW payments",
-      "description": "Ready-to-use options for Stitchmon Roadshop orders priced in Korean won."
+      "description": "Ready-to-use options for paying in Korean won."
     },
     "global": {
       "title": "Global payments",
-      "description": "Growing choices for Stitchmon fans around the world."
+      "description": "Growing choices for international customers."
     }
   },
   "status": {
     "available": "Available now",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "empty": "No payment methods are available right now."
   },
   "card": {
     "preparing": "We are putting the finishing touches on this option.",
@@ -39,10 +20,14 @@
     "selectCurrencyPrompt": "Choose a currency to continue."
   },
   "footer": {
-    "message": "© {year} Stitchmon Roadshop. The official online payment center for your orders."
+    "message": "© {year} Payment Center. Seamless checkout anywhere."
   },
   "loading": {
-    "deepLink": "Opening the app so you can continue your payment…"
+    "deepLink": "Opening the app so you can continue your payment…",
+    "methods": "Loading payment methods…"
+  },
+  "errors": {
+    "loadMethods": "We couldn't load the payment methods. Please try again."
   },
   "popups": {
     "deepLink": {

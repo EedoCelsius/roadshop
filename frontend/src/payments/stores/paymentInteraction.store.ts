@@ -31,11 +31,17 @@ const buildWorkflowContext = (
   setTossDeepLinkUrl: (url: string | null) => void,
 ): PaymentActionContext => ({
   openTransferDialog,
-  openMethodUrl: (method: PaymentMethod, currency: string | null) => {
+  openMethodUrl: async (method: PaymentMethod, currency: string | null) => {
+    const ready = await paymentInfoStore.ensureMethodInfo(method.id)
+
+    if (!ready) {
+      return
+    }
+
     const url = paymentInfoStore.getMethodUrl(method.id, currency ?? undefined)
     openUrlInNewTab(url)
   },
-  ensurePaymentInfoLoaded: paymentInfoStore.ensureLoaded,
+  ensureMethodInfoLoaded: paymentInfoStore.ensureMethodInfo,
   getDeepLinkInfo: paymentInfoStore.getDeepLinkInfo,
   showDeepLinkPopup: showPopup,
   openUrlInNewTab,
@@ -51,8 +57,6 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const i18nStore = useI18nStore()
   const { isCurrencySelectorOpen, selectedCurrency, selectedMethod } = storeToRefs(paymentStore)
   const { tossInfo } = storeToRefs(paymentInfoStore)
-
-  void paymentInfoStore.ensureLoaded()
 
   const popupContent = ref<{
     type: DeepLinkPopupType

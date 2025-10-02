@@ -25,7 +25,8 @@ const paymentStore = usePaymentStore()
 const paymentInteractionStore = usePaymentInteractionStore()
 const i18nStore = useI18nStore()
 
-const { methods, selectedMethod, isCurrencySelectorOpen } = storeToRefs(paymentStore)
+const { methods, selectedMethod, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
+  storeToRefs(paymentStore)
 const {
   isPopupVisible,
   popupContent,
@@ -48,6 +49,10 @@ const localizedSections = computed(() =>
     section,
     title: i18nStore.t(`sections.${section.category.toLowerCase()}.title`),
   })),
+)
+
+const hasVisibleMethods = computed(() =>
+  localizedSections.value.some((entry) => entry.section.methods.length > 0),
 )
 
 const selectedMethodName = computed(() =>
@@ -116,13 +121,34 @@ const onLaunchTossInstructionDialog = () => {
 
 <template>
   <div class="flex flex-col gap-8">
-    <Section
-      v-for="(entry, index) in localizedSections"
-      :key="`${entry.section.category}-${index}`"
-      :section="entry.section"
-      :title="entry.title"
-      @select="onSelectMethod"
-    />
+    <div
+      v-if="methodsError"
+      class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+      role="alert"
+    >
+      {{ i18nStore.t('errors.loadMethods') }}
+    </div>
+    <div
+      v-else-if="!hasVisibleMethods && areMethodsLoading"
+      class="flex justify-center py-12"
+    >
+      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('loading.methods') }}</span>
+    </div>
+    <div
+      v-else-if="!hasVisibleMethods"
+      class="flex justify-center py-12"
+    >
+      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('status.empty') }}</span>
+    </div>
+    <template v-else>
+      <Section
+        v-for="(entry, index) in localizedSections"
+        :key="`${entry.section.category}-${index}`"
+        :section="entry.section"
+        :title="entry.title"
+        @select="onSelectMethod"
+      />
+    </template>
 
     <DialogCloseFull
       v-if="popupContent && isNotMobilePopup"
