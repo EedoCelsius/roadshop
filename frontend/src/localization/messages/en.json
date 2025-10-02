@@ -1,22 +1,16 @@
 {
   "sections": {
     "krw": {
-      "title": "KRW payments",
-      "description": "Ready-to-use options for paying in Korean won."
+      "title": "KRW payments"
     },
     "global": {
-      "title": "Global payments",
-      "description": "Growing choices for international customers."
+      "title": "Global payments"
     }
   },
   "status": {
-    "available": "Available now",
-    "comingSoon": "Coming soon",
     "empty": "No payment methods are available right now."
   },
   "card": {
-    "preparing": "We are putting the finishing touches on this option.",
-    "selectedCurrency": "Selected currency: {currency}",
     "selectCurrencyPrompt": "Choose a currency to continue."
   },
   "footer": {
@@ -60,16 +54,10 @@
   "dialog": {
     "close": "Close"
   },
-  "accountInfo": {
-    "bank": "Bank",
-    "account": "Account number",
-    "holder": "Account holder"
-  },
   "tossInstruction": {
     "title": "Send with Toss",
     "description": "We've <strong>automatically copied</strong> the account details you need for Toss.",
     "launchCta": "Go to Toss",
-    "launching": "Opening Toss...",
     "reopen": "Reopen Toss"
   },
   "transferPopup": {
@@ -93,14 +81,8 @@
       "name": "Toss Transfer",
       "cta": "Open Toss"
     },
-    "naver": {
-      "name": "Naver Pay"
-    },
     "alipay": {
       "name": "Alipay"
-    },
-    "paypal": {
-      "name": "PayPal"
     },
     "card": {
       "name": "Credit Card"

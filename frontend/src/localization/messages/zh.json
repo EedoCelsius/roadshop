@@ -1,22 +1,16 @@
 {
   "sections": {
     "krw": {
-      "title": "韩元支付",
-      "description": "适用于韩元支付的即时选项。"
+      "title": "韩元支付"
     },
     "global": {
-      "title": "全球支付",
-      "description": "我们持续扩展，为全球客户提供更多选择。"
+      "title": "全球支付"
     }
   },
   "status": {
-    "available": "立即可用",
-    "comingSoon": "即将推出",
     "empty": "目前没有可用的支付方式。"
   },
   "card": {
-    "preparing": "我们正在全力准备，敬请期待。",
-    "selectedCurrency": "已选择的货币：{currency}",
     "selectCurrencyPrompt": "请选择货币以继续。"
   },
   "footer": {
@@ -60,16 +54,10 @@
   "dialog": {
     "close": "关闭"
   },
-  "accountInfo": {
-    "bank": "银行",
-    "account": "账号",
-    "holder": "账户名"
-  },
   "tossInstruction": {
     "title": "使用 Toss 转账",
     "description": "已将转账所需的账户信息<strong>自动复制</strong>好了。",
     "launchCta": "前往 Toss",
-    "launching": "正在打开 Toss...",
     "reopen": "重新打开 Toss"
   },
   "transferPopup": {
@@ -93,14 +81,8 @@
       "name": "Toss 转账",
       "cta": "打开 Toss"
     },
-    "naver": {
-      "name": "Naver Pay"
-    },
     "alipay": {
       "name": "支付宝"
-    },
-    "paypal": {
-      "name": "PayPal"
     },
     "card": {
       "name": "信用卡"
