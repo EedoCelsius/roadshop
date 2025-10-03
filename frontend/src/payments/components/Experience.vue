@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
@@ -28,28 +27,9 @@ const i18nStore = useI18nStore()
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
 
-const router = useRouter()
-const route = useRoute()
-
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
 const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
-
-const dialogRouteMethods = new Set(['kakao', 'toss', 'transfer'])
-
-const currentRouteMethod = computed(() => {
-  const param = route.params.method
-
-  if (!param) {
-    return null
-  }
-
-  if (Array.isArray(param)) {
-    return param[0] ?? null
-  }
-
-  return typeof param === 'string' ? param : null
-})
 
 const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
   method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
@@ -77,128 +57,35 @@ const selectedMethodName = computed(() =>
 
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
 
-const openMethodUrl = async (method: PaymentMethodWithCurrencies, currency: string | null): Promise<boolean> => {
+const openMethodUrl = async (method: PaymentMethodWithCurrencies, currency: string | null) => {
   const ready = await paymentInfoStore.ensureMethodInfo(method.id)
 
   if (!ready) {
-    return false
+    return
   }
 
   const url = paymentInfoStore.getMethodUrl(method.id, currency ?? undefined)
 
   if (url) {
     openUrlInNewTab(url)
-    return true
   }
-
-  return false
 }
 
-const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currency: string | null): Promise<boolean> => {
+const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currency: string | null) => {
   switch (method.id) {
     case 'transfer':
-      return (await transferExperienceRef.value?.run()) ?? false
+      await transferExperienceRef.value?.run()
+      break
     case 'toss':
-      return (await tossExperienceRef.value?.run()) ?? false
+      await tossExperienceRef.value?.run()
+      break
     case 'kakao':
-      return (await kakaoExperienceRef.value?.run()) ?? false
+      await kakaoExperienceRef.value?.run()
+      break
     default:
-      return await openMethodUrl(method, currency)
-  }
-
-  return false
-}
-
-const goHome = async () => {
-  if (currentRouteMethod.value) {
-    await router.replace({ name: 'home' })
+      await openMethodUrl(method, currency)
   }
 }
-
-let lastHandledRouteMethod: string | null = null
-let isHandlingRouteDialog = false
-let shouldRetryRouteHandling = false
-
-const finalizeRouteHandling = () => {
-  isHandlingRouteDialog = false
-
-  if (shouldRetryRouteHandling) {
-    shouldRetryRouteHandling = false
-    void handleRouteDialog()
-  }
-}
-
-const handleRouteDialog = async () => {
-  if (isHandlingRouteDialog) {
-    shouldRetryRouteHandling = true
-    return
-  }
-
-  isHandlingRouteDialog = true
-
-  const methodId = currentRouteMethod.value
-
-  if (!methodId) {
-    lastHandledRouteMethod = null
-    finalizeRouteHandling()
-    return
-  }
-
-  if (areMethodsLoading.value) {
-    finalizeRouteHandling()
-    return
-  }
-
-  if (!dialogRouteMethods.has(methodId)) {
-    await goHome()
-    finalizeRouteHandling()
-    return
-  }
-
-  const method = paymentStore.getMethodById(methodId)
-
-  if (!method) {
-    if (!methods.value.length && !methodsError.value) {
-      finalizeRouteHandling()
-      return
-    }
-
-    await goHome()
-    finalizeRouteHandling()
-    return
-  }
-
-  if (lastHandledRouteMethod === methodId && !isCurrencySelectorOpen.value) {
-    finalizeRouteHandling()
-    return
-  }
-
-  paymentStore.selectMethod(methodId)
-  lastHandledRouteMethod = methodId
-
-  await nextTick()
-
-  if (isCurrencySelectorOpen.value && !selectedCurrency.value) {
-    finalizeRouteHandling()
-    return
-  }
-
-  const wasSuccessful = await runWorkflowForMethod(method, selectedCurrency.value)
-
-  if (!wasSuccessful) {
-    await goHome()
-  }
-
-  finalizeRouteHandling()
-}
-
-watch(
-  [currentRouteMethod, () => areMethodsLoading.value, () => methods.value.length, () => methodsError.value],
-  () => {
-    void handleRouteDialog()
-  },
-  { immediate: true },
-)
 
 const onSelectMethod = (methodId: string) => {
   paymentStore.selectMethod(methodId)
@@ -230,12 +117,6 @@ const onCurrencySelect = (currency: string) => {
 
 const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
-
-  void goHome()
-}
-
-const onDialogClosed = () => {
-  void goHome()
 }
 </script>
 
@@ -277,9 +158,9 @@ const onDialogClosed = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" @closed="onDialogClosed" />
-    <TossExperience ref="tossExperienceRef" @closed="onDialogClosed" />
-    <KakaoExperience ref="kakaoExperienceRef" @closed="onDialogClosed" />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"
