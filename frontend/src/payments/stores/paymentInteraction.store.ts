@@ -13,9 +13,8 @@ import type {
   DeepLinkDialogType,
   PaymentActionContext,
 } from '@/payments/workflows/types'
-import { createTransferCopyPayload } from '@/payments/utils/createTransferCopyPayload'
+import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
 import { openUrlInNewTab } from '@/shared/utils/navigation'
-import { copyText } from '@/shared/utils/clipboard'
 
 const buildWorkflowContext = (
   paymentStore: ReturnType<typeof usePaymentStore>,
@@ -56,7 +55,6 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const paymentStore = usePaymentStore()
   const paymentInfoStore = usePaymentInfoStore()
   const i18nStore = useI18nStore()
-  const { locale } = storeToRefs(i18nStore)
   const { isCurrencySelectorOpen, selectedCurrency, selectedMethod } = storeToRefs(paymentStore)
   const { tossInfo } = storeToRefs(paymentInfoStore)
 
@@ -130,17 +128,14 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       return false
     }
 
-    const payload = createTransferCopyPayload(
+    const success = await copyTransferInfo(
       {
         bank: tossInfo.value.bankName,
         accountNumber: tossInfo.value.accountNo,
         holder: tossInfo.value.accountHolder,
       },
       tossInfo.value.amount.krw,
-      locale.value
     )
-
-    const success = await copyText(payload)
 
     hasCopiedTossAccountInfo.value = success
 
