@@ -64,17 +64,13 @@ export const usePaymentStore = defineStore('payment', () => {
     return findMethodById(selectedMethodId.value)
   })
 
-  const resetSelection = () => {
-    selectedMethodId.value = null
-    selectedCurrency.value = null
-    isCurrencySelectorOpen.value = false
-  }
-
   const selectMethod = (methodId: string): void => {
     const method = findMethodById(methodId)
 
     if (!method) {
-      resetSelection()
+      selectedMethodId.value = null
+      selectedCurrency.value = null
+      isCurrencySelectorOpen.value = false
       return
     }
 
@@ -116,7 +112,6 @@ export const usePaymentStore = defineStore('payment', () => {
     selectMethod,
     chooseCurrency,
     closeCurrencySelector,
-    resetSelection,
     getMethodById: findMethodById,
     getSupportedCurrencies: (methodId: string) =>
       findMethodById(methodId)?.supportedCurrencies ?? [],

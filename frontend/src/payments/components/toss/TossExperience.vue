@@ -17,8 +17,6 @@ const tossDeepLinkUrl = ref<string | null>(null)
 const notMobileDialogRef = ref<InstanceType<typeof IsNotMobileDialog> | null>(null)
 const notInstalledDialogRef = ref<InstanceType<typeof IsNotInstalledDialog> | null>(null)
 
-const emit = defineEmits<{ close: [] }>()
-
 const tossInfo = computed(() => paymentInfoStore.tossInfo)
 
 const countdownManager = createCountdownManager((remainingSeconds) => {
@@ -87,7 +85,6 @@ const run = async (): Promise<boolean> => {
 
 const onInstructionClose = () => {
   closeInstructionDialog()
-  emit('close')
 }
 
 const onInstructionLaunchNow = () => {
@@ -116,6 +113,6 @@ defineExpose({
     @launch-now="onInstructionLaunchNow"
     @reopen="onInstructionReopen"
   />
-  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" @close="emit('close')" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" @close="emit('close')" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" />
 </template>
