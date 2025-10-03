@@ -24,7 +24,7 @@ export const createKakaoDeepLink = (info: KakaoPaymentInfo): string => {
   return `kakaotalk://kakaopay/money/to/qr?qr_code=281006011${personalCode}${hexAmount}0000`
 }
 
-const isKaKaoInfo = (info: TossPaymentInfo | KakaoPaymentInfo): info is KakaoPaymentInfo =>
+const isKakaoInfo = (info: TossPaymentInfo | KakaoPaymentInfo): info is KakaoPaymentInfo =>
   'personalCode' in info
 
 export const resolveDeepLink = (
@@ -36,14 +36,14 @@ export const resolveDeepLink = (
   }
 
   if (provider === 'toss') {
-    if (isKaKaoInfo(info)) {
+    if (isKakaoInfo(info)) {
       throw new Error('Invalid payment info provided for Toss deep link')
     }
 
     return createTossDeepLink(info)
   }
 
-  if (!isKaKaoInfo(info)) {
+  if (!isKakaoInfo(info)) {
     throw new Error('Invalid payment info provided for Kakao deep link')
   }
 
