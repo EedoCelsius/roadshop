@@ -91,7 +91,7 @@ const dialogQrHint = computed(() => {
       dialogContent.value.provider,
     )
 
-    return template.split('{provider}').join(providerLabel)
+    return template.split('{method}').join(providerLabel)
   }
 
   return null
