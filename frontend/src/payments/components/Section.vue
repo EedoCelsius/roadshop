@@ -7,7 +7,11 @@ interface Props {
   title: string
 }
 
-const props = defineProps<Props>()
+defineOptions({
+  name: 'PaymentMethodSection',
+})
+
+const { section, title } = defineProps<Props>()
 
 const emit = defineEmits<{
   select: [string]
@@ -17,7 +21,7 @@ const emit = defineEmits<{
 <template>
   <section class="flex flex-col gap-5">
     <div class="flex flex-col gap-2">
-      <h2 class="text-2xl font-semibold text-roadshop-primary">{{ title }}</h2>
+      <h2 class="text-2xl font-semibold text-brand-primary">{{ title }}</h2>
     </div>
     <div class="grid gap-3 md:grid-cols-2">
       <OptionCard

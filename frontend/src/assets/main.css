@@ -7,5 +7,5 @@
 }
 
 body {
-  @apply bg-roadshop-highlight text-roadshop-primary min-h-screen font-sans antialiased;
+  @apply bg-brand-highlight text-brand-primary min-h-screen font-sans antialiased;
 }

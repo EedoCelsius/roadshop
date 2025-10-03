@@ -7,7 +7,7 @@ import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import { getFirmIcon } from '@icons/firms'
-import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
+import { useTransferCopyState } from './useTransferCopyState'
 
 interface Props {
   visible: boolean
@@ -66,7 +66,7 @@ watch(
         class="overflow-hidden rounded-2xl border border-slate-200 shadow-sm"
       >
         <div class="flex w-full flex-col items-stretch sm:flex-row sm:items-stretch">
-          <div class="flex flex-1 items-start gap-3 bg-roadshop-highlight/40 p-4">
+          <div class="flex flex-1 items-start gap-3 bg-brand-highlight/40 p-4">
             <div
               v-if="getFirmIcon(account.bank)"
               class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white shadow"
@@ -75,13 +75,13 @@ watch(
             </div>
             <div>
               <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <p class="text-base font-semibold text-roadshop-primary">{{ account.bank }}</p>
+                <p class="text-base font-semibold text-brand-primary">{{ account.bank }}</p>
                 <p class="text-xs text-slate-500">{{ account.holder }}</p>
               </div>
               <div class="relative mt-1">
                 <button
                   type="button"
-                  class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary"
+                  class="group inline-flex items-center gap-1 font-mono text-sm text-brand-primary"
                   @click="handleCopyNumber(account)"
                   @mouseenter="setHoveredControl(account, 'number', true)"
                   @mouseleave="setHoveredControl(account, 'number', false)"
@@ -95,7 +95,7 @@ watch(
                     :class="
                       isCopied(account, 'number')
                         ? ['pi-check', 'text-emerald-500', 'group-hover:text-emerald-500']
-                        : ['pi-copy', 'text-roadshop-primary', 'group-hover:text-roadshop-primary']
+                        : ['pi-copy', 'text-brand-primary', 'group-hover:text-brand-primary']
                     "
                   ></i>
                 </button>
@@ -114,7 +114,7 @@ watch(
                 'flex h-full min-h-[45px] w-full items-center justify-center gap-2 px-5 text-sm font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-w-[64px]',
                 isCopied(account, 'all')
                   ? 'bg-emerald-500 hover:bg-emerald-500 focus-visible:outline-emerald-500'
-                  : 'bg-roadshop-primary hover:bg-roadshop-primary/90 focus-visible:outline-roadshop-primary',
+                  : 'bg-brand-primary hover:bg-brand-primary/90 focus-visible:outline-brand-primary',
               ]"
               :aria-label="copyAllLabel"
               @click="handleCopyAll(account, props.amount)"

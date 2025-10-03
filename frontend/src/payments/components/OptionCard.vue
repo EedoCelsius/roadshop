@@ -53,7 +53,7 @@ onBeforeUnmount(() => {
 <template>
   <article
     class="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg focus:outline-none cursor-pointer"
-    :class="props.isSelected ? 'ring-2 ring-roadshop-accent' : ''"
+    :class="props.isSelected ? 'ring-2 ring-brand-accent' : ''"
     role="button"
     tabindex="0"
     @click="emit('select')"
@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
         <div class="flex flex-1 items-center">
-          <h3 class="text-xl font-semibold text-roadshop-primary">
+          <h3 class="text-xl font-semibold text-brand-primary">
             {{ props.name }}
           </h3>
         </div>
@@ -85,12 +85,12 @@ onBeforeUnmount(() => {
 
     <div
       v-if="props.category !== 'KRW' && props.supportedCurrencies.length"
-      class="flex flex-wrap gap-2 text-xs text-roadshop-primary"
+      class="flex flex-wrap gap-2 text-xs text-brand-primary"
     >
       <span
         v-for="currency in props.supportedCurrencies"
         :key="currency"
-        class="inline-flex items-center gap-1 rounded-full border border-roadshop-primary/20 bg-roadshop-highlight/60 px-3 py-1 font-semibold"
+        class="inline-flex items-center gap-1 rounded-full border border-brand-primary/20 bg-brand-highlight/60 px-3 py-1 font-semibold"
       >
         {{ currency }}
       </span>

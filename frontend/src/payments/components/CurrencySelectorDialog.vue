@@ -45,11 +45,11 @@ const onClose = () => {
         v-for="currency in props.currencies"
         :key="currency"
         type="button"
-        class="flex items-center justify-between rounded-xl border border-roadshop-primary/20 px-4 py-3 text-roadshop-primary transition hover:border-roadshop-accent hover:bg-roadshop-highlight/60"
+        class="flex items-center justify-between rounded-xl border border-brand-primary/20 px-4 py-3 text-brand-primary transition hover:border-brand-accent hover:bg-brand-highlight/60"
         @click="onSelectCurrency(currency)"
       >
         <span class="text-sm font-semibold">{{ currency }}</span>
-        <span aria-hidden="true" class="text-roadshop-accent">→</span>
+        <span aria-hidden="true" class="text-brand-accent">→</span>
       </button>
     </div>
   </DialogCloseFull>

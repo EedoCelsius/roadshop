@@ -30,7 +30,7 @@ const onClose = () => {
       >
         <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl" @click.stop>
           <header class="space-y-2">
-            <h3 class="text-lg font-semibold text-roadshop-primary">{{ props.title }}</h3>
+            <h3 class="text-lg font-semibold text-brand-primary">{{ props.title }}</h3>
             <p v-if="props.description" class="text-sm text-slate-600" v-html="props.description"></p>
           </header>
           <div class="mt-6">

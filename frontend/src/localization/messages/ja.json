@@ -24,7 +24,7 @@
     },
     "transferAccounts": {
       "title": "口座振込のご案内",
-      "description": "下記のいずれかの口座へ <strong class=\"text-roadshop-accent\">₩{amount}</strong> をお振り込みください。",
+      "description": "下記のいずれかの口座へ <strong class=\"text-brand-accent\">₩{amount}</strong> をお振り込みください。",
       "copy": {
         "all": "振込情報をコピー",
         "accountNo": "口座番号のみコピー"
@@ -40,7 +40,7 @@
     },
     "tossInstruction": {
       "title": "Tossで送金",
-      "description": "送金に必要な口座情報を<strong class=\"text-roadshop-accent\">自動でコピー</strong>しました。",
+      "description": "送金に必要な口座情報を<strong class=\"text-brand-accent\">自動でコピー</strong>しました。",
       "launchCta": "Tossへ移動",
       "reopen": "Tossをもう一度開く"
     }

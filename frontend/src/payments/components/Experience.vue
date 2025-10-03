@@ -21,6 +21,10 @@ import type {
   PaymentMethodWithCurrencies,
 } from '@/payments/types'
 
+defineOptions({
+  name: 'PaymentExperience',
+})
+
 const paymentStore = usePaymentStore()
 const paymentInteractionStore = usePaymentInteractionStore()
 const i18nStore = useI18nStore()
@@ -155,13 +159,13 @@ const onLaunchTossInstructionDialog = () => {
       v-else-if="!hasVisibleMethods && areMethodsLoading"
       class="flex justify-center py-12"
     >
-      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('status.loading.methods') }}</span>
+      <span class="text-sm text-brand-primary/70">{{ i18nStore.t('status.loading.methods') }}</span>
     </div>
     <div
       v-else-if="!hasVisibleMethods"
       class="flex justify-center py-12"
     >
-      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('status.empty') }}</span>
+      <span class="text-sm text-brand-primary/70">{{ i18nStore.t('status.empty') }}</span>
     </div>
     <template v-else>
       <Section
