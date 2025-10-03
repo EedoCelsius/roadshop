@@ -1,47 +1,35 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import DialogCloseEnd from '@/shared/components/DialogCloseEnd.vue'
-import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
-import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
-import TossInstructionDialog from '@/payments/components/TossInstructionDialog.vue'
-import QrCodeDisplay from '@/shared/components/QrCodeDisplay.vue'
+import KakaoExperience from '@/payments/components/kakao/KakaoExperience.vue'
+import TossExperience from '@/payments/components/toss/TossExperience.vue'
+import TransferExperience from '@/payments/components/transfer/TransferExperience.vue'
 import { useLocalizedSections } from '@/payments/composables/useLocalizedSections'
 import { usePaymentStore } from '@/payments/stores/payment.store'
-import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
+import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 import { useI18nStore } from '@/localization/store'
-import type {
-  DeepLinkProvider,
-  PaymentCategory,
-  PaymentIcon,
-  PaymentMethodWithCurrencies,
-} from '@/payments/types'
+import { isDeepLinkChecking } from '@/payments/services/deepLinkService'
+import { openUrlInNewTab } from '@/shared/utils/navigation'
+import type { PaymentCategory, PaymentMethodWithCurrencies } from '@/payments/types'
 
 defineOptions({
   name: 'PaymentExperience',
 })
 
 const paymentStore = usePaymentStore()
-const paymentInteractionStore = usePaymentInteractionStore()
+const paymentInfoStore = usePaymentInfoStore()
 const i18nStore = useI18nStore()
 
-const { methods, selectedMethod, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
+const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
-const {
-  isDialogVisible,
-  dialogContent,
-  isDeepLinkChecking,
-  isTransferDialogVisible,
-  transferAmount,
-  transferAccounts,
-  isTossInstructionDialogVisible,
-  tossInstructionCountdown,
-  tossAccountInfo,
-} = storeToRefs(paymentInteractionStore)
+
+const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
+const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
+const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
 
 const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
   method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
@@ -69,80 +57,66 @@ const selectedMethodName = computed(() =>
 
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
 
-const isNotMobileDialog = computed(() => dialogContent.value?.type === 'not-mobile')
-const dialogQrValue = computed(() => dialogContent.value?.deepLinkUrl ?? null)
-const dialogQrHint = computed(() => {
-  if (!dialogContent.value?.deepLinkUrl) {
-    return null
+const openMethodUrl = async (method: PaymentMethodWithCurrencies, currency: string | null) => {
+  const ready = await paymentInfoStore.ensureMethodInfo(method.id)
+
+  if (!ready) {
+    return
   }
 
-  const typeKey =
-    dialogContent.value.type === 'not-mobile'
-      ? 'dialogs.notMobile.qrHint'
-      : 'dialogs.notInstalled.qrHint'
+  const url = paymentInfoStore.getMethodUrl(method.id, currency ?? undefined)
 
-  const candidateKeys = [typeKey, 'dialogs.notInstalled.qrHint']
-
-  for (const key of candidateKeys) {
-    const template = i18nStore.t(key)
-
-    if (template === key) {
-      continue
-    }
-
-    const methodLabel = i18nStore.t(
-      `options.${dialogContent.value.provider}`,
-      dialogContent.value.provider,
-    )
-
-    return template.split('{method}').join(methodLabel)
+  if (url) {
+    openUrlInNewTab(url)
   }
+}
 
-  return null
-})
-const deepLinkProviderIcons = computed(() =>
-  methods.value.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
-    if (method.deepLinkProvider && method.icons?.[0]) {
-      map[method.deepLinkProvider] = method.icons[0]
-    }
-
-    return map
-  }, {}),
-)
-const dialogQrIcon = computed(() =>
-  dialogContent.value ? deepLinkProviderIcons.value[dialogContent.value.provider] ?? null : null,
-)
+const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currency: string | null) => {
+  switch (method.id) {
+    case 'transfer':
+      await transferExperienceRef.value?.run()
+      break
+    case 'toss':
+      await tossExperienceRef.value?.run()
+      break
+    case 'kakao':
+      await kakaoExperienceRef.value?.run()
+      break
+    default:
+      await openMethodUrl(method, currency)
+  }
+}
 
 const onSelectMethod = (methodId: string) => {
-  void paymentInteractionStore.handleMethodSelection(methodId)
+  paymentStore.selectMethod(methodId)
+
+  const method = paymentStore.getMethodById(methodId)
+
+  if (!method || isCurrencySelectorOpen.value) {
+    return
+  }
+
+  void runWorkflowForMethod(method, selectedCurrency.value)
 }
 
 const onCurrencySelect = (currency: string) => {
-  void paymentInteractionStore.handleCurrencySelection(currency)
+  paymentStore.chooseCurrency(currency)
+
+  if (selectedCurrency.value !== currency) {
+    return
+  }
+
+  const method = selectedMethod.value
+
+  if (!method) {
+    return
+  }
+
+  void runWorkflowForMethod(method, currency)
 }
 
 const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
-}
-
-const onDialogConfirm = () => {
-  paymentInteractionStore.closeDialog()
-}
-
-const onCloseTransferDialog = () => {
-  paymentInteractionStore.closeTransferDialog()
-}
-
-const onCloseTossInstructionDialog = () => {
-  paymentInteractionStore.closeTossInstructionDialog()
-}
-
-const onReopenTossInstructionDialog = () => {
-  void paymentInteractionStore.reopenTossDeepLink()
-}
-
-const onLaunchTossInstructionDialog = () => {
-  paymentInteractionStore.completeTossInstructionCountdown()
 }
 </script>
 
@@ -177,55 +151,16 @@ const onLaunchTossInstructionDialog = () => {
       />
     </template>
 
-    <DialogCloseFull
-      v-if="dialogContent && isNotMobileDialog"
-      :visible="isDialogVisible"
-      :title="dialogContent.title"
-      :description="dialogContent.message"
-      :close-label="dialogContent.confirmLabel"
-      @close="onDialogConfirm"
-    >
-      <div
-        v-if="dialogQrValue"
-        class="mt-6 flex flex-col items-center gap-3"
-      >
-        <QrCodeDisplay :value="dialogQrValue" :icon="dialogQrIcon ?? undefined" />
-        <p v-if="dialogQrHint" class="text-center text-xs text-slate-500">
-          {{ dialogQrHint }}
-          <i class="pi pi-camera"></i>
-        </p>
-      </div>
-    </DialogCloseFull>
-    <DialogCloseEnd
-      v-else-if="dialogContent"
-      :visible="isDialogVisible"
-      :title="dialogContent.title"
-      :description="dialogContent.message"
-      :close-label="dialogContent.confirmLabel"
-      @close="onDialogConfirm"
-    />
     <CurrencySelectorDialog
-      v-if="selectedMethod"
-      :visible="isCurrencySelectorOpen"
+      v-if="selectedMethod && isCurrencySelectorOpen"
       :method-name="selectedMethodName"
       :currencies="selectedMethodCurrencies"
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferAccountsDialog
-      :visible="isTransferDialogVisible"
-      :accounts="transferAccounts"
-      :amount="transferAmount"
-      @close="onCloseTransferDialog"
-    />
-    <TossInstructionDialog
-      :visible="isTossInstructionDialogVisible"
-      :info="tossAccountInfo"
-      :countdown="tossInstructionCountdown"
-      @close="onCloseTossInstructionDialog"
-      @launch-now="onLaunchTossInstructionDialog"
-      @reopen="onReopenTossInstructionDialog"
-    />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"

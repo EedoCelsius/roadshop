@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, onBeforeUnmount, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
@@ -10,7 +10,6 @@ import { getFirmIcon } from '@icons/firms'
 import { useTransferCopyState } from './useTransferCopyState'
 
 interface Props {
-  visible: boolean
   amount: number
   accounts: TransferAccount[]
 }
@@ -43,18 +42,20 @@ const onClose = () => {
 }
 
 watch(
-  () => props.visible,
-  (visible) => {
-    if (!visible) {
-      reset()
-    }
+  () => props.accounts,
+  () => {
+    reset()
   },
+  { deep: true },
 )
+
+onBeforeUnmount(() => {
+  reset()
+})
 </script>
 
 <template>
   <DialogCloseFull
-    :visible="props.visible"
     :title="title"
     :description="descriptionHtml"
     @close="onClose"

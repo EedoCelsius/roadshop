@@ -5,7 +5,6 @@ import DialogBase from '@/shared/components/DialogBase.vue'
 import { useI18nStore } from '@/localization/store'
 
 const props = defineProps<{
-  visible: boolean
   title: string
   description?: string
   closeLabel?: string
@@ -25,7 +24,7 @@ const onClose = () => {
 </script>
 
 <template>
-  <DialogBase :visible="props.visible" :title="props.title" :description="props.description" @close="onClose">
+  <DialogBase :title="props.title" :description="props.description" @close="onClose">
     <slot />
     <template #footer>
       <footer class="mt-6">
