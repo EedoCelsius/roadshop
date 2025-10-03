@@ -42,7 +42,7 @@ export type PaymentMethodDetail =
   | { type: 'url'; data: MethodUrlInfo }
 
 const DEFAULT_API_BASE_URL =
-  'https://raw.githubusercontent.com/EedoCelsius/payment-component/refs/heads/main/backend/response'
+  'https://raw.githubusercontent.com/EedoCelsius/roadshop/refs/heads/main/backend/response'
 
 const normalizeBaseUrl = (value: string): string => value.replace(/\/+$/, '')
 const normalizePath = (value: string): string => value.replace(/^\/+/, '')
