@@ -137,7 +137,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
         holder: tossInfo.value.accountHolder,
       },
       tossInfo.value.amount.krw,
-      { locale: locale.value },
+      locale.value
     )
 
     const success = await copyText(payload)
