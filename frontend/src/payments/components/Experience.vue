@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
@@ -15,11 +15,6 @@ import { useI18nStore } from '@/localization/store'
 import { isDeepLinkChecking } from '@/payments/services/deepLinkService'
 import { openUrlInNewTab } from '@/shared/utils/navigation'
 import type { PaymentCategory, PaymentMethodWithCurrencies } from '@/payments/types'
-
-interface RouteCandidate {
-  methodId: string
-  basePath: string
-}
 
 defineOptions({
   name: 'PaymentExperience',
@@ -66,32 +61,29 @@ const openMethodUrl = async (method: PaymentMethodWithCurrencies, currency: stri
   const ready = await paymentInfoStore.ensureMethodInfo(method.id)
 
   if (!ready) {
-    return false
+    return
   }
 
   const url = paymentInfoStore.getMethodUrl(method.id, currency ?? undefined)
 
-  if (!url) {
-    return false
+  if (url) {
+    openUrlInNewTab(url)
   }
-
-  openUrlInNewTab(url)
-  return true
 }
 
-const runWorkflowForMethod = async (
-  method: PaymentMethodWithCurrencies,
-  currency: string | null,
-): Promise<boolean> => {
+const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currency: string | null) => {
   switch (method.id) {
     case 'transfer':
-      return (await transferExperienceRef.value?.run()) ?? false
+      await transferExperienceRef.value?.run()
+      break
     case 'toss':
-      return (await tossExperienceRef.value?.run()) ?? false
+      await tossExperienceRef.value?.run()
+      break
     case 'kakao':
-      return (await kakaoExperienceRef.value?.run()) ?? false
+      await kakaoExperienceRef.value?.run()
+      break
     default:
-      return await openMethodUrl(method, currency)
+      await openMethodUrl(method, currency)
   }
 }
 
@@ -125,125 +117,6 @@ const onCurrencySelect = (currency: string) => {
 
 const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
-}
-
-const resolveRouteCandidate = (): RouteCandidate | null => {
-  const { pathname, search, hash } = window.location
-  const normalizedPathname = pathname.replace(/\/+$/, '') || '/'
-  const segments = normalizedPathname.split('/').filter(Boolean)
-
-  if (!segments.length) {
-    return null
-  }
-
-  const methodId = segments[segments.length - 1]
-  const baseSegments = segments.slice(0, -1)
-  const basePathname = baseSegments.length ? `/${baseSegments.join('/')}` : '/'
-
-  return {
-    methodId,
-    basePath: `${basePathname}${search}${hash}` || '/',
-  }
-}
-
-const pendingRoute = ref<RouteCandidate | null>(null)
-const routeState = ref<RouteCandidate | null>(null)
-const isHandlingRoute = ref(false)
-
-const restoreRoutePath = () => {
-  if (!routeState.value) {
-    return
-  }
-
-  const basePath = routeState.value.basePath || '/'
-  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`
-
-  if (current !== basePath) {
-    window.history.replaceState(null, '', basePath)
-  } else {
-    window.history.replaceState(null, '', basePath)
-  }
-
-  pendingRoute.value = null
-  routeState.value = null
-}
-
-const tryHandlePendingRoute = async () => {
-  if (!pendingRoute.value || isHandlingRoute.value) {
-    return
-  }
-
-  const candidate = pendingRoute.value
-  const method = paymentStore.getMethodById(candidate.methodId)
-
-  if (!method) {
-    if (!areMethodsLoading.value && methods.value.length > 0) {
-      const isValidMethod = methods.value.some((entry) => entry.id === candidate.methodId)
-
-      if (!isValidMethod) {
-        pendingRoute.value = null
-      }
-    }
-
-    return
-  }
-
-  isHandlingRoute.value = true
-  routeState.value = candidate
-  pendingRoute.value = null
-
-  try {
-    const defaultCurrency = method.supportedCurrencies[0] ?? null
-    const succeeded = await runWorkflowForMethod(method, defaultCurrency)
-
-    if (!succeeded) {
-      restoreRoutePath()
-    }
-  } finally {
-    isHandlingRoute.value = false
-  }
-}
-
-const updateRouteFromLocation = () => {
-  const candidate = resolveRouteCandidate()
-
-  if (!candidate || candidate.methodId !== routeState.value?.methodId) {
-    routeState.value = null
-  }
-
-  pendingRoute.value = candidate
-  void tryHandlePendingRoute()
-}
-
-onMounted(() => {
-  updateRouteFromLocation()
-  window.addEventListener('popstate', updateRouteFromLocation)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('popstate', updateRouteFromLocation)
-})
-
-watch(
-  () => methods.value.length,
-  () => {
-    void tryHandlePendingRoute()
-  },
-)
-
-watch(
-  () => pendingRoute.value,
-  () => {
-    void tryHandlePendingRoute()
-  },
-)
-
-const onMethodExperienceClose = (methodId: string) => {
-  if (routeState.value?.methodId !== methodId) {
-    return
-  }
-
-  restoreRoutePath()
 }
 </script>
 
@@ -285,9 +158,9 @@ const onMethodExperienceClose = (methodId: string) => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" @close="onMethodExperienceClose('transfer')" />
-    <TossExperience ref="tossExperienceRef" @close="onMethodExperienceClose('toss')" />
-    <KakaoExperience ref="kakaoExperienceRef" @close="onMethodExperienceClose('kakao')" />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"

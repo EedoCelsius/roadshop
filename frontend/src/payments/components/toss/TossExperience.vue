@@ -10,7 +10,6 @@ import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkSer
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
 const paymentInfoStore = usePaymentInfoStore()
-const emit = defineEmits<{ close: [] }>()
 
 const isInstructionVisible = ref(false)
 const tossInstructionCountdown = ref(0)
@@ -86,7 +85,6 @@ const run = async (): Promise<boolean> => {
 
 const onInstructionClose = () => {
   closeInstructionDialog()
-  emit('close')
 }
 
 const onInstructionLaunchNow = () => {
@@ -99,10 +97,6 @@ const onInstructionReopen = () => {
   }
 
   void runDeepLink(tossDeepLinkUrl.value)
-}
-
-const onDialogClose = () => {
-  emit('close')
 }
 
 defineExpose({
@@ -119,6 +113,6 @@ defineExpose({
     @launch-now="onInstructionLaunchNow"
     @reopen="onInstructionReopen"
   />
-  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" @close="onDialogClose" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" @close="onDialogClose" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" />
 </template>
