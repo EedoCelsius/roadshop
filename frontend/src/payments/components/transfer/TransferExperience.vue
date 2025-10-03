@@ -10,8 +10,6 @@ const isDialogVisible = ref(false)
 const transferAmount = computed(() => paymentInfoStore.transferInfo?.amount.krw ?? 0)
 const transferAccounts = computed(() => paymentInfoStore.transferInfo?.account ?? [])
 
-const emit = defineEmits<{ close: [] }>()
-
 const openDialog = async (): Promise<boolean> => {
   const ready = await paymentInfoStore.ensureMethodInfo('transfer')
 
@@ -29,7 +27,6 @@ const closeDialog = () => {
 
 const onClose = () => {
   closeDialog()
-  emit('close')
 }
 
 defineExpose({

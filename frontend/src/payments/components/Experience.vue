@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
@@ -30,115 +30,6 @@ const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoa
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
 const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
-
-const resolveBasePath = (): string => {
-  if (typeof window === 'undefined') {
-    return '/'
-  }
-
-  try {
-    const url = new URL(import.meta.env.BASE_URL ?? '/', window.location.origin)
-    const trimmedPath = url.pathname.replace(/\/+$/, '')
-    return trimmedPath || '/'
-  } catch (error) {
-    console.error('Failed to resolve base path', error)
-    return '/'
-  }
-}
-
-const getMethodFromPath = (): string | null => {
-  if (typeof window === 'undefined') {
-    return null
-  }
-
-  const segments = window.location.pathname.split('/').filter(Boolean)
-  return segments.length ? segments[segments.length - 1] : null
-}
-
-let lastHandledPath: string | null = null
-let activeRouteMethod: string | null = null
-let isProcessingRoute = false
-
-const handleRouteNavigation = async () => {
-  if (typeof window === 'undefined' || isProcessingRoute || areMethodsLoading.value) {
-    return
-  }
-
-  const currentPath = window.location.pathname
-  const candidateMethod = getMethodFromPath()
-
-  if (!candidateMethod || !methods.value.some((method) => method.id === candidateMethod)) {
-    activeRouteMethod = null
-    lastHandledPath = currentPath
-    return
-  }
-
-  if (lastHandledPath === currentPath && activeRouteMethod === candidateMethod) {
-    return
-  }
-
-  const method = paymentStore.getMethodById(candidateMethod)
-
-  if (!method) {
-    return
-  }
-
-  isProcessingRoute = true
-  lastHandledPath = currentPath
-  activeRouteMethod = candidateMethod
-
-  paymentStore.selectMethod(candidateMethod)
-
-  try {
-    if (!isCurrencySelectorOpen.value) {
-      await runWorkflowForMethod(method, selectedCurrency.value)
-    }
-  } finally {
-    isProcessingRoute = false
-  }
-}
-
-const navigateToBasePath = () => {
-  if (typeof window === 'undefined') {
-    return
-  }
-
-  const targetPath = resolveBasePath()
-
-  try {
-    window.history.replaceState({}, '', targetPath)
-  } catch (error) {
-    console.error('Failed to navigate to base path', error)
-  }
-
-  lastHandledPath = window.location.pathname
-  activeRouteMethod = null
-}
-
-const onExperienceClose = () => {
-  navigateToBasePath()
-}
-
-const onPopState = () => {
-  void handleRouteNavigation()
-}
-
-watch(
-  [methods, () => areMethodsLoading.value],
-  () => {
-    void handleRouteNavigation()
-  },
-  { immediate: true },
-)
-
-onMounted(() => {
-  window.addEventListener('popstate', onPopState)
-  void handleRouteNavigation()
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('popstate', onPopState)
-})
 
 const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
   method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
@@ -267,9 +158,9 @@ const onCloseCurrencySelector = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" @close="onExperienceClose" />
-    <TossExperience ref="tossExperienceRef" @close="onExperienceClose" />
-    <KakaoExperience ref="kakaoExperienceRef" @close="onExperienceClose" />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"
