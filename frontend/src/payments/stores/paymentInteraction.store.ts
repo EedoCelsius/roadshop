@@ -130,7 +130,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       return false
     }
 
-    const { payload } = createTransferCopyPayload(
+    const payload = createTransferCopyPayload(
       {
         bank: tossInfo.value.bankName,
         accountNumber: tossInfo.value.accountNo,
