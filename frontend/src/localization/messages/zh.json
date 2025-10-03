@@ -16,7 +16,7 @@
     "notMobile": {
       "title": "仅限移动设备使用",
       "description": "{method} 链接只能在移动设备上打开。请在手机上重试。",
-      "qrHint": "扫描二维码前往 {method} 应用"
+      "qrHint": "扫描前往 {method} 应用"
     },
     "notInstalled": {
       "title": "应用没有打开吗？",

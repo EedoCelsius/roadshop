@@ -16,7 +16,7 @@
     "notMobile": {
       "title": "モバイル専用です",
       "description": "{method}リンクはモバイルアプリでのみ開きます。スマートフォンで再度お試しください。",
-      "qrHint": "QRコードをスキャンして{method}アプリに移動します"
+      "qrHint": "読み取って{method}アプリに移動します"
     },
     "notInstalled": {
       "title": "アプリが起動しませんか？",
