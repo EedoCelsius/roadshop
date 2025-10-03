@@ -22,11 +22,11 @@ const emit = defineEmits<{
 
 const i18nStore = useI18nStore()
 
-const title = computed(() => i18nStore.t('tossInstruction.title'))
-const description = computed(() => i18nStore.t('tossInstruction.description'))
+const title = computed(() => i18nStore.t('dialogs.tossInstruction.title'))
+const description = computed(() => i18nStore.t('dialogs.tossInstruction.description'))
 const closeLabel = computed(() => i18nStore.t('dialogs.close'))
-const launchLabel = computed(() => i18nStore.t('tossInstruction.launchCta'))
-const reopenLabel = computed(() => i18nStore.t('tossInstruction.reopen'))
+const launchLabel = computed(() => i18nStore.t('dialogs.tossInstruction.launchCta'))
+const reopenLabel = computed(() => i18nStore.t('dialogs.tossInstruction.reopen'))
 const isCountingDown = computed(() => props.countdown > 0)
 
 const onClose = () => {

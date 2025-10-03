@@ -3,6 +3,49 @@
     "krw": "KRW 決済",
     "global": "グローバル決済"
   },
+  "options": {
+    "transfer": "口座振込",
+    "kakao": "Kakao送金",
+    "toss": "Toss送金",
+    "alipay": "Alipay（アリペイ）",
+    "card": "クレジットカード"
+  },
+  "dialogs": {
+    "close": "閉じる",
+    "confirm": "OK",
+    "notMobile": {
+      "title": "モバイル専用です",
+      "description": "{provider}送金リンクはモバイルアプリでのみ開けます。スマートフォンで再度お試しください。"
+    },
+    "notInstalled": {
+      "title": "アプリが起動しませんか？",
+      "description": "{provider}アプリに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。",
+      "qrHint": "QRコードをスキャンして{provider}アプリに移動します"
+    },
+    "transferAccounts": {
+      "title": "口座振込のご案内",
+      "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
+      "amountWithCurrency": "{amount} KRW",
+      "copy": {
+        "all": "振込情報をコピー",
+        "accountNo": "口座番号のみコピー"
+      },
+      "copied": {
+        "all": "クリップボードにコピーしました",
+        "accountNo": "口座番号のみコピーしました"
+      }
+    },
+    "currencySelector": {
+      "title": "通貨を選択してください",
+      "description": "{method} 決済に使用する通貨を選択してください。"
+    },
+    "tossInstruction": {
+      "title": "Tossで送金",
+      "description": "送金に必要な口座情報を<strong>自動でコピー</strong>しました。",
+      "launchCta": "Tossへ移動",
+      "reopen": "Tossをもう一度開く"
+    }
+  },
   "status": {
     "empty": "現在利用できる決済方法はありません。",
     "loading": {
@@ -11,59 +54,6 @@
     },
     "errors": {
       "loadMethods": "決済方法を読み込めませんでした。再度お試しください。"
-    }
-  },
-  "dialogs": {
-    "close": "閉じる",
-    "confirm": "OK",
-    "deepLink": {
-      "titles": {
-        "notMobile": "モバイル専用です",
-        "notInstalled": "アプリが起動しませんか？"
-      },
-      "description": {
-        "notMobile": "{provider}送金リンクはモバイルアプリでのみ開けます。スマートフォンで再度お試しください。",
-        "notInstalled": "{provider}に移動しなかった場合は、インストール状況を確認してからもう一度お試しください。",
-        "qrHint": "QRコードをスキャンして{provider}アプリに移動します"
-      }
-    },
-    "transferAccounts": {
-      "title": "口座振込のご案内",
-      "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
-      "copyAll": "すべての情報をコピー",
-      "copyNumber": "口座番号のみコピー",
-      "copyAllButton": "振込情報をコピー",
-      "copiedAllButton": "クリップボードにコピーしました",
-      "copiedNumber": "口座番号のみコピーしました"
-    }
-  },
-  "currencySelector": {
-    "title": "通貨を選択してください",
-    "description": "{method} 決済に使用する通貨を選択してください。"
-  },
-  "tossInstruction": {
-    "title": "Tossで送金",
-    "description": "送金に必要な口座情報を<strong>自動でコピー</strong>しました。",
-    "launchCta": "Tossへ移動",
-    "reopen": "Tossをもう一度開く"
-  },
-  "payment": {
-    "transfer": {
-      "name": "口座振込"
-    },
-    "kakao": {
-      "name": "Kakao送金",
-      "cta": "Kakao送金を開く"
-    },
-    "toss": {
-      "name": "Toss送金",
-      "cta": "Toss送金を開く"
-    },
-    "alipay": {
-      "name": "Alipay（アリペイ）"
-    },
-    "card": {
-      "name": "クレジットカード"
     }
   }
 }
