@@ -19,8 +19,8 @@
     },
     "notInstalled": {
       "title": "应用没有打开吗？",
-      "description": "如果没有跳转到 {provider} 应用，请确认已安装后再试一次。",
-      "qrHint": "扫描二维码前往 {provider} 应用"
+      "description": "如果没有跳转到 {method} 应用，请确认已安装后再试一次。",
+      "qrHint": "扫描二维码前往 {method} 应用"
     },
     "transferAccounts": {
       "title": "银行转账信息",

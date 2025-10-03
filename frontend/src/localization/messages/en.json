@@ -19,8 +19,8 @@
     },
     "notInstalled": {
       "title": "Having trouble opening the app?",
-      "description": "If the {provider} app didn't open, please make sure it's installed and try again.",
-      "qrHint": "Scan to open the {provider} app"
+      "description": "If the {method} app didn't open, please make sure it's installed and try again.",
+      "qrHint": "Scan to open the {method} app"
     },
     "transferAccounts": {
       "title": "Bank transfer details",

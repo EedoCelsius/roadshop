@@ -19,8 +19,8 @@
     },
     "notInstalled": {
       "title": "アプリが起動しませんか？",
-      "description": "{provider}アプリに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。",
-      "qrHint": "QRコードをスキャンして{provider}アプリに移動します"
+      "description": "{method}アプリに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。",
+      "qrHint": "QRコードをスキャンして{method}アプリに移動します"
     },
     "transferAccounts": {
       "title": "口座振込のご案内",
