@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
@@ -24,8 +23,6 @@ defineOptions({
 const paymentStore = usePaymentStore()
 const paymentInfoStore = usePaymentInfoStore()
 const i18nStore = useI18nStore()
-const router = useRouter()
-const route = useRoute()
 
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
@@ -33,13 +30,6 @@ const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoa
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
 const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
-const methodFromRoute = computed(() => {
-  const { method } = route.params
-
-  return typeof method === 'string' ? method : null
-})
-const pendingRouteMethod = ref<string | null>(null)
-const triggeredRouteMethod = ref<string | null>(null)
 
 const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
   method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
@@ -66,15 +56,6 @@ const selectedMethodName = computed(() =>
 )
 
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
-
-const navigateHome = () => {
-  triggeredRouteMethod.value = pendingRouteMethod.value
-  paymentStore.resetSelection()
-
-  if (route.name !== 'home') {
-    void router.replace({ name: 'home' })
-  }
-}
 
 const openMethodUrl = async (method: PaymentMethodWithCurrencies, currency: string | null) => {
   const ready = await paymentInfoStore.ensureMethodInfo(method.id)
@@ -106,75 +87,16 @@ const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currenc
   }
 }
 
-const tryRunMethodFromRoute = async () => {
-  const methodId = pendingRouteMethod.value
-
-  if (!methodId || triggeredRouteMethod.value === methodId) {
-    return
-  }
+const onSelectMethod = (methodId: string) => {
+  paymentStore.selectMethod(methodId)
 
   const method = paymentStore.getMethodById(methodId)
 
-  if (!method) {
-    if (!areMethodsLoading.value) {
-      triggeredRouteMethod.value = methodId
-      navigateHome()
-    }
-
+  if (!method || isCurrencySelectorOpen.value) {
     return
   }
 
-  triggeredRouteMethod.value = methodId
-  paymentStore.selectMethod(methodId)
-
-  if (!isCurrencySelectorOpen.value) {
-    await runWorkflowForMethod(method, selectedCurrency.value)
-  }
-}
-
-watch(
-  methodFromRoute,
-  (method) => {
-    pendingRouteMethod.value = method
-
-    if (!method) {
-      triggeredRouteMethod.value = null
-      paymentStore.resetSelection()
-      return
-    }
-
-    if (triggeredRouteMethod.value !== method) {
-      triggeredRouteMethod.value = null
-    }
-
-    void tryRunMethodFromRoute()
-  },
-  { immediate: true },
-)
-
-watch(
-  () => methods.value.length,
-  () => {
-    void tryRunMethodFromRoute()
-  },
-)
-
-watch(areMethodsLoading, (loading) => {
-  if (!loading) {
-    void tryRunMethodFromRoute()
-  }
-})
-
-const onSelectMethod = (methodId: string) => {
-  if (methodFromRoute.value !== methodId) {
-    void router.replace({ name: 'payment-method', params: { method: methodId } })
-    return
-  }
-
-  pendingRouteMethod.value = methodId
-  triggeredRouteMethod.value = null
-
-  void tryRunMethodFromRoute()
+  void runWorkflowForMethod(method, selectedCurrency.value)
 }
 
 const onCurrencySelect = (currency: string) => {
@@ -194,11 +116,7 @@ const onCurrencySelect = (currency: string) => {
 }
 
 const onCloseCurrencySelector = () => {
-  navigateHome()
-}
-
-const onDialogClose = () => {
-  navigateHome()
+  paymentStore.closeCurrencySelector()
 }
 </script>
 
@@ -240,9 +158,9 @@ const onDialogClose = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" @close="onDialogClose" />
-    <TossExperience ref="tossExperienceRef" @close="onDialogClose" />
-    <KakaoExperience ref="kakaoExperienceRef" @close="onDialogClose" />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"
