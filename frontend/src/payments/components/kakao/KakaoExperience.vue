@@ -11,8 +11,6 @@ const paymentInfoStore = usePaymentInfoStore()
 const notMobileDialogRef = ref<InstanceType<typeof IsNotMobileDialog> | null>(null)
 const notInstalledDialogRef = ref<InstanceType<typeof IsNotInstalledDialog> | null>(null)
 
-const emit = defineEmits<{ close: [] }>()
-
 const run = async (): Promise<boolean> => {
   const ready = await paymentInfoStore.ensureMethodInfo('kakao')
 
@@ -46,13 +44,9 @@ const run = async (): Promise<boolean> => {
 defineExpose({
   run,
 })
-
-const onDialogClose = () => {
-  emit('close')
-}
 </script>
 
 <template>
-  <IsNotMobileDialog ref="notMobileDialogRef" method="kakao" @close="onDialogClose" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="kakao" @close="onDialogClose" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="kakao" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="kakao" />
 </template>

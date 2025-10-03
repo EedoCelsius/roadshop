@@ -11,8 +11,6 @@ import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
 const paymentInfoStore = usePaymentInfoStore()
 
-const emit = defineEmits<{ close: [] }>()
-
 const isInstructionVisible = ref(false)
 const tossInstructionCountdown = ref(0)
 const tossDeepLinkUrl = ref<string | null>(null)
@@ -87,7 +85,6 @@ const run = async (): Promise<boolean> => {
 
 const onInstructionClose = () => {
   closeInstructionDialog()
-  emit('close')
 }
 
 const onInstructionLaunchNow = () => {
@@ -100,14 +97,6 @@ const onInstructionReopen = () => {
   }
 
   void runDeepLink(tossDeepLinkUrl.value)
-}
-
-const onNotMobileDialogClose = () => {
-  emit('close')
-}
-
-const onNotInstalledDialogClose = () => {
-  emit('close')
 }
 
 defineExpose({
@@ -124,6 +113,6 @@ defineExpose({
     @launch-now="onInstructionLaunchNow"
     @reopen="onInstructionReopen"
   />
-  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" @close="onNotMobileDialogClose" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" @close="onNotInstalledDialogClose" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" />
 </template>
