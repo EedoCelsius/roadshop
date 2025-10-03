@@ -31,7 +31,7 @@ const run = async (): Promise<boolean> => {
     await launchDeepLink(deepLink, {
       timeoutMs: 1500,
       onNotInstalled: () => notInstalledDialogRef.value?.open(),
-      onNotMobile: () => notMobileDialogRef.value?.open({ qrValue: deepLink }),
+      onNotMobile: () => notMobileDialogRef.value?.open(),
     })
 
     return true
@@ -47,6 +47,6 @@ defineExpose({
 </script>
 
 <template>
-  <IsNotMobileDialog ref="notMobileDialogRef" method-id="kakao" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method-id="kakao" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="kakao" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="kakao" />
 </template>

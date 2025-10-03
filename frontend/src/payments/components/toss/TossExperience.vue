@@ -44,7 +44,7 @@ const runDeepLink = async (deepLink: string) => {
   await launchDeepLink(deepLink, {
     timeoutMs: 2000,
     onNotInstalled: () => notInstalledDialogRef.value?.open(),
-    onNotMobile: () => notMobileDialogRef.value?.open({ qrValue: deepLink }),
+    onNotMobile: () => notMobileDialogRef.value?.open(),
   })
 }
 
@@ -113,6 +113,6 @@ defineExpose({
     @launch-now="onInstructionLaunchNow"
     @reopen="onInstructionReopen"
   />
-  <IsNotMobileDialog ref="notMobileDialogRef" method-id="toss" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method-id="toss" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" />
 </template>

@@ -5,7 +5,7 @@ import DialogCloseEnd from '@/shared/components/DialogCloseEnd.vue'
 import { useI18nStore } from '@/localization/store'
 
 interface Props {
-  methodId: string
+  method: string
 }
 
 const props = defineProps<Props>()
@@ -16,7 +16,7 @@ const i18nStore = useI18nStore()
 
 const isVisible = ref(false)
 
-const methodLabel = computed(() => i18nStore.t(`options.${props.methodId}`, props.methodId))
+const methodLabel = computed(() => i18nStore.t(`options.${props.method}`, props.method))
 const title = computed(() => i18nStore.t('dialogs.notInstalled.title'))
 const confirmLabel = computed(() => i18nStore.t('dialogs.confirm'))
 const description = computed(() => {

@@ -5,10 +5,12 @@ import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import QrCodeDisplay from '@/shared/components/QrCodeDisplay.vue'
 import { useI18nStore } from '@/localization/store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
-import type { PaymentIcon } from '@/payments/types'
+import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
+import { resolveDeepLink } from '@/payments/services/deepLinkService'
+import type { DeepLinkProvider, PaymentIcon } from '@/payments/types'
 
 interface Props {
-  methodId: string
+  method: DeepLinkProvider
 }
 
 const props = defineProps<Props>()
@@ -17,13 +19,14 @@ const emit = defineEmits<{ close: [] }>()
 
 const paymentStore = usePaymentStore()
 const i18nStore = useI18nStore()
+const paymentInfoStore = usePaymentInfoStore()
 
 const isVisible = ref(false)
 const qrValue = ref<string | null>(null)
 
-const method = computed(() => paymentStore.getMethodById(props.methodId) ?? null)
-const methodLabel = computed(() => i18nStore.t(`options.${props.methodId}`, props.methodId))
-const icon = computed<PaymentIcon | null>(() => method.value?.icons?.[0] ?? null)
+const paymentMethod = computed(() => paymentStore.getMethodById(props.method) ?? null)
+const methodLabel = computed(() => i18nStore.t(`options.${props.method}`, props.method))
+const icon = computed<PaymentIcon | null>(() => paymentMethod.value?.icons?.[0] ?? null)
 const title = computed(() => i18nStore.t('dialogs.notMobile.title'))
 const confirmLabel = computed(() => i18nStore.t('dialogs.confirm'))
 const description = computed(() => {
@@ -53,8 +56,15 @@ const close = () => {
   emit('close')
 }
 
-const open = (options: { qrValue?: string | null } = {}) => {
-  qrValue.value = options.qrValue ?? null
+const open = () => {
+  try {
+    const info = paymentInfoStore.getDeepLinkInfo(props.method)
+    qrValue.value = resolveDeepLink(props.method, info)
+  } catch (error) {
+    console.error(error)
+    qrValue.value = null
+  }
+
   isVisible.value = true
 }
 
