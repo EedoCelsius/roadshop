@@ -7,8 +7,8 @@ import { isMobileDevice } from '@/shared/utils/device'
 export const createTossDeepLink = (info: TossPaymentInfo): string => {
   const params = new URLSearchParams({
     amount: info.amount.krw.toString(),
-    bank: info.bankName,
-    accountNo: info.accountNo,
+    bank: info.account.bank,
+    accountNo: info.account.number,
     origin: 'qr',
   })
 
@@ -24,8 +24,8 @@ export const createKakaoDeepLink = (info: KakaoPaymentInfo): string => {
   return `kakaotalk://kakaopay/money/to/qr?qr_code=281006011${personalCode}${hexAmount}0000`
 }
 
-const isTossInfo = (info: TossPaymentInfo | KakaoPaymentInfo): info is TossPaymentInfo =>
-  'bankName' in info
+const isKaKaoInfo = (info: TossPaymentInfo | KakaoPaymentInfo): info is KakaoPaymentInfo =>
+  'personalCode' in info
 
 export const resolveDeepLink = (
   provider: DeepLinkProvider,
@@ -36,14 +36,14 @@ export const resolveDeepLink = (
   }
 
   if (provider === 'toss') {
-    if (!isTossInfo(info)) {
+    if (isKaKaoInfo(info)) {
       throw new Error('Invalid payment info provided for Toss deep link')
     }
 
     return createTossDeepLink(info)
   }
 
-  if (isTossInfo(info)) {
+  if (!isKaKaoInfo(info)) {
     throw new Error('Invalid payment info provided for Kakao deep link')
   }
 
