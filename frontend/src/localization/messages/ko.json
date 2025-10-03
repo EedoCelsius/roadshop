@@ -19,8 +19,8 @@
     },
     "notInstalled": {
       "title": "앱이 실행되지 않았나요?",
-      "description": "{provider} 앱으로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
-      "qrHint": "스캔해서 {provider} 앱으로 이동합니다"
+      "description": "{method} 앱으로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
+      "qrHint": "스캔해서 {method} 앱으로 이동합니다"
     },
     "transferAccounts": {
       "title": "계좌이체 정보",

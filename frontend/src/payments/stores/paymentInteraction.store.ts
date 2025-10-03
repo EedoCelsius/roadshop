@@ -85,16 +85,16 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     dialogContent.value = null
   }
 
-  const formatProviderMessage = (key: string, provider: DeepLinkProvider) => {
+  const formatDialogMessage = (key: string, provider: DeepLinkProvider) => {
     const template = i18nStore.t(key)
 
     if (template === key) {
       return template
     }
 
-    const providerLabel = i18nStore.t(`options.${provider}`, provider)
+    const methodLabel = i18nStore.t(`options.${provider}`, provider)
 
-    return template.split('{provider}').join(providerLabel)
+    return template.replace('{method}', methodLabel)
   }
 
   const showDialog = (
@@ -109,7 +109,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       type,
       provider,
       title: i18nStore.t(`${baseKey}.title`),
-      message: formatProviderMessage(messageKey, provider),
+      message: formatDialogMessage(messageKey, provider),
       confirmLabel: i18nStore.t('dialogs.confirm'),
       deepLinkUrl: options.deepLinkUrl ?? null,
     }
