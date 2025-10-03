@@ -4,7 +4,8 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-const base = process.env.BASE_URL ?? './'
+const isProduction = process.env.NODE_ENV === 'production'
+const base = process.env.BASE_URL ?? (isProduction ? '/roadshop/' : '/')
 
 // https://vite.dev/config/
 export default defineConfig({

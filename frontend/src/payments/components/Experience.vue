@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useRoute, useRouter } from 'vue-router'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
@@ -23,6 +24,8 @@ defineOptions({
 const paymentStore = usePaymentStore()
 const paymentInfoStore = usePaymentInfoStore()
 const i18nStore = useI18nStore()
+const router = useRouter()
+const route = useRoute()
 
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
@@ -118,6 +121,62 @@ const onCurrencySelect = (currency: string) => {
 const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
 }
+
+const routeMethod = computed(() => {
+  const param = route.params.method
+  return typeof param === 'string' ? param : null
+})
+
+const navigateHome = async () => {
+  if (route.name === 'home') {
+    return
+  }
+
+  await router.replace({ name: 'home' })
+}
+
+const handleRouteMethod = async (methodId: string) => {
+  if (areMethodsLoading.value) {
+    return
+  }
+
+  const method = paymentStore.getMethodById(methodId)
+
+  if (!method) {
+    await navigateHome()
+    return
+  }
+
+  paymentStore.selectMethod(methodId)
+
+  if (!selectedCurrency.value) {
+    const defaultCurrency = method.supportedCurrencies[0] ?? null
+
+    if (defaultCurrency) {
+      paymentStore.chooseCurrency(defaultCurrency)
+    }
+  }
+
+  const currency = selectedCurrency.value ?? method.supportedCurrencies[0] ?? null
+
+  await runWorkflowForMethod(method, currency)
+}
+
+watch(
+  () => [routeMethod.value, areMethodsLoading.value] as const,
+  ([methodId, loading]) => {
+    if (!methodId || loading) {
+      return
+    }
+
+    void handleRouteMethod(methodId)
+  },
+  { immediate: true },
+)
+
+const onExperienceClose = async () => {
+  await navigateHome()
+}
 </script>
 
 <template>
@@ -158,9 +217,9 @@ const onCloseCurrencySelector = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" />
-    <TossExperience ref="tossExperienceRef" />
-    <KakaoExperience ref="kakaoExperienceRef" />
+    <TransferExperience ref="transferExperienceRef" @close="onExperienceClose" />
+    <TossExperience ref="tossExperienceRef" @close="onExperienceClose" />
+    <KakaoExperience ref="kakaoExperienceRef" @close="onExperienceClose" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"
