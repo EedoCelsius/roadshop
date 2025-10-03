@@ -85,6 +85,18 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     dialogContent.value = null
   }
 
+  const formatProviderMessage = (key: string, provider: DeepLinkProvider) => {
+    const template = i18nStore.t(key)
+
+    if (template === key) {
+      return template
+    }
+
+    const providerLabel = i18nStore.t(`payment.${provider}.name`, provider)
+
+    return template.split('{provider}').join(providerLabel)
+  }
+
   const showDialog = (
     type: DeepLinkDialogType,
     provider: DeepLinkProvider,
@@ -92,12 +104,13 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   ) => {
     const baseKey = 'dialogs.deepLink'
     const keySuffix = type === 'not-mobile' ? 'notMobile' : 'notInstalled'
+    const messageKey = `${baseKey}.description.${keySuffix}`
 
     dialogContent.value = {
       type,
       provider,
       title: i18nStore.t(`${baseKey}.titles.${keySuffix}`),
-      message: i18nStore.t(`${baseKey}.providers.${provider}.${keySuffix}`),
+      message: formatProviderMessage(messageKey, provider),
       confirmLabel: i18nStore.t('dialogs.confirm'),
       deepLinkUrl: options.deepLinkUrl ?? null,
     }

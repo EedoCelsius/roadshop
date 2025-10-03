@@ -1,21 +1,17 @@
 {
-  "sections": {
-    "krw": {
-      "title": "KRW 결제"
-    },
-    "global": {
-      "title": "글로벌 결제"
-    }
+  "category": {
+    "krw": "KRW 결제",
+    "global": "글로벌 결제"
   },
   "status": {
-    "empty": "현재 사용 가능한 결제 수단이 없습니다."
-  },
-  "loading": {
-    "deepLink": "결제 앱을 여는 중이에요…",
-    "methods": "결제 수단을 불러오는 중이에요…"
-  },
-  "errors": {
-    "loadMethods": "결제 수단을 불러오지 못했어요. 다시 시도해 주세요."
+    "empty": "현재 사용 가능한 결제 수단이 없습니다.",
+    "loading": {
+      "deepLink": "결제 앱을 여는 중이에요…",
+      "methods": "결제 수단을 불러오는 중이에요…"
+    },
+    "errors": {
+      "loadMethods": "결제 수단을 불러오지 못했어요. 다시 시도해 주세요."
+    }
   },
   "dialogs": {
     "close": "닫기",
@@ -25,17 +21,10 @@
         "notMobile": "모바일에서만 이용할 수 있어요",
         "notInstalled": "앱이 실행되지 않았나요?"
       },
-      "providers": {
-        "kakao": {
-          "notMobile": "카카오송금 링크는 모바일 카카오톡 앱에서만 열려요. 휴대폰에서 다시 시도해 주세요.",
-          "notInstalled": "카카오톡으로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
-          "qrHint": "스캔해서 카카오톡 앱으로 이동합니다"
-        },
-        "toss": {
-          "notMobile": "토스송금 링크는 모바일에서만 열려요. 휴대폰에서 다시 시도해 주세요.",
-          "notInstalled": "토스로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
-          "qrHint": "스캔해서 토스 앱으로 이동합니다"
-        }
+      "description": {
+        "notMobile": "{provider} 송금링크는 모바일에서만 열려요. 휴대폰에서 다시 시도해 주세요.",
+        "notInstalled": "{provider} 송금링크로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
+        "qrHint": "스캔해서 {provider} 앱으로 이동합니다"
       }
     },
     "transferAccounts": {

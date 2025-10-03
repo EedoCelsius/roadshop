@@ -1,21 +1,17 @@
 {
-  "sections": {
-    "krw": {
-      "title": "KRW payments"
-    },
-    "global": {
-      "title": "Global payments"
-    }
+  "category": {
+    "krw": "KRW payments",
+    "global": "Global payments"
   },
   "status": {
-    "empty": "No payment methods are available right now."
-  },
-  "loading": {
-    "deepLink": "Opening the app so you can continue your payment…",
-    "methods": "Loading payment methods…"
-  },
-  "errors": {
-    "loadMethods": "We couldn't load the payment methods. Please try again."
+    "empty": "No payment methods are available right now.",
+    "loading": {
+      "deepLink": "Opening the app so you can continue your payment…",
+      "methods": "Loading payment methods…"
+    },
+    "errors": {
+      "loadMethods": "We couldn't load the payment methods. Please try again."
+    }
   },
   "dialogs": {
     "close": "Close",
@@ -25,17 +21,10 @@
         "notMobile": "Open on your mobile device",
         "notInstalled": "Having trouble opening the app?"
       },
-      "providers": {
-        "kakao": {
-          "notMobile": "The Kakao Transfer link only opens in the KakaoTalk mobile app. Please continue on your phone.",
-          "notInstalled": "If KakaoTalk didn't open, please make sure it's installed and try again.",
-          "qrHint": "Scan to open the KakaoTalk app"
-        },
-        "toss": {
-          "notMobile": "The Toss Transfer link only opens on mobile. Please continue on your phone.",
-          "notInstalled": "If Toss didn't open, please make sure it's installed and try again.",
-          "qrHint": "Scan to open the Toss app"
-        }
+      "description": {
+        "notMobile": "The {provider} transfer link only opens in the mobile app. Please continue on your phone.",
+        "notInstalled": "If {provider} didn't open, please make sure it's installed and try again.",
+        "qrHint": "Scan to open the {provider} app"
       }
     },
     "transferAccounts": {

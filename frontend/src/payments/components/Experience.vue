@@ -45,10 +45,14 @@ const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory 
 const { sections } = useLocalizedSections(categorizeMethod)
 
 const localizedSections = computed(() =>
-  sections.value.map((section) => ({
-    section,
-    title: i18nStore.t(`sections.${section.category.toLowerCase()}.title`),
-  })),
+  sections.value.map((section) => {
+    const categoryKey = section.category.toLowerCase()
+
+    return {
+      section,
+      title: i18nStore.t(`category.${categoryKey}`),
+    }
+  }),
 )
 
 const hasVisibleMethods = computed(() =>
@@ -68,10 +72,19 @@ const dialogQrHint = computed(() => {
     return null
   }
 
-  const key = `dialogs.deepLink.providers.${dialogContent.value.provider}.qrHint`
-  const translation = i18nStore.t(key)
+  const templateKey = 'dialogs.deepLink.description.qrHint'
+  const template = i18nStore.t(templateKey)
 
-  return translation === key ? null : translation
+  if (template === templateKey) {
+    return null
+  }
+
+  const providerLabel = i18nStore.t(
+    `payment.${dialogContent.value.provider}.name`,
+    dialogContent.value.provider,
+  )
+
+  return template.split('{provider}').join(providerLabel)
 })
 const deepLinkProviderIcons = computed(() =>
   methods.value.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
@@ -126,13 +139,13 @@ const onLaunchTossInstructionDialog = () => {
       class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
       role="alert"
     >
-      {{ i18nStore.t('errors.loadMethods') }}
+      {{ i18nStore.t('status.errors.loadMethods') }}
     </div>
     <div
       v-else-if="!hasVisibleMethods && areMethodsLoading"
       class="flex justify-center py-12"
     >
-      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('loading.methods') }}</span>
+      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('status.loading.methods') }}</span>
     </div>
     <div
       v-else-if="!hasVisibleMethods"
@@ -199,6 +212,9 @@ const onLaunchTossInstructionDialog = () => {
       @launch-now="onLaunchTossInstructionDialog"
       @reopen="onReopenTossInstructionDialog"
     />
-    <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
+    <LoadingOverlay
+      :visible="isDeepLinkChecking"
+      :message="i18nStore.t('status.loading.deepLink')"
+    />
   </div>
 </template>
