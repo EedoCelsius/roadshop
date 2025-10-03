@@ -15,12 +15,12 @@
     "confirm": "OK",
     "notMobile": {
       "title": "Open on your mobile device",
-      "description": "The {method} link only opens on mobile. Please continue on your phone."
+      "description": "The {method} link only opens on mobile. Please continue on your phone.",
+      "qrHint": "Scan to open the {method} app"
     },
     "notInstalled": {
       "title": "Having trouble opening the app?",
-      "description": "If the {method} app didn't open, please make sure it's installed and try again.",
-      "qrHint": "Scan to open the {method} app"
+      "description": "If the {method} app didn't open, please make sure it's installed and try again."
     },
     "transferAccounts": {
       "title": "Bank transfer details",

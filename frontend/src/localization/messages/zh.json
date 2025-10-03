@@ -15,12 +15,12 @@
     "confirm": "好的",
     "notMobile": {
       "title": "仅限移动设备使用",
-      "description": "{method} 链接只能在移动设备上打开。请在手机上重试。"
+      "description": "{method} 链接只能在移动设备上打开。请在手机上重试。",
+      "qrHint": "扫描二维码前往 {method} 应用"
     },
     "notInstalled": {
       "title": "应用没有打开吗？",
-      "description": "如果没有跳转到 {method} 应用，请确认已安装后再试一次。",
-      "qrHint": "扫描二维码前往 {method} 应用"
+      "description": "如果没有跳转到 {method} 应用，请确认已安装后再试一次。"
     },
     "transferAccounts": {
       "title": "银行转账信息",
