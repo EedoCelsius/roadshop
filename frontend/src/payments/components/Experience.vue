@@ -2,14 +2,13 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import DialogCloseEnd from '@/shared/components/DialogCloseEnd.vue'
-import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
 import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
 import TossInstructionDialog from '@/payments/components/TossInstructionDialog.vue'
-import QrCodeDisplay from '@/shared/components/QrCodeDisplay.vue'
+import IsNotInstalledDialog from '@/payments/components/IsNotInstalledDialog.vue'
+import IsNotMobileDialog from '@/payments/components/IsNotMobileDialog.vue'
 import { useLocalizedSections } from '@/payments/composables/useLocalizedSections'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { usePaymentInteractionStore } from '@/payments/stores/paymentInteraction.store'
@@ -70,6 +69,7 @@ const selectedMethodName = computed(() =>
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
 
 const isNotMobileDialog = computed(() => dialogContent.value?.type === 'not-mobile')
+const isNotInstalledDialog = computed(() => dialogContent.value?.type === 'not-installed')
 const dialogQrValue = computed(() => dialogContent.value?.deepLinkUrl ?? null)
 const dialogQrHint = computed(() => {
   if (!dialogContent.value?.deepLinkUrl) {
@@ -177,31 +177,23 @@ const onLaunchTossInstructionDialog = () => {
       />
     </template>
 
-    <DialogCloseFull
+    <IsNotMobileDialog
       v-if="dialogContent && isNotMobileDialog"
       :visible="isDialogVisible"
       :title="dialogContent.title"
       :description="dialogContent.message"
-      :close-label="dialogContent.confirmLabel"
+      :confirm-label="dialogContent.confirmLabel"
+      :qr-value="dialogQrValue"
+      :qr-hint="dialogQrHint"
+      :qr-icon="dialogQrIcon"
       @close="onDialogConfirm"
-    >
-      <div
-        v-if="dialogQrValue"
-        class="mt-6 flex flex-col items-center gap-3"
-      >
-        <QrCodeDisplay :value="dialogQrValue" :icon="dialogQrIcon ?? undefined" />
-        <p v-if="dialogQrHint" class="text-center text-xs text-slate-500">
-          {{ dialogQrHint }}
-          <i class="pi pi-camera"></i>
-        </p>
-      </div>
-    </DialogCloseFull>
-    <DialogCloseEnd
-      v-else-if="dialogContent"
+    />
+    <IsNotInstalledDialog
+      v-else-if="dialogContent && isNotInstalledDialog"
       :visible="isDialogVisible"
       :title="dialogContent.title"
       :description="dialogContent.message"
-      :close-label="dialogContent.confirmLabel"
+      :confirm-label="dialogContent.confirmLabel"
       @close="onDialogConfirm"
     />
     <CurrencySelectorDialog
