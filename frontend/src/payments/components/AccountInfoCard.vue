@@ -19,7 +19,7 @@ const props = defineProps<Props>()
           class="flex h-20 w-20 items-center justify-center rounded-3xl bg-roadshop-highlight/60 shadow-inner"
           aria-hidden="true"
         >
-          <img :src="getFirmIcon(props.account.bank.value)" :alt="props.account.bank" class="h-14 w-14" />
+          <img :src="getFirmIcon(props.account.bank)" :alt="props.account.bank" class="h-14 w-14" />
         </div>
         <div>
           <p class="text-2xl font-semibold text-roadshop-primary">
