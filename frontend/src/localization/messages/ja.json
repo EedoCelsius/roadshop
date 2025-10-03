@@ -15,7 +15,7 @@
     "confirm": "OK",
     "notMobile": {
       "title": "モバイル専用です",
-      "description": "{provider}送金リンクはモバイルアプリでのみ開けます。スマートフォンで再度お試しください。"
+      "description": "{method}リンクはモバイルアプリでのみ開きます。スマートフォンで再度お試しください。"
     },
     "notInstalled": {
       "title": "アプリが起動しませんか？",

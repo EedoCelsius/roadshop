@@ -15,7 +15,7 @@
     "confirm": "OK",
     "notMobile": {
       "title": "Open on your mobile device",
-      "description": "The {provider} transfer link only opens in the mobile app. Please continue on your phone."
+      "description": "The {method} link only opens on mobile. Please continue on your phone."
     },
     "notInstalled": {
       "title": "Having trouble opening the app?",
