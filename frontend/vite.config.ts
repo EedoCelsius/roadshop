@@ -4,21 +4,19 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-// https://vite.dev/config/
-export default defineConfig(({ mode }) => {
-  const base = process.env.BASE_URL ?? (mode === 'production' ? '/roadshop/' : '/')
+const base = process.env.BASE_URL ?? './'
 
-  return {
-    base,
-    plugins: [
-      vue(),
-      vueDevTools(),
-    ],
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
-        '@icons': fileURLToPath(new URL('./src/assets/icons', import.meta.url)),
-      },
+// https://vite.dev/config/
+export default defineConfig({
+  base,
+  plugins: [
+    vue(),
+    vueDevTools(),
+  ],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@icons': fileURLToPath(new URL('./src/assets/icons', import.meta.url)),
     },
-  }
+  },
 })
