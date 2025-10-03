@@ -22,49 +22,30 @@ const i18nStore = useI18nStore()
 const paymentInfoStore = usePaymentInfoStore()
 
 const isVisible = ref(false)
-const qrValue = ref<string | null>(null)
+const qrValue = computed(() => {
+  try {
+    const info = paymentInfoStore.getDeepLinkInfo(props.method)
+    return resolveDeepLink(props.method, info)
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+})
 
 const paymentMethod = computed(() => paymentStore.getMethodById(props.method) ?? null)
 const methodLabel = computed(() => i18nStore.t(`options.${props.method}`, props.method))
 const icon = computed<PaymentIcon | null>(() => paymentMethod.value?.icons?.[0] ?? null)
 const title = computed(() => i18nStore.t('dialogs.notMobile.title'))
 const confirmLabel = computed(() => i18nStore.t('dialogs.confirm'))
-const description = computed(() => {
-  const template = i18nStore.t('dialogs.notMobile.description')
-  return template.includes('{method}') ? template.replace('{method}', methodLabel.value) : template
-})
-const qrHint = computed(() => {
-  if (!isVisible.value || !qrValue.value) {
-    return null
-  }
-
-  for (const key of ['dialogs.notMobile.qrHint', 'dialogs.notInstalled.qrHint']) {
-    const template = i18nStore.t(key)
-    if (template === key) {
-      continue
-    }
-
-    return template.includes('{method}') ? template.replace('{method}', methodLabel.value) : template
-  }
-
-  return null
-})
+const description = computed(() => i18nStore.t('dialogs.notMobile.description').replace('{method}', methodLabel.value))
+const qrHint = computed(() => i18nStore.t('dialogs.notMobile.qrHint').replace('{method}', methodLabel.value))
 
 const close = () => {
   isVisible.value = false
-  qrValue.value = null
   emit('close')
 }
 
 const open = () => {
-  try {
-    const info = paymentInfoStore.getDeepLinkInfo(props.method)
-    qrValue.value = resolveDeepLink(props.method, info)
-  } catch (error) {
-    console.error(error)
-    qrValue.value = null
-  }
-
   isVisible.value = true
 }
 
