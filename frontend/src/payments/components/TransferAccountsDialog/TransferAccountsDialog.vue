@@ -7,7 +7,6 @@ import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import { getFirmIcon } from '@icons/firms'
-import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
 import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
@@ -27,47 +26,20 @@ const { locale } = storeToRefs(i18nStore)
 
 const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
   useTransferCopyState()
-
-const formatAmountForDisplay = (amount: number, locale: string | null) =>
-  `${amount.toLocaleString(locale || 'ko-KR')}원`
-
-const formattedAmount = computed(() => formatAmountForDisplay(props.amount, locale.value))
+  
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
-  i18nStore
-    .t('dialogs.transferAccounts.description')
+  i18nStore.t('dialogs.transferAccounts.description')
     .replace(
       '{amount}',
-      `<strong class="font-semibold text-roadshop-primary">${formattedAmount.value}</strong>`,
+      `<strong class="font-semibold text-roadshop-primary">${props.amount.toLocaleString(locale.value || 'ko-KR')}원</strong>`,
     ),
 )
+
 const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.all'))
 const copyNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.accountNo'))
 const copiedAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copied.all'))
 const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copied.accountNo'))
-
-const getIconForBank = (bank: string) => getFirmIcon(bank)
-
-const copyTransferDetails = async (account: TransferAccount) => {
-  await handleCopyAll(account.number, () =>
-    copyTransferInfo(
-      {
-        bank: account.bank,
-        accountNumber: account.number,
-        holder: account.holder,
-      },
-      props.amount,
-    ),
-  )
-}
-
-const copyAccountNumber = async (account: TransferAccount) => {
-  await handleCopyNumber(account.number)
-}
-
-const setHoverState = (accountNumber: string, action: CopyAction, value: boolean) => {
-  setHoveredControl(accountNumber, action, value)
-}
 
 const onClose = () => {
   emit('close')
@@ -99,10 +71,10 @@ watch(
         <div class="flex w-full flex-col items-stretch sm:flex-row sm:items-stretch">
           <div class="flex flex-1 items-start gap-3 bg-roadshop-highlight/40 p-4">
             <div
-              v-if="getIconForBank(account.bank)"
+              v-if="getFirmIcon(account.bank)"
               class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white shadow"
             >
-              <img :src="getIconForBank(account.bank)" :alt="account.bank" class="h-7 w-7" />
+              <img :src="getFirmIcon(account.bank)" :alt="account.bank" class="h-7 w-7" />
             </div>
             <div>
               <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
@@ -113,27 +85,27 @@ watch(
                 <button
                   type="button"
                   class="group inline-flex items-center gap-1 font-mono text-sm text-roadshop-primary"
-                  @click="copyAccountNumber(account)"
-                  @mouseenter="setHoverState(account.number, 'number', true)"
-                  @mouseleave="setHoverState(account.number, 'number', false)"
-                  @focus="setHoverState(account.number, 'number', true)"
-                  @blur="setHoverState(account.number, 'number', false)"
+                  @click="handleCopyNumber(account)"
+                  @mouseenter="setHoveredControl(account, 'number', true)"
+                  @mouseleave="setHoveredControl(account, 'number', false)"
+                  @focus="setHoveredControl(account, 'number', true)"
+                  @blur="setHoveredControl(account, 'number', false)"
                 >
                   <span class="underline underline-offset-4">{{ account.number }}</span>
                   <i
                     aria-hidden="true"
                     class="pi text-xs transition"
                     :class="
-                      isCopied(account.number, 'number')
+                      isCopied(account, 'number')
                         ? ['pi-check', 'text-emerald-500', 'group-hover:text-emerald-500']
                         : ['pi-copy', 'text-roadshop-primary', 'group-hover:text-roadshop-primary']
                     "
                   ></i>
                 </button>
                 <TooltipBubble
-                  :visible="isTooltipVisible(account.number, 'number')"
-                  :message="isCopied(account.number, 'number') ? copiedNumberLabel : copyNumberLabel"
-                  :variant="isCopied(account.number, 'number') ? 'success' : 'default'"
+                  :visible="isTooltipVisible(account, 'number')"
+                  :message="isCopied(account, 'number') ? copiedNumberLabel : copyNumberLabel"
+                  :variant="isCopied(account, 'number') ? 'success' : 'default'"
                 />
               </div>
             </div>
@@ -143,19 +115,19 @@ watch(
               type="button"
               :class="[
                 'flex h-full min-h-[45px] w-full items-center justify-center gap-2 px-5 text-sm font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:min-w-[64px]',
-                isCopied(account.number, 'all')
+                isCopied(account, 'all')
                   ? 'bg-emerald-500 hover:bg-emerald-500 focus-visible:outline-emerald-500'
                   : 'bg-roadshop-primary hover:bg-roadshop-primary/90 focus-visible:outline-roadshop-primary',
               ]"
               :aria-label="copyAllLabel"
-              @click="copyTransferDetails(account)"
+              @click="handleCopyAll(account)"
             >
               <span class="flex items-center gap-2 sm:hidden">
                 <span class="font-semibold text-white">
-                  {{ isCopied(account.number, 'all') ? copiedAllLabel : copyAllLabel }}
+                  {{ isCopied(account, 'all') ? copiedAllLabel : copyAllLabel }}
                 </span>
                 <i
-                  v-if="isCopied(account.number, 'all')"
+                  v-if="isCopied(account, 'all')"
                   aria-hidden="true"
                   class="pi pi-check text-white"
                 ></i>
@@ -163,7 +135,7 @@ watch(
               <i
                 aria-hidden="true"
                 class="pi hidden text-lg text-white sm:flex"
-                :class="isCopied(account.number, 'all') ? 'pi-check' : 'pi-clipboard'"
+                :class="isCopied(account, 'all') ? 'pi-check' : 'pi-clipboard'"
               ></i>
             </button>
           </div>
