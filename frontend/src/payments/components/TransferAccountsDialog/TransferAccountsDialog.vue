@@ -120,7 +120,7 @@ watch(
                   : 'bg-roadshop-primary hover:bg-roadshop-primary/90 focus-visible:outline-roadshop-primary',
               ]"
               :aria-label="copyAllLabel"
-              @click="handleCopyAll(account)"
+              @click="handleCopyAll(account, props.amount)"
             >
               <span class="flex items-center gap-2 sm:hidden">
                 <span class="font-semibold text-white">
