@@ -30,7 +30,6 @@ const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopy
   useTransferCopyState()
 
 const formattedAmount = computed(() => formatKrwAmount(props.amount, locale.value))
-
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
   i18nStore
@@ -48,7 +47,7 @@ const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.c
 const getIconForBank = (bank: string) => getFirmIcon(bank)
 
 const copyTransferDetails = async (account: TransferAccount) => {
-  const { payload } = createTransferCopyPayload(
+  const payload = createTransferCopyPayload(
     {
       bank: account.bank,
       accountNumber: account.number,
