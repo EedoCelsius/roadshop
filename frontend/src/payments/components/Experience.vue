@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useRoute, useRouter } from 'vue-router'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
@@ -23,6 +24,8 @@ defineOptions({
 const paymentStore = usePaymentStore()
 const paymentInfoStore = usePaymentInfoStore()
 const i18nStore = useI18nStore()
+const route = useRoute()
+const router = useRouter()
 
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
@@ -30,6 +33,80 @@ const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoa
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
 const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
+
+const getDialogFromParam = (param: unknown): string | null => {
+  if (Array.isArray(param)) {
+    return param[0] ?? null
+  }
+
+  return typeof param === 'string' && param.length > 0 ? param : null
+}
+
+const navigateToBaseRoute = () => {
+  if (!getDialogFromParam(route.params.dialog)) {
+    return
+  }
+
+  void router.replace({ name: 'roadshop', params: {} })
+}
+
+const handleDialogRunResult = async (result: boolean | void | undefined) => {
+  if (result === false) {
+    navigateToBaseRoute()
+  }
+}
+
+const runDialogForRoute = async (dialogId: string) => {
+  const normalizedId = dialogId.toLowerCase()
+
+  const runnerMap: Record<string, (() => Promise<boolean | void> | boolean | void) | undefined> = {
+    transfer: () => transferExperienceRef.value?.run(),
+    toss: () => tossExperienceRef.value?.run(),
+    kakao: () => kakaoExperienceRef.value?.run(),
+  }
+
+  const runner = runnerMap[normalizedId]
+
+  if (!runner) {
+    navigateToBaseRoute()
+    return
+  }
+
+  await handleDialogRunResult(await runner())
+}
+
+const handleRouteDialogChange = async (dialogParam: unknown) => {
+  const dialogId = getDialogFromParam(dialogParam)
+
+  if (!dialogId) {
+    return
+  }
+
+  await runDialogForRoute(dialogId)
+}
+
+let isMounted = false
+
+onMounted(async () => {
+  await nextTick()
+  isMounted = true
+  void handleRouteDialogChange(route.params.dialog)
+})
+
+watch(
+  () => route.params.dialog,
+  (dialogParam) => {
+    if (!isMounted) {
+      return
+    }
+
+    void handleRouteDialogChange(dialogParam)
+  },
+)
+
+const onExperienceClose = () => {
+  navigateToBaseRoute()
+}
 
 const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
   method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
@@ -158,9 +235,9 @@ const onCloseCurrencySelector = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" />
-    <TossExperience ref="tossExperienceRef" />
-    <KakaoExperience ref="kakaoExperienceRef" />
+    <TransferExperience ref="transferExperienceRef" @close="onExperienceClose" />
+    <TossExperience ref="tossExperienceRef" @close="onExperienceClose" />
+    <KakaoExperience ref="kakaoExperienceRef" @close="onExperienceClose" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"

@@ -5,6 +5,7 @@ import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
 const paymentInfoStore = usePaymentInfoStore()
+const emit = defineEmits<{ close: [] }>()
 const isDialogVisible = ref(false)
 
 const transferAmount = computed(() => paymentInfoStore.transferInfo?.amount.krw ?? 0)
@@ -27,6 +28,7 @@ const closeDialog = () => {
 
 const onClose = () => {
   closeDialog()
+  emit('close')
 }
 
 defineExpose({
