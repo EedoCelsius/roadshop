@@ -9,6 +9,8 @@ import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
 import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
+const emit = defineEmits<{ closed: [] }>()
+
 const paymentInfoStore = usePaymentInfoStore()
 
 const isInstructionVisible = ref(false)
@@ -85,6 +87,7 @@ const run = async (): Promise<boolean> => {
 
 const onInstructionClose = () => {
   closeInstructionDialog()
+  emit('closed')
 }
 
 const onInstructionLaunchNow = () => {
@@ -102,6 +105,10 @@ const onInstructionReopen = () => {
 defineExpose({
   run,
 })
+
+const onExperienceDialogClosed = () => {
+  emit('closed')
+}
 </script>
 
 <template>
@@ -113,6 +120,6 @@ defineExpose({
     @launch-now="onInstructionLaunchNow"
     @reopen="onInstructionReopen"
   />
-  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" @close="onExperienceDialogClosed" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" @close="onExperienceDialogClosed" />
 </template>
