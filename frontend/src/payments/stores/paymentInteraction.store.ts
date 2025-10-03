@@ -2,54 +2,23 @@ import { computed, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
 import { useI18nStore } from '@/localization/store'
-import { isDeepLinkChecking as deepLinkChecking, launchDeepLink } from '@/payments/services/deepLinkService'
+import {
+  isDeepLinkChecking as deepLinkChecking,
+  launchDeepLink,
+  resolveDeepLink,
+} from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { createCountdownManager } from '@/payments/stores/utils/createCountdownManager'
 import type { DeepLinkProvider, PaymentMethod } from '@/payments/types'
-import { createPaymentActionResolver } from '@/payments/workflows/createPaymentActionResolver'
-import type {
-  DeepLinkDialogOptions,
-  DeepLinkDialogType,
-  PaymentActionContext,
-} from '@/payments/workflows/types'
 import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
 import { openUrlInNewTab } from '@/shared/utils/navigation'
 
-const buildWorkflowContext = (
-  paymentStore: ReturnType<typeof usePaymentStore>,
-  paymentInfoStore: ReturnType<typeof usePaymentInfoStore>,
-  showDialog: (
-    type: DeepLinkDialogType,
-    provider: DeepLinkProvider,
-    options?: DeepLinkDialogOptions,
-  ) => void,
-  openTransferDialog: () => void,
-  copyTossAccountInfo: () => Promise<boolean>,
-  showTossInstructionDialog: (seconds: number) => Promise<boolean>,
-  completeTossInstructionDialog: () => void,
-  setTossDeepLinkUrl: (url: string | null) => void,
-): PaymentActionContext => ({
-  openTransferDialog,
-  openMethodUrl: async (method: PaymentMethod, currency: string | null) => {
-    const ready = await paymentInfoStore.ensureMethodInfo(method.id)
+type DeepLinkDialogType = 'not-mobile' | 'not-installed'
 
-    if (!ready) {
-      return
-    }
-
-    const url = paymentInfoStore.getMethodUrl(method.id, currency ?? undefined)
-    openUrlInNewTab(url)
-  },
-  ensureMethodInfoLoaded: paymentInfoStore.ensureMethodInfo,
-  getDeepLinkInfo: paymentInfoStore.getDeepLinkInfo,
-  showDeepLinkDialog: showDialog,
-  openUrlInNewTab,
-  copyTossAccountInfo,
-  showTossInstructionDialog,
-  completeTossInstructionDialog,
-  setTossDeepLinkUrl,
-})
+type DeepLinkDialogOptions = {
+  deepLinkUrl?: string | null
+}
 
 export const usePaymentInteractionStore = defineStore('payment-interaction', () => {
   const paymentStore = usePaymentStore()
@@ -179,18 +148,108 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     })
   }
 
-  const workflowContext = buildWorkflowContext(
-    paymentStore,
-    paymentInfoStore,
-    showDialog,
-    openTransferDialog,
-    copyTossAccountInfo,
-    showTossInstructionDialog,
-    completeTossInstructionDialog,
-    setTossDeepLinkUrl,
-  )
+  const openMethodUrl = async (method: PaymentMethod, currency: string | null) => {
+    const ready = await paymentInfoStore.ensureMethodInfo(method.id)
 
-  const resolveAction = createPaymentActionResolver(workflowContext)
+    if (!ready) {
+      return
+    }
+
+    const url = paymentInfoStore.getMethodUrl(method.id, currency ?? undefined)
+    openUrlInNewTab(url)
+  }
+
+  const runTransferWorkflow = async () => {
+    const ready = await paymentInfoStore.ensureMethodInfo('transfer')
+
+    if (!ready) {
+      return
+    }
+
+    openTransferDialog()
+  }
+
+  const resolveDeepLinkFor = async (provider: DeepLinkProvider) => {
+    const ready = await paymentInfoStore.ensureMethodInfo(provider)
+
+    if (!ready) {
+      return null
+    }
+
+    const info = paymentInfoStore.getDeepLinkInfo(provider)
+
+    if (!info) {
+      console.error(`Missing ${provider} payment info payload`)
+      return null
+    }
+
+    try {
+      return resolveDeepLink(provider, info)
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
+
+  const runKakaoWorkflow = async () => {
+    const deepLink = await resolveDeepLinkFor('kakao')
+
+    if (!deepLink) {
+      return
+    }
+
+    await launchDeepLink(deepLink, {
+      timeoutMs: 1500,
+      onNotInstalled: () => showDialog('not-installed', 'kakao'),
+      onNotMobile: () => showDialog('not-mobile', 'kakao', { deepLinkUrl: deepLink }),
+    })
+  }
+
+  const runTossWorkflow = async () => {
+    setTossDeepLinkUrl(null)
+
+    const deepLink = await resolveDeepLinkFor('toss')
+
+    if (!deepLink) {
+      return
+    }
+
+    setTossDeepLinkUrl(deepLink)
+
+    await copyTossAccountInfo()
+    const shouldLaunch = await showTossInstructionDialog(5)
+
+    if (!shouldLaunch) {
+      completeTossInstructionDialog()
+      return
+    }
+
+    try {
+      await launchDeepLink(deepLink, {
+        timeoutMs: 2000,
+        onNotInstalled: () => showDialog('not-installed', 'toss'),
+        onNotMobile: () => showDialog('not-mobile', 'toss', { deepLinkUrl: deepLink }),
+      })
+    } finally {
+      completeTossInstructionDialog()
+    }
+  }
+
+  const runWorkflowForMethod = async (method: PaymentMethod, currency: string | null) => {
+    switch (method.id) {
+      case 'transfer':
+        await runTransferWorkflow()
+        break
+      case 'toss':
+        await runTossWorkflow()
+        break
+      case 'kakao':
+        await runKakaoWorkflow()
+        break
+      default:
+        await openMethodUrl(method, currency)
+    }
+  }
 
   const handleMethodSelection = async (methodId: string) => {
     paymentStore.selectMethod(methodId)
@@ -201,8 +260,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       return
     }
 
-    const action = resolveAction(method)
-    await action.handleSelection?.({ method, currency: selectedCurrency.value })
+    await runWorkflowForMethod(method, selectedCurrency.value)
   }
 
   const handleCurrencySelection = async (currency: string) => {
@@ -218,8 +276,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       return
     }
 
-    const action = resolveAction(method)
-    await action.handleCurrencySelection?.({ method, currency })
+    await runWorkflowForMethod(method, currency)
   }
 
   return {
