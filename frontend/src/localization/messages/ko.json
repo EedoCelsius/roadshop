@@ -15,12 +15,12 @@
     "confirm": "확인",
     "notMobile": {
       "title": "모바일에서만 이용할 수 있어요",
-      "description": "{method} 링크는 모바일에서만 열려요. 휴대폰에서 다시 시도해 주세요."
+      "description": "{method} 링크는 모바일에서만 열려요. 휴대폰에서 다시 시도해 주세요.",
+      "qrHint": "스캔해서 {method} 앱으로 이동합니다"
     },
     "notInstalled": {
       "title": "앱이 실행되지 않았나요?",
-      "description": "{method} 앱으로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
-      "qrHint": "스캔해서 {method} 앱으로 이동합니다"
+      "description": "{method} 앱으로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요."
     },
     "transferAccounts": {
       "title": "계좌이체 정보",

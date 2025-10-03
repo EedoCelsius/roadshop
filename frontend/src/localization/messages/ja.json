@@ -15,12 +15,12 @@
     "confirm": "OK",
     "notMobile": {
       "title": "モバイル専用です",
-      "description": "{method}リンクはモバイルアプリでのみ開きます。スマートフォンで再度お試しください。"
+      "description": "{method}リンクはモバイルアプリでのみ開きます。スマートフォンで再度お試しください。",
+      "qrHint": "QRコードをスキャンして{method}アプリに移動します"
     },
     "notInstalled": {
       "title": "アプリが起動しませんか？",
-      "description": "{method}アプリに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。",
-      "qrHint": "QRコードをスキャンして{method}アプリに移動します"
+      "description": "{method}アプリに移動しなかった場合は、インストール状況を確認してからもう一度お試しください。"
     },
     "transferAccounts": {
       "title": "口座振込のご案内",
@@ -56,3 +56,4 @@
     }
   }
 }
+
