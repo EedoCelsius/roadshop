@@ -24,7 +24,7 @@
     },
     "transferAccounts": {
       "title": "Bank transfer details",
-      "description": "Send {amount} to one of the accounts below.",
+      "description": "Send <strong class=\"text-roadshop-accent\">₩{amount}</strong> to one of the accounts below.",
       "copy": {
         "all": "Copy transfer details",
         "accountNo": "Copy only account number"
@@ -40,7 +40,7 @@
     },
     "tossInstruction": {
       "title": "Send with Toss",
-      "description": "We've <strong>automatically copied</strong> the account details you need for Toss.",
+      "description": "We've <strong class=\"text-roadshop-accent\">automatically copied</strong> the account details you need for Toss.",
       "launchCta": "Go to Toss",
       "reopen": "Reopen Toss"
     }

@@ -30,10 +30,7 @@ const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopy
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
   i18nStore.t('dialogs.transferAccounts.description')
-    .replace(
-      '{amount}',
-      `<strong class="font-semibold text-roadshop-primary">₩${props.amount.toLocaleString(locale.value || 'ko-KR')}</strong>`,
-    ),
+    .replace('{amount}', props.amount.toLocaleString(locale.value || 'ko-KR')),
 )
 
 const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.all'))
