@@ -24,8 +24,7 @@
     },
     "transferAccounts": {
       "title": "Bank transfer details",
-      "description": "Send {amountWithCurrency} to one of the accounts below.",
-      "amountWithCurrency": "{amount} KRW",
+      "description": "Send {amount} to one of the accounts below.",
       "copy": {
         "all": "Copy transfer details",
         "accountNo": "Copy only account number"

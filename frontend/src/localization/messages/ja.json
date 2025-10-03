@@ -24,8 +24,7 @@
     },
     "transferAccounts": {
       "title": "口座振込のご案内",
-      "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
-      "amountWithCurrency": "{amount} KRW",
+      "description": "下記のいずれかの口座へ {amount} をお振り込みください。",
       "copy": {
         "all": "振込情報をコピー",
         "accountNo": "口座番号のみコピー"

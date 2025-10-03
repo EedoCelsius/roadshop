@@ -24,8 +24,7 @@
     },
     "transferAccounts": {
       "title": "계좌이체 정보",
-      "description": "{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.",
-      "amountWithCurrency": "{amount}원",
+      "description": "{amount}을 아래 계좌 중 하나로 보내 주세요.",
       "copy": {
         "all": "이체 정보 복사",
         "accountNo": "계좌번호만 복사"
