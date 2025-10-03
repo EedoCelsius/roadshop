@@ -28,12 +28,9 @@ const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopy
   useTransferCopyState()
   
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
-const formattedAmount = computed(() => props.amount.toLocaleString(locale.value || 'ko-KR'))
-
 const descriptionHtml = computed(() =>
-  i18nStore
-    .t('dialogs.transferAccounts.description')
-    .replace('{amount}', formattedAmount.value),
+  i18nStore.t('dialogs.transferAccounts.description')
+    .replace('{amount}', props.amount.toLocaleString(locale.value || 'ko-KR')),
 )
 
 const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.all'))
