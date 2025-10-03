@@ -24,8 +24,5 @@ export const createTransferCopyPayload = (
   const amountText =
     options.amountText ?? formatKrwAmount(amount, options.locale)
 
-  return {
-    amountText,
-    payload: `${account.bank} ${account.accountNumber} ${account.holder} [${amountText}]`,
-  }
+  return `${account.bank} ${account.accountNumber} [${account.holder}] ${amountText}`
 }
