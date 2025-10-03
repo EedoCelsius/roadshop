@@ -1,8 +1,8 @@
-# Road Shop Pay Frontend
+# Universal Payment Component Frontend
 
-A Vue 3 + Vite single-page experience that guides visitors at Korean street shops to the right QR payment option. The
-site now starts in English, automatically follows the browser language when possible, and lets guests switch between
-English, Korean, and Japanese manually.
+A Vue 3 + Vite single-page experience that guides visitors to the right QR payment option. The site now starts in
+English, automatically follows the browser language when possible, and lets guests switch between English, Korean, and
+Japanese manually.
 
 ## Tech stack
 

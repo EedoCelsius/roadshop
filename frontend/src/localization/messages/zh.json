@@ -24,7 +24,7 @@
     },
     "transferAccounts": {
       "title": "银行转账信息",
-      "description": "请将 <strong class=\"text-roadshop-accent\">₩{amount}</strong> 转入下方任一账户。",
+      "description": "请将 <strong class=\"text-brand-accent\">₩{amount}</strong> 转入下方任一账户。",
       "copy": {
         "all": "复制转账信息",
         "accountNo": "仅复制账号"
@@ -40,7 +40,7 @@
     },
     "tossInstruction": {
       "title": "使用 Toss 转账",
-      "description": "已将转账所需的账户信息<strong class=\"text-roadshop-accent\">自动复制</strong>好了。",
+      "description": "已将转账所需的账户信息<strong class=\"text-brand-accent\">自动复制</strong>好了。",
       "launchCta": "前往 Toss",
       "reopen": "重新打开 Toss"
     }

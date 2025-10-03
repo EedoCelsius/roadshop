@@ -24,7 +24,7 @@
     },
     "transferAccounts": {
       "title": "계좌이체 정보",
-      "description": "<strong class=\"text-roadshop-accent\">₩{amount}</strong>을 아래 계좌 중 하나로 보내 주세요.",
+      "description": "<strong class=\"text-brand-accent\">₩{amount}</strong>을 아래 계좌 중 하나로 보내 주세요.",
       "copy": {
         "all": "이체 정보 복사",
         "accountNo": "계좌번호만 복사"
@@ -40,7 +40,7 @@
     },
     "tossInstruction": {
       "title": "토스로 송금하기",
-      "description": "송금에 필요한 계좌 정보를 <strong class=\"text-roadshop-accent\">자동으로 복사</strong>해 두었어요.",
+      "description": "송금에 필요한 계좌 정보를 <strong class=\"text-brand-accent\">자동으로 복사</strong>해 두었어요.",
       "launchCta": "토스로 이동하기",
       "reopen": "토스 다시열기"
     }

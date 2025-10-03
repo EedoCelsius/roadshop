@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        roadshop: {
+        brand: {
           primary: "#111827",
           accent: "#00C896",
           highlight: "#F3F4F6",
