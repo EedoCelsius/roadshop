@@ -94,11 +94,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
 
     const methodLabel = i18nStore.t(`options.${provider}`, provider)
 
-    return template
-      .split('{method}')
-      .join(methodLabel)
-      .split('{provider}')
-      .join(methodLabel)
+    return template.replace('{method}', methodLabel)
   }
 
   const showDialog = (
