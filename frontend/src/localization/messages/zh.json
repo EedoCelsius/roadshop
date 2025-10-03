@@ -13,9 +13,6 @@
   "card": {
     "selectCurrencyPrompt": "请选择货币以继续。"
   },
-  "footer": {
-    "message": "© {year} 支付中心。随时随地完成结账。"
-  },
   "loading": {
     "deepLink": "正在打开支付应用…",
     "methods": "正在加载支付方式…"

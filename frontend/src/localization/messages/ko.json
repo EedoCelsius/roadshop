@@ -13,9 +13,6 @@
   "card": {
     "selectCurrencyPrompt": "진행하려면 통화를 선택해 주세요."
   },
-  "footer": {
-    "message": "© {year} 결제 센터. 어디서나 간편한 체크아웃을 제공합니다."
-  },
   "loading": {
     "deepLink": "결제 앱을 여는 중이에요…",
     "methods": "결제 수단을 불러오는 중이에요…"
