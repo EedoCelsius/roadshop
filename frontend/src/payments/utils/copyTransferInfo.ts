@@ -5,7 +5,7 @@ export const copyTransferInfo = async (
   account: TransferAccount,
   amount: number,
 ): Promise<boolean> => {
-  const payload = `${account.bank} ${account.accountNumber} [${account.holder}] ₩${amount.toLocaleString('ko-KR')}`
+  const payload = `${account.bank} ${account.number} [${account.holder}] ₩${amount.toLocaleString('ko-KR')}`
 
   return copyText(payload)
 }
