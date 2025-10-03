@@ -5,7 +5,6 @@ import { useI18nStore } from '@/localization/store'
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 
 interface Props {
-  visible: boolean
   methodName: string
   currencies: string[]
 }
@@ -35,7 +34,6 @@ const onClose = () => {
 
 <template>
   <DialogCloseFull
-    :visible="props.visible"
     :title="title"
     :description="description"
     @close="onClose"

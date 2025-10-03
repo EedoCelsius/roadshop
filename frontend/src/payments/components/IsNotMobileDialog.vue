@@ -1,39 +1,81 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import QrCodeDisplay from '@/shared/components/QrCodeDisplay.vue'
+import { useI18nStore } from '@/localization/store'
+import { usePaymentStore } from '@/payments/stores/payment.store'
 import type { PaymentIcon } from '@/payments/types'
 
-const props = defineProps<{
-  visible: boolean
-  title: string
-  description?: string
-  confirmLabel?: string
-  qrValue?: string | null
-  qrHint?: string | null
-  qrIcon?: PaymentIcon | null
-}>()
+interface Props {
+  methodId: string
+}
 
-const emit = defineEmits<{
-  close: []
-}>()
+const props = defineProps<Props>()
 
-const onClose = () => {
+const emit = defineEmits<{ close: [] }>()
+
+const paymentStore = usePaymentStore()
+const i18nStore = useI18nStore()
+
+const isVisible = ref(false)
+const qrValue = ref<string | null>(null)
+
+const method = computed(() => paymentStore.getMethodById(props.methodId) ?? null)
+const methodLabel = computed(() => i18nStore.t(`options.${props.methodId}`, props.methodId))
+const icon = computed<PaymentIcon | null>(() => method.value?.icons?.[0] ?? null)
+const title = computed(() => i18nStore.t('dialogs.notMobile.title'))
+const confirmLabel = computed(() => i18nStore.t('dialogs.confirm'))
+const description = computed(() => {
+  const template = i18nStore.t('dialogs.notMobile.description')
+  return template.includes('{method}') ? template.replace('{method}', methodLabel.value) : template
+})
+const qrHint = computed(() => {
+  if (!isVisible.value || !qrValue.value) {
+    return null
+  }
+
+  for (const key of ['dialogs.notMobile.qrHint', 'dialogs.notInstalled.qrHint']) {
+    const template = i18nStore.t(key)
+    if (template === key) {
+      continue
+    }
+
+    return template.includes('{method}') ? template.replace('{method}', methodLabel.value) : template
+  }
+
+  return null
+})
+
+const close = () => {
+  isVisible.value = false
+  qrValue.value = null
   emit('close')
 }
+
+const open = (options: { qrValue?: string | null } = {}) => {
+  qrValue.value = options.qrValue ?? null
+  isVisible.value = true
+}
+
+defineExpose({
+  open,
+  close,
+})
 </script>
 
 <template>
   <DialogCloseFull
-    :visible="props.visible"
-    :title="props.title"
-    :description="props.description"
-    :close-label="props.confirmLabel"
-    @close="onClose"
+    v-if="isVisible"
+    :title="title"
+    :description="description"
+    :close-label="confirmLabel"
+    @close="close"
   >
-    <div v-if="props.qrValue" class="mt-6 flex flex-col items-center gap-3">
-      <QrCodeDisplay :value="props.qrValue" :icon="props.qrIcon ?? undefined" />
-      <p v-if="props.qrHint" class="text-center text-xs text-slate-500">
-        {{ props.qrHint }}
+    <div v-if="qrValue" class="mt-6 flex flex-col items-center gap-3">
+      <QrCodeDisplay :value="qrValue" :icon="icon ?? undefined" />
+      <p v-if="qrHint" class="text-center text-xs text-slate-500">
+        {{ qrHint }}
         <i class="pi pi-camera"></i>
       </p>
     </div>

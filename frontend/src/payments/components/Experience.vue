@@ -152,8 +152,7 @@ const onCloseCurrencySelector = () => {
     </template>
 
     <CurrencySelectorDialog
-      v-if="selectedMethod"
-      :visible="isCurrencySelectorOpen"
+      v-if="selectedMethod && isCurrencySelectorOpen"
       :method-name="selectedMethodName"
       :currencies="selectedMethodCurrencies"
       @select="onCurrencySelect"

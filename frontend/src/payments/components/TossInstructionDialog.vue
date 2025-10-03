@@ -7,7 +7,6 @@ import DialogBase from '@/shared/components/DialogBase.vue'
 import type { TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
 interface Props {
-  visible: boolean
   info: TossPaymentInfo | null
   countdown: number
 }
@@ -44,7 +43,6 @@ const onLaunchNow = () => {
 
 <template>
   <DialogBase
-    :visible="props.visible"
     :title="title"
     :description="description"
     @close="onClose"

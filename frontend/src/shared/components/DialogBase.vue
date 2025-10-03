@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const props = defineProps<{
-  visible: boolean
   title: string
   description?: string
 }>()
@@ -24,7 +23,6 @@ const onClose = () => {
   <Teleport to="body">
     <Transition name="dialog-fade">
       <div
-        v-if="props.visible"
         class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/60 px-6"
         @click="onBackdropClick"
       >

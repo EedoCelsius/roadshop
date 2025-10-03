@@ -36,7 +36,7 @@ defineExpose({
 
 <template>
   <TransferAccountsDialog
-    :visible="isDialogVisible"
+    v-if="isDialogVisible"
     :accounts="transferAccounts"
     :amount="transferAmount"
     @close="onClose"
