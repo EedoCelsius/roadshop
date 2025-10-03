@@ -32,7 +32,7 @@ const descriptionHtml = computed(() =>
   i18nStore.t('dialogs.transferAccounts.description')
     .replace(
       '{amount}',
-      `<strong class="font-semibold text-roadshop-primary">${props.amount.toLocaleString(locale.value || 'ko-KR')}원</strong>`,
+      `<strong class="font-semibold text-roadshop-primary">₩${props.amount.toLocaleString(locale.value || 'ko-KR')}</strong>`,
     ),
 )
 
