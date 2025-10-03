@@ -5,6 +5,7 @@ import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paym
 import { isMobileDevice } from '@/shared/utils/device'
 
 export const createTossDeepLink = (info: TossPaymentInfo): string => {
+  console.log(info)
   const params = new URLSearchParams({
     amount: info.amount.krw.toString(),
     bank: info.account.bank,
