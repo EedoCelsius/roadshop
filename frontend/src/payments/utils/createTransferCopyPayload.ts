@@ -6,18 +6,11 @@ export type TransferCopyAccount = {
   holder: string
 }
 
-export type TransferCopyPayload = {
-  payload: string
-  amountText: string
-}
-
 export const createTransferCopyPayload = (
   account: TransferCopyAccount,
   amount: number,
-  options: TransferCopyOptions = {},
+  locale: string | null,
 ): string => {
-  const amountText =
-    options.amountText ?? formatKrwAmount(amount, options.locale)
-
+  const amountText = formatKrwAmount(amount, locale)
   return `${account.bank} ${account.accountNumber} [${account.holder}] ${amountText}`
 }
