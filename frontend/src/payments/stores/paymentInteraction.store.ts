@@ -13,6 +13,7 @@ import type {
   DeepLinkDialogType,
   PaymentActionContext,
 } from '@/payments/workflows/types'
+import { createTransferCopyPayload } from '@/payments/utils/createTransferCopyPayload'
 import { openUrlInNewTab } from '@/shared/utils/navigation'
 import { copyText } from '@/shared/utils/clipboard'
 
@@ -55,6 +56,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const paymentStore = usePaymentStore()
   const paymentInfoStore = usePaymentInfoStore()
   const i18nStore = useI18nStore()
+  const { locale } = storeToRefs(i18nStore)
   const { isCurrencySelectorOpen, selectedCurrency, selectedMethod } = storeToRefs(paymentStore)
   const { tossInfo } = storeToRefs(paymentInfoStore)
 
@@ -128,8 +130,16 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       return false
     }
 
-    const amountText = new Intl.NumberFormat('ko-KR').format(tossInfo.value.amount.krw)
-    const payload = `${tossInfo.value.bankName} ${tossInfo.value.accountNo} ${tossInfo.value.accountHolder} [${amountText}원]`
+    const { payload } = createTransferCopyPayload(
+      {
+        bank: tossInfo.value.bankName,
+        accountNumber: tossInfo.value.accountNo,
+        holder: tossInfo.value.accountHolder,
+      },
+      tossInfo.value.amount.krw,
+      { locale: locale.value },
+    )
+
     const success = await copyText(payload)
 
     hasCopiedTossAccountInfo.value = success

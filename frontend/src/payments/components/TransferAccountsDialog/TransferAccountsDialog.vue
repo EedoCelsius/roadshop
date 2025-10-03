@@ -7,6 +7,8 @@ import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import { getFirmIcon } from '@icons/firms'
+import { formatKrwAmount } from '@/payments/utils/formatKrwAmount'
+import { createTransferCopyPayload } from '@/payments/utils/createTransferCopyPayload'
 import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
@@ -27,31 +29,15 @@ const { locale } = storeToRefs(i18nStore)
 const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
   useTransferCopyState()
 
-const localeNumberFormats: Record<string, string> = {
-  en: 'en-US',
-  ko: 'ko-KR',
-  ja: 'ja-JP',
-  zh: 'zh-CN',
-}
-
-const numberFormatter = computed(() => new Intl.NumberFormat(localeNumberFormats[locale.value] ?? 'en-US'))
-const formattedAmount = computed(() => numberFormatter.value.format(props.amount))
-
-const formattedAmountForCopy = computed(() => new Intl.NumberFormat('ko-KR').format(props.amount))
-
-const formatAmountWithCurrency = (value: string) =>
-  i18nStore.t('dialogs.transferAccounts.amountWithCurrency').replace('{amount}', value)
-
-const amountWithCurrency = computed(() => formatAmountWithCurrency(formattedAmount.value))
-const amountWithCurrencyForCopy = computed(() => formatAmountWithCurrency(formattedAmountForCopy.value))
+const formattedAmount = computed(() => formatKrwAmount(props.amount, locale.value))
 
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
   i18nStore
     .t('dialogs.transferAccounts.description')
     .replace(
-      '{amountWithCurrency}',
-      `<strong class="font-semibold text-roadshop-primary">${amountWithCurrency.value}</strong>`,
+      '{amount}',
+      `<strong class="font-semibold text-roadshop-primary">${formattedAmount.value}</strong>`,
     ),
 )
 const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.all'))
@@ -62,8 +48,18 @@ const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.c
 const getIconForBank = (bank: string) => getFirmIcon(bank)
 
 const copyTransferDetails = async (account: TransferAccount) => {
-  const amountText = amountWithCurrencyForCopy.value
-  const payload = `${account.bank} ${account.number} ${account.holder} [${amountText}]`
+  const { payload } = createTransferCopyPayload(
+    {
+      bank: account.bank,
+      accountNumber: account.number,
+      holder: account.holder,
+    },
+    props.amount,
+    {
+      amountText: formattedAmount.value,
+    },
+  )
+
   await handleCopyAll(account.number, payload)
 }
 

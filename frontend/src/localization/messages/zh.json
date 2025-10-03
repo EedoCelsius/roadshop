@@ -24,8 +24,7 @@
     },
     "transferAccounts": {
       "title": "银行转账信息",
-      "description": "请将 {amountWithCurrency} 转入下方任一账户。",
-      "amountWithCurrency": "{amount} 韩元",
+      "description": "请将 {amount} 转入下方任一账户。",
       "copy": {
         "all": "复制转账信息",
         "accountNo": "仅复制账号"
