@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
@@ -24,8 +23,6 @@ defineOptions({
 const paymentStore = usePaymentStore()
 const paymentInfoStore = usePaymentInfoStore()
 const i18nStore = useI18nStore()
-const router = useRouter()
-const route = useRoute()
 
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
@@ -38,22 +35,6 @@ const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory 
   method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
 
 const { sections } = useLocalizedSections(categorizeMethod)
-
-const getMethodIdFromRoute = () => {
-  if (route.name !== 'method') {
-    return null
-  }
-
-  const param = route.params.methodId
-
-  if (Array.isArray(param)) {
-    return param[0] ?? null
-  }
-
-  return typeof param === 'string' ? param : null
-}
-
-const methodIdFromRoute = computed<string | null>(() => getMethodIdFromRoute())
 
 const localizedSections = computed(() =>
   sections.value.map((section) => {
@@ -106,58 +87,16 @@ const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currenc
   }
 }
 
-const navigateToHome = () => {
-  if (route.name !== 'home') {
-    void router.push({ name: 'home' })
-  }
-}
-
-const activateRouteMethod = () => {
-  if (areMethodsLoading.value) {
-    return
-  }
-
-  const methodId = methodIdFromRoute.value
-
-  if (!methodId) {
-    if (selectedMethod.value || isCurrencySelectorOpen.value || selectedCurrency.value) {
-      paymentStore.selectMethod('')
-    }
-
-    return
-  }
+const onSelectMethod = (methodId: string) => {
+  paymentStore.selectMethod(methodId)
 
   const method = paymentStore.getMethodById(methodId)
 
-  if (!method) {
-    void router.replace({ name: 'home' })
+  if (!method || isCurrencySelectorOpen.value) {
     return
   }
 
-  if (selectedMethod.value?.id !== methodId) {
-    paymentStore.selectMethod(methodId)
-  }
-
-  if (!isCurrencySelectorOpen.value) {
-    void runWorkflowForMethod(method, selectedCurrency.value)
-  }
-}
-
-watch(
-  [methodIdFromRoute, () => methods.value.length, () => areMethodsLoading.value],
-  () => {
-    activateRouteMethod()
-  },
-  { immediate: true },
-)
-
-const onSelectMethod = (methodId: string) => {
-  if (methodIdFromRoute.value === methodId) {
-    activateRouteMethod()
-    return
-  }
-
-  void router.push({ name: 'method', params: { methodId } })
+  void runWorkflowForMethod(method, selectedCurrency.value)
 }
 
 const onCurrencySelect = (currency: string) => {
@@ -178,11 +117,6 @@ const onCurrencySelect = (currency: string) => {
 
 const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
-  navigateToHome()
-}
-
-const onExperienceClose = () => {
-  navigateToHome()
 }
 </script>
 
@@ -224,9 +158,9 @@ const onExperienceClose = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" @close="onExperienceClose" />
-    <TossExperience ref="tossExperienceRef" @close="onExperienceClose" />
-    <KakaoExperience ref="kakaoExperienceRef" @close="onExperienceClose" />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"
