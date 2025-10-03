@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
@@ -27,77 +26,6 @@ const i18nStore = useI18nStore()
 
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
-
-const router = useRouter()
-const route = useRoute()
-
-const handledRouteMethodId = ref<string | null>(null)
-let isSynchronizingRoute = false
-
-const goHome = async () => {
-  if (route.name !== 'home') {
-    await router.push({ name: 'home' })
-  }
-}
-
-const resetRouteState = () => {
-  if (handledRouteMethodId.value !== null) {
-    paymentStore.resetSelection()
-    handledRouteMethodId.value = null
-  }
-}
-
-const syncRouteWithExperience = async () => {
-  if (isSynchronizingRoute) {
-    return
-  }
-
-  const methodId = route.params.methodId as string | undefined
-
-  if (!methodId) {
-    resetRouteState()
-    return
-  }
-
-  if (areMethodsLoading.value) {
-    return
-  }
-
-  const method = paymentStore.getMethodById(methodId)
-
-  if (!method) {
-    handledRouteMethodId.value = null
-    await router.replace({ name: 'home' })
-    return
-  }
-
-  isSynchronizingRoute = true
-
-  try {
-    paymentStore.selectMethod(methodId)
-    handledRouteMethodId.value = methodId
-
-    if (isCurrencySelectorOpen.value) {
-      return
-    }
-
-    await runWorkflowForMethod(method, selectedCurrency.value)
-  } finally {
-    isSynchronizingRoute = false
-  }
-}
-
-watch(
-  [
-    () => route.params.methodId,
-    () => areMethodsLoading.value,
-    () => methods.value.length,
-  ],
-  () => {
-    void syncRouteWithExperience()
-  },
-  { immediate: true },
-)
 
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
@@ -190,15 +118,6 @@ const onCurrencySelect = (currency: string) => {
 const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
 }
-
-const onExperienceClose = async () => {
-  if (handledRouteMethodId.value === null) {
-    return
-  }
-
-  resetRouteState()
-  await goHome()
-}
 </script>
 
 <template>
@@ -239,9 +158,9 @@ const onExperienceClose = async () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" @close="onExperienceClose" />
-    <TossExperience ref="tossExperienceRef" @close="onExperienceClose" />
-    <KakaoExperience ref="kakaoExperienceRef" @close="onExperienceClose" />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"
