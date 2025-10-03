@@ -10,12 +10,6 @@
   "status": {
     "empty": "現在利用できる決済方法はありません。"
   },
-  "card": {
-    "selectCurrencyPrompt": "続行するには通貨を選択してください。"
-  },
-  "footer": {
-    "message": "© {year} 決済センター。どこからでもシームレスなお支払いを。"
-  },
   "loading": {
     "deepLink": "お支払いアプリを開いています…",
     "methods": "決済方法を読み込み中です…"
@@ -23,15 +17,13 @@
   "errors": {
     "loadMethods": "決済方法を読み込めませんでした。再度お試しください。"
   },
-  "popups": {
+  "dialogs": {
+    "close": "閉じる",
+    "confirm": "OK",
     "deepLink": {
       "titles": {
         "notMobile": "モバイル専用です",
         "notInstalled": "アプリが起動しませんか？"
-      },
-      "confirms": {
-        "notMobile": "了解",
-        "notInstalled": "OK"
       },
       "providers": {
         "kakao": {
@@ -45,29 +37,26 @@
           "qrHint": "QRコードをスキャンしてTossアプリに移動します"
         }
       }
+    },
+    "transferAccounts": {
+      "title": "口座振込のご案内",
+      "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
+      "copyAll": "すべての情報をコピー",
+      "copyNumber": "口座番号のみコピー",
+      "copyAllButton": "振込情報をコピー",
+      "copiedAllButton": "クリップボードにコピーしました",
+      "copiedNumber": "口座番号のみコピーしました"
     }
   },
   "currencySelector": {
     "title": "通貨を選択してください",
     "description": "{method} 決済に使用する通貨を選択してください。"
   },
-  "dialog": {
-    "close": "閉じる"
-  },
   "tossInstruction": {
     "title": "Tossで送金",
     "description": "送金に必要な口座情報を<strong>自動でコピー</strong>しました。",
     "launchCta": "Tossへ移動",
     "reopen": "Tossをもう一度開く"
-  },
-  "transferPopup": {
-    "title": "口座振込のご案内",
-    "description": "下記のいずれかの口座へ {amountWithCurrency} をお振り込みください。",
-    "copyAll": "すべての情報をコピー",
-    "copyNumber": "口座番号のみコピー",
-    "copyAllButton": "振込情報をコピー",
-    "copiedAllButton": "クリップボードにコピーしました",
-    "copiedNumber": "口座番号のみコピーしました"
   },
   "payment": {
     "transfer": {

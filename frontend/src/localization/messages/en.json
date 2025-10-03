@@ -10,12 +10,6 @@
   "status": {
     "empty": "No payment methods are available right now."
   },
-  "card": {
-    "selectCurrencyPrompt": "Choose a currency to continue."
-  },
-  "footer": {
-    "message": "© {year} Payment Center. Seamless checkout anywhere."
-  },
   "loading": {
     "deepLink": "Opening the app so you can continue your payment…",
     "methods": "Loading payment methods…"
@@ -23,15 +17,13 @@
   "errors": {
     "loadMethods": "We couldn't load the payment methods. Please try again."
   },
-  "popups": {
+  "dialogs": {
+    "close": "Close",
+    "confirm": "OK",
     "deepLink": {
       "titles": {
         "notMobile": "Open on your mobile device",
         "notInstalled": "Having trouble opening the app?"
-      },
-      "confirms": {
-        "notMobile": "Got it",
-        "notInstalled": "OK"
       },
       "providers": {
         "kakao": {
@@ -45,29 +37,26 @@
           "qrHint": "Scan to open the Toss app"
         }
       }
+    },
+    "transferAccounts": {
+      "title": "Bank transfer details",
+      "description": "Send {amountWithCurrency} to one of the accounts below.",
+      "copyAll": "Copy all details",
+      "copyNumber": "Copy only account number",
+      "copyAllButton": "Copy transfer details",
+      "copiedAllButton": "Copied to clipboard",
+      "copiedNumber": "Account number copied"
     }
   },
   "currencySelector": {
     "title": "Choose a currency",
     "description": "Choose the currency to use for {method} payments."
   },
-  "dialog": {
-    "close": "Close"
-  },
   "tossInstruction": {
     "title": "Send with Toss",
     "description": "We've <strong>automatically copied</strong> the account details you need for Toss.",
     "launchCta": "Go to Toss",
     "reopen": "Reopen Toss"
-  },
-  "transferPopup": {
-    "title": "Bank transfer details",
-    "description": "Send {amountWithCurrency} to one of the accounts below.",
-    "copyAll": "Copy all details",
-    "copyNumber": "Copy only account number",
-    "copyAllButton": "Copy transfer details",
-    "copiedAllButton": "Copied to clipboard",
-    "copiedNumber": "Account number copied"
   },
   "payment": {
     "transfer": {

@@ -10,12 +10,6 @@
   "status": {
     "empty": "目前没有可用的支付方式。"
   },
-  "card": {
-    "selectCurrencyPrompt": "请选择货币以继续。"
-  },
-  "footer": {
-    "message": "© {year} 支付中心。随时随地完成结账。"
-  },
   "loading": {
     "deepLink": "正在打开支付应用…",
     "methods": "正在加载支付方式…"
@@ -23,15 +17,13 @@
   "errors": {
     "loadMethods": "无法加载支付方式，请稍后再试。"
   },
-  "popups": {
+  "dialogs": {
+    "close": "关闭",
+    "confirm": "好的",
     "deepLink": {
       "titles": {
         "notMobile": "仅限移动设备使用",
         "notInstalled": "应用没有打开吗？"
-      },
-      "confirms": {
-        "notMobile": "知道了",
-        "notInstalled": "好的"
       },
       "providers": {
         "kakao": {
@@ -45,29 +37,26 @@
           "qrHint": "扫描二维码前往 Toss 应用"
         }
       }
+    },
+    "transferAccounts": {
+      "title": "银行转账信息",
+      "description": "请将 {amountWithCurrency} 转入下方任一账户。",
+      "copyAll": "复制全部信息",
+      "copyNumber": "仅复制账号",
+      "copyAllButton": "复制转账信息",
+      "copiedAllButton": "已复制到剪贴板",
+      "copiedNumber": "仅复制了账号"
     }
   },
   "currencySelector": {
     "title": "选择货币",
     "description": "请选择用于 {method} 付款的货币。"
   },
-  "dialog": {
-    "close": "关闭"
-  },
   "tossInstruction": {
     "title": "使用 Toss 转账",
     "description": "已将转账所需的账户信息<strong>自动复制</strong>好了。",
     "launchCta": "前往 Toss",
     "reopen": "重新打开 Toss"
-  },
-  "transferPopup": {
-    "title": "银行转账信息",
-    "description": "请将 {amountWithCurrency} 转入下方任一账户。",
-    "copyAll": "复制全部信息",
-    "copyNumber": "仅复制账号",
-    "copyAllButton": "复制转账信息",
-    "copiedAllButton": "已复制到剪贴板",
-    "copiedNumber": "仅复制了账号"
   },
   "payment": {
     "transfer": {

@@ -9,8 +9,8 @@ import { createCountdownManager } from '@/payments/stores/utils/createCountdownM
 import type { DeepLinkProvider, PaymentMethod } from '@/payments/types'
 import { createPaymentActionResolver } from '@/payments/workflows/createPaymentActionResolver'
 import type {
-  DeepLinkPopupOptions,
-  DeepLinkPopupType,
+  DeepLinkDialogOptions,
+  DeepLinkDialogType,
   PaymentActionContext,
 } from '@/payments/workflows/types'
 import { openUrlInNewTab } from '@/shared/utils/navigation'
@@ -19,10 +19,10 @@ import { copyText } from '@/shared/utils/clipboard'
 const buildWorkflowContext = (
   paymentStore: ReturnType<typeof usePaymentStore>,
   paymentInfoStore: ReturnType<typeof usePaymentInfoStore>,
-  showPopup: (
-    type: DeepLinkPopupType,
+  showDialog: (
+    type: DeepLinkDialogType,
     provider: DeepLinkProvider,
-    options?: DeepLinkPopupOptions,
+    options?: DeepLinkDialogOptions,
   ) => void,
   openTransferDialog: () => void,
   copyTossAccountInfo: () => Promise<boolean>,
@@ -43,7 +43,7 @@ const buildWorkflowContext = (
   },
   ensureMethodInfoLoaded: paymentInfoStore.ensureMethodInfo,
   getDeepLinkInfo: paymentInfoStore.getDeepLinkInfo,
-  showDeepLinkPopup: showPopup,
+  showDeepLinkDialog: showDialog,
   openUrlInNewTab,
   copyTossAccountInfo,
   showTossInstructionDialog,
@@ -58,8 +58,8 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const { isCurrencySelectorOpen, selectedCurrency, selectedMethod } = storeToRefs(paymentStore)
   const { tossInfo } = storeToRefs(paymentInfoStore)
 
-  const popupContent = ref<{
-    type: DeepLinkPopupType
+  const dialogContent = ref<{
+    type: DeepLinkDialogType
     provider: DeepLinkProvider
     title: string
     message: string
@@ -79,26 +79,26 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   const transferAmount = computed(() => paymentInfoStore.transferInfo?.amount.krw ?? 0)
   const transferAccounts = computed(() => paymentInfoStore.transferInfo?.account ?? [])
 
-  const isPopupVisible = computed(() => popupContent.value !== null)
+  const isDialogVisible = computed(() => dialogContent.value !== null)
 
-  const closePopup = () => {
-    popupContent.value = null
+  const closeDialog = () => {
+    dialogContent.value = null
   }
 
-  const showPopup = (
-    type: DeepLinkPopupType,
+  const showDialog = (
+    type: DeepLinkDialogType,
     provider: DeepLinkProvider,
-    options: DeepLinkPopupOptions = {},
+    options: DeepLinkDialogOptions = {},
   ) => {
-    const baseKey = 'popups.deepLink'
+    const baseKey = 'dialogs.deepLink'
     const keySuffix = type === 'not-mobile' ? 'notMobile' : 'notInstalled'
 
-    popupContent.value = {
+    dialogContent.value = {
       type,
       provider,
       title: i18nStore.t(`${baseKey}.titles.${keySuffix}`),
       message: i18nStore.t(`${baseKey}.providers.${provider}.${keySuffix}`),
-      confirmLabel: i18nStore.t(`${baseKey}.confirms.${keySuffix}`),
+      confirmLabel: i18nStore.t('dialogs.confirm'),
       deepLinkUrl: options.deepLinkUrl ?? null,
     }
   }
@@ -165,15 +165,15 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     const deepLink = tossDeepLinkUrl.value
     await launchDeepLink(deepLink, {
       timeoutMs: 2000,
-      onNotInstalled: () => showPopup('not-installed', 'toss'),
-      onNotMobile: () => showPopup('not-mobile', 'toss', { deepLinkUrl: deepLink }),
+      onNotInstalled: () => showDialog('not-installed', 'toss'),
+      onNotMobile: () => showDialog('not-mobile', 'toss', { deepLinkUrl: deepLink }),
     })
   }
 
   const workflowContext = buildWorkflowContext(
     paymentStore,
     paymentInfoStore,
-    showPopup,
+    showDialog,
     openTransferDialog,
     copyTossAccountInfo,
     showTossInstructionDialog,
@@ -214,8 +214,8 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
   }
 
   return {
-    isPopupVisible,
-    popupContent,
+    isDialogVisible,
+    dialogContent,
     isDeepLinkChecking: deepLinkChecking,
     isTransferDialogVisible,
     transferAmount,
@@ -224,7 +224,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
     tossInstructionCountdown,
     hasCopiedTossAccountInfo,
     tossAccountInfo: tossInfo,
-    closePopup,
+    closeDialog,
     closeTransferDialog,
     completeTossInstructionCountdown,
     closeTossInstructionDialog,

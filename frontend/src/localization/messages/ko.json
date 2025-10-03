@@ -10,12 +10,6 @@
   "status": {
     "empty": "현재 사용 가능한 결제 수단이 없습니다."
   },
-  "card": {
-    "selectCurrencyPrompt": "진행하려면 통화를 선택해 주세요."
-  },
-  "footer": {
-    "message": "© {year} 결제 센터. 어디서나 간편한 체크아웃을 제공합니다."
-  },
   "loading": {
     "deepLink": "결제 앱을 여는 중이에요…",
     "methods": "결제 수단을 불러오는 중이에요…"
@@ -23,15 +17,13 @@
   "errors": {
     "loadMethods": "결제 수단을 불러오지 못했어요. 다시 시도해 주세요."
   },
-  "popups": {
+  "dialogs": {
+    "close": "닫기",
+    "confirm": "확인",
     "deepLink": {
       "titles": {
         "notMobile": "모바일에서만 이용할 수 있어요",
         "notInstalled": "앱이 실행되지 않았나요?"
-      },
-      "confirms": {
-        "notMobile": "확인",
-        "notInstalled": "확인"
       },
       "providers": {
         "kakao": {
@@ -45,29 +37,26 @@
           "qrHint": "스캔해서 토스 앱으로 이동합니다"
         }
       }
+    },
+    "transferAccounts": {
+      "title": "계좌이체 정보",
+      "description": "{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.",
+      "copyAll": "전체 정보 복사",
+      "copyNumber": "계좌번호만 복사",
+      "copyAllButton": "이체 정보 복사",
+      "copiedAllButton": "클립보드에 복사됨",
+      "copiedNumber": "계좌번호만 복사했어요"
     }
   },
   "currencySelector": {
     "title": "통화를 선택하세요",
     "description": "{method} 결제에 사용할 통화를 선택하세요."
   },
-  "dialog": {
-    "close": "닫기"
-  },
   "tossInstruction": {
     "title": "토스로 송금하기",
     "description": "송금에 필요한 계좌 정보를 <strong>자동으로 복사</strong>해 두었어요.",
     "launchCta": "토스로 이동하기",
     "reopen": "토스 다시열기"
-  },
-  "transferPopup": {
-    "title": "계좌이체 정보",
-    "description": "{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.",
-    "copyAll": "전체 정보 복사",
-    "copyNumber": "계좌번호만 복사",
-    "copyAllButton": "이체 정보 복사",
-    "copiedAllButton": "클립보드에 복사됨",
-    "copiedNumber": "계좌번호만 복사했어요"
   },
   "payment": {
     "transfer": {

@@ -28,8 +28,8 @@ const i18nStore = useI18nStore()
 const { methods, selectedMethod, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
 const {
-  isPopupVisible,
-  popupContent,
+  isDialogVisible,
+  dialogContent,
   isDeepLinkChecking,
   isTransferDialogVisible,
   transferAmount,
@@ -61,14 +61,14 @@ const selectedMethodName = computed(() =>
 
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
 
-const isNotMobilePopup = computed(() => popupContent.value?.type === 'not-mobile')
-const popupQrValue = computed(() => popupContent.value?.deepLinkUrl ?? null)
-const popupQrHint = computed(() => {
-  if (!popupContent.value) {
+const isNotMobileDialog = computed(() => dialogContent.value?.type === 'not-mobile')
+const dialogQrValue = computed(() => dialogContent.value?.deepLinkUrl ?? null)
+const dialogQrHint = computed(() => {
+  if (!dialogContent.value) {
     return null
   }
 
-  const key = `popups.deepLink.providers.${popupContent.value.provider}.qrHint`
+  const key = `dialogs.deepLink.providers.${dialogContent.value.provider}.qrHint`
   const translation = i18nStore.t(key)
 
   return translation === key ? null : translation
@@ -82,8 +82,8 @@ const deepLinkProviderIcons = computed(() =>
     return map
   }, {}),
 )
-const popupQrIcon = computed(() =>
-  popupContent.value ? deepLinkProviderIcons.value[popupContent.value.provider] ?? null : null,
+const dialogQrIcon = computed(() =>
+  dialogContent.value ? deepLinkProviderIcons.value[dialogContent.value.provider] ?? null : null,
 )
 
 const onSelectMethod = (methodId: string) => {
@@ -98,8 +98,8 @@ const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
 }
 
-const onPopupConfirm = () => {
-  paymentInteractionStore.closePopup()
+const onDialogConfirm = () => {
+  paymentInteractionStore.closeDialog()
 }
 
 const onCloseTransferDialog = () => {
@@ -151,31 +151,31 @@ const onLaunchTossInstructionDialog = () => {
     </template>
 
     <DialogCloseFull
-      v-if="popupContent && isNotMobilePopup"
-      :visible="isPopupVisible"
-      :title="popupContent.title"
-      :description="popupContent.message"
-      :close-label="popupContent.confirmLabel"
-      @close="onPopupConfirm"
+      v-if="dialogContent && isNotMobileDialog"
+      :visible="isDialogVisible"
+      :title="dialogContent.title"
+      :description="dialogContent.message"
+      :close-label="dialogContent.confirmLabel"
+      @close="onDialogConfirm"
     >
       <div
-        v-if="popupQrValue"
+        v-if="dialogQrValue"
         class="mt-6 flex flex-col items-center gap-3"
       >
-        <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
-        <p v-if="popupQrHint" class="text-center text-xs text-slate-500">
-          {{ popupQrHint }}
+        <QrCodeDisplay :value="dialogQrValue" :icon="dialogQrIcon ?? undefined" />
+        <p v-if="dialogQrHint" class="text-center text-xs text-slate-500">
+          {{ dialogQrHint }}
           <i class="pi pi-camera"></i>
         </p>
       </div>
     </DialogCloseFull>
     <DialogCloseEnd
-      v-else-if="popupContent"
-      :visible="isPopupVisible"
-      :title="popupContent.title"
-      :description="popupContent.message"
-      :close-label="popupContent.confirmLabel"
-      @close="onPopupConfirm"
+      v-else-if="dialogContent"
+      :visible="isDialogVisible"
+      :title="dialogContent.title"
+      :description="dialogContent.message"
+      :close-label="dialogContent.confirmLabel"
+      @close="onDialogConfirm"
     />
     <CurrencySelectorDialog
       v-if="selectedMethod"

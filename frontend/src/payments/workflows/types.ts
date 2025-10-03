@@ -1,7 +1,7 @@
 import type { PaymentMethod, DeepLinkProvider } from '@/payments/types'
 import type { KakaoPaymentInfo, TossPaymentInfo } from '@/payments/services/paymentInfoService'
 
-export type DeepLinkPopupOptions = {
+export type DeepLinkDialogOptions = {
   deepLinkUrl?: string | null
 }
 
@@ -10,10 +10,10 @@ export type PaymentActionContext = {
   openMethodUrl: (method: PaymentMethod, currency: string | null) => Promise<void>
   ensureMethodInfoLoaded: (methodId: string) => Promise<boolean>
   getDeepLinkInfo: (provider: DeepLinkProvider) => TossPaymentInfo | KakaoPaymentInfo | null
-  showDeepLinkPopup: (
-    type: DeepLinkPopupType,
+  showDeepLinkDialog: (
+    type: DeepLinkDialogType,
     provider: DeepLinkProvider,
-    options?: DeepLinkPopupOptions,
+    options?: DeepLinkDialogOptions,
   ) => void
   openUrlInNewTab: (url: string | null) => void
   copyTossAccountInfo: () => Promise<boolean>
@@ -37,4 +37,4 @@ export type PaymentCurrencySelectionPayload = {
   currency: string
 }
 
-export type DeepLinkPopupType = 'not-mobile' | 'not-installed'
+export type DeepLinkDialogType = 'not-mobile' | 'not-installed'

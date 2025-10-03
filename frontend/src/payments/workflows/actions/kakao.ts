@@ -32,8 +32,8 @@ const runKakaoWorkflow = async (context: PaymentActionContext) => {
 
   await launchDeepLink(deepLink, {
     timeoutMs: 1500,
-    onNotInstalled: () => context.showDeepLinkPopup('not-installed', 'kakao'),
-    onNotMobile: () => context.showDeepLinkPopup('not-mobile', 'kakao', { deepLinkUrl: deepLink }),
+    onNotInstalled: () => context.showDeepLinkDialog('not-installed', 'kakao'),
+    onNotMobile: () => context.showDeepLinkDialog('not-mobile', 'kakao', { deepLinkUrl: deepLink }),
   })
 }
 

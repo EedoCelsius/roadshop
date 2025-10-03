@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FooterSection from '@/app/layout/FooterSection.vue'
 import Experience from '@/payments/components/Experience.vue'
 </script>
 
@@ -8,6 +7,5 @@ import Experience from '@/payments/components/Experience.vue'
     <main class="mx-auto w-full max-w-5xl flex-1 px-6 py-12">
       <Experience />
     </main>
-    <FooterSection />
   </div>
 </template>
