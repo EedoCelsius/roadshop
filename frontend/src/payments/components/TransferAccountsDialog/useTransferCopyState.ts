@@ -1,5 +1,7 @@
 import { onBeforeUnmount, reactive, ref } from 'vue'
 
+import type { TransferAccount } from '@/payments/services/paymentInfoService'
+import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
 import { copyText } from '@/shared/utils/clipboard'
 
 export type CopyAction = 'all' | 'number'
@@ -29,13 +31,13 @@ export const useTransferCopyState = () => {
     copyTimers.set(key, timeoutId)
   }
 
-  const markCopied = (key: string, action: CopyAction) => {
-    copyStates[key] = action
-    scheduleReset(key)
+  const markCopied = (account: TransferAccount, action: CopyAction) => {
+    copyStates[account.number] = action
+    scheduleReset(account.number)
   }
 
-  const setHoveredControl = (accountNumber: string, action: CopyAction, value: boolean) => {
-    const key = controlKey(accountNumber, action)
+  const setHoveredControl = (account: TransferAccount, action: CopyAction, value: boolean) => {
+    const key = controlKey(account.number, action)
 
     if (value) {
       hoveredControl.value = key
@@ -47,11 +49,11 @@ export const useTransferCopyState = () => {
     }
   }
 
-  const isCopied = (accountNumber: string, action: CopyAction) => copyStates[accountNumber] === action
+  const isCopied = (account: TransferAccount, action: CopyAction) => copyStates[account.number] === action
 
-  const isTooltipVisible = (accountNumber: string, action: CopyAction) => {
-    const key = controlKey(accountNumber, action)
-    return hoveredControl.value === key || isCopied(accountNumber, action)
+  const isTooltipVisible = (account: TransferAccount, action: CopyAction) => {
+    const key = controlKey(account.number, action)
+    return hoveredControl.value === key || isCopied(account, action)
   }
 
   const reset = () => {
@@ -69,22 +71,26 @@ export const useTransferCopyState = () => {
     hoveredControl.value = null
   }
 
-  const handleCopyAll = async (
-    accountNumber: string,
-    copyAction: () => Promise<boolean>,
-  ) => {
-    const success = await copyAction()
+  const handleCopyAll = async (account: TransferAccount) => {
+    const success = await copyTransferInfo(
+      {
+        bank: account.bank,
+        accountNumber: account.number,
+        holder: account.holder,
+      },
+      props.amount,
+    )
 
     if (success) {
-      markCopied(accountNumber, 'all')
+      markCopied(account, 'all')
     }
   }
 
-  const handleCopyNumber = async (accountNumber: string) => {
-    const success = await copyText(accountNumber)
+  const handleCopyNumber = async (account: TransferAccount) => {
+    const success = await copyText(account.number)
 
     if (success) {
-      markCopied(accountNumber, 'number')
+      markCopied(account, 'number')
     }
   }
 
