@@ -15,7 +15,7 @@
     "confirm": "好的",
     "notMobile": {
       "title": "仅限移动设备使用",
-      "description": "{provider} 链接只能在移动设备上打开。请在手机上重试。"
+      "description": "{method} 链接只能在移动设备上打开。请在手机上重试。"
     },
     "notInstalled": {
       "title": "应用没有打开吗？",
