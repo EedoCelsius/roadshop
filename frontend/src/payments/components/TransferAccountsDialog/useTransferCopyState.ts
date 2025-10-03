@@ -71,15 +71,8 @@ export const useTransferCopyState = () => {
     hoveredControl.value = null
   }
 
-  const handleCopyAll = async (account: TransferAccount) => {
-    const success = await copyTransferInfo(
-      {
-        bank: account.bank,
-        accountNumber: account.number,
-        holder: account.holder,
-      },
-      props.amount,
-    )
+  const handleCopyAll = async (account: TransferAccount, amount: number) => {
+    const success = await copyTransferInfo(account, amount)
 
     if (success) {
       markCopied(account, 'all')
