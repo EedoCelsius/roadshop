@@ -6,6 +6,8 @@ import IsNotMobileDialog from '@/payments/components/IsNotMobileDialog.vue'
 import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
+const emit = defineEmits<{ close: [] }>()
+
 const paymentInfoStore = usePaymentInfoStore()
 
 const notMobileDialogRef = ref<InstanceType<typeof IsNotMobileDialog> | null>(null)
@@ -41,12 +43,20 @@ const run = async (): Promise<boolean> => {
   }
 }
 
+const onNotMobileClose = () => {
+  emit('close')
+}
+
+const onNotInstalledClose = () => {
+  emit('close')
+}
+
 defineExpose({
   run,
 })
 </script>
 
 <template>
-  <IsNotMobileDialog ref="notMobileDialogRef" method="kakao" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="kakao" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="kakao" @close="onNotMobileClose" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="kakao" @close="onNotInstalledClose" />
 </template>
