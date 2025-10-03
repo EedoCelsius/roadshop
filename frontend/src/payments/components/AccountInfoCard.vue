@@ -2,33 +2,13 @@
 import { computed } from 'vue'
 
 import { getFirmIcon } from '@icons/firms'
+import type { TransferAccount } from '@/payments/services/paymentInfoService'
 
 interface Props {
-  bankName: string
-  accountNo: string
-  accountHolder: string
+  account: TransferAccount
 }
 
 const props = defineProps<Props>()
-
-const normalizedBankName = computed(() => props.bankName.trim())
-
-const bankIcon = computed(() => {
-  return getFirmIcon(normalizedBankName.value) ?? null
-})
-
-const bankMonogram = computed(() => {
-  const trimmed = normalizedBankName.value
-  if (!trimmed) {
-    return ''
-  }
-
-  const compact = trimmed.replace(/[^\p{L}\p{N}]/gu, '')
-  const source = compact || trimmed
-  const preview = source.slice(0, 2)
-
-  return /[A-Za-z]/.test(preview) ? preview.toUpperCase() : preview
-})
 </script>
 
 <template>
@@ -39,14 +19,13 @@ const bankMonogram = computed(() => {
           class="flex h-20 w-20 items-center justify-center rounded-3xl bg-roadshop-highlight/60 shadow-inner"
           aria-hidden="true"
         >
-          <img v-if="bankIcon" :src="bankIcon" :alt="props.bankName" class="h-14 w-14" />
-          <span v-else class="text-2xl font-semibold text-roadshop-primary">{{ bankMonogram }}</span>
+          <img :src="getFirmIcon(props.account.bank.value)" :alt="props.account.bank" class="h-14 w-14" />
         </div>
         <div>
           <p class="text-2xl font-semibold text-roadshop-primary">
-            {{ props.bankName }}<span class="ml-2 text-lg font-medium text-roadshop-primary/80">({{ props.accountHolder }})</span>
+            {{ props.account.bank }}<span class="ml-2 text-lg font-medium text-roadshop-primary/80">({{ props.account.holder }})</span>
           </p>
-          <p class="mt-3 font-mono text-lg tracking-wider text-slate-700">{{ props.accountNo }}</p>
+          <p class="mt-3 font-mono text-lg tracking-wider text-slate-700">{{ props.account.number }}</p>
         </div>
       </div>
     </div>
