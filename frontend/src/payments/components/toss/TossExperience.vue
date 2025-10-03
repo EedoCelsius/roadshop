@@ -10,6 +10,8 @@ import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkSer
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
 const paymentInfoStore = usePaymentInfoStore()
+const emit = defineEmits<{ close: [] }>()
+let isClosingSilently = false
 
 const isInstructionVisible = ref(false)
 const tossInstructionCountdown = ref(0)
@@ -85,6 +87,9 @@ const run = async (): Promise<boolean> => {
 
 const onInstructionClose = () => {
   closeInstructionDialog()
+  if (!isClosingSilently) {
+    emit('close')
+  }
 }
 
 const onInstructionLaunchNow = () => {
@@ -99,8 +104,32 @@ const onInstructionReopen = () => {
   void runDeepLink(tossDeepLinkUrl.value)
 }
 
+const onNotMobileClose = () => {
+  if (!isClosingSilently) {
+    emit('close')
+  }
+}
+
+const onNotInstalledClose = () => {
+  if (!isClosingSilently) {
+    emit('close')
+  }
+}
+
+const closeAllDialogs = () => {
+  isClosingSilently = true
+  try {
+    closeInstructionDialog()
+    notMobileDialogRef.value?.close()
+    notInstalledDialogRef.value?.close()
+  } finally {
+    isClosingSilently = false
+  }
+}
+
 defineExpose({
   run,
+  close: closeAllDialogs,
 })
 </script>
 
@@ -113,6 +142,6 @@ defineExpose({
     @launch-now="onInstructionLaunchNow"
     @reopen="onInstructionReopen"
   />
-  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" @close="onNotMobileClose" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" @close="onNotInstalledClose" />
 </template>

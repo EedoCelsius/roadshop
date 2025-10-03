@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import type { Pinia } from 'pinia'
 
 import App from '@/app/App.vue'
+import router from '@/app/router'
 import { createAppPinia } from '@/app/providers/createPinia'
 import { useI18nStore } from '@/localization/store'
 
@@ -15,8 +16,10 @@ export const bootstrapApp = async () => {
   const pinia = createAppPinia()
 
   app.use(pinia)
+  app.use(router)
 
   await initializeLocalization(pinia)
+  await router.isReady()
 
   app.mount('#app')
 }

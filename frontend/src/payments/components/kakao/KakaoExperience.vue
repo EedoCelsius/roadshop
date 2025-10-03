@@ -7,9 +7,17 @@ import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkSer
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
 const paymentInfoStore = usePaymentInfoStore()
+const emit = defineEmits<{ close: [] }>()
 
 const notMobileDialogRef = ref<InstanceType<typeof IsNotMobileDialog> | null>(null)
 const notInstalledDialogRef = ref<InstanceType<typeof IsNotInstalledDialog> | null>(null)
+let isClosingSilently = false
+
+const notifyClose = () => {
+  if (!isClosingSilently) {
+    emit('close')
+  }
+}
 
 const run = async (): Promise<boolean> => {
   const ready = await paymentInfoStore.ensureMethodInfo('kakao')
@@ -43,10 +51,19 @@ const run = async (): Promise<boolean> => {
 
 defineExpose({
   run,
+  close: () => {
+    isClosingSilently = true
+    try {
+      notMobileDialogRef.value?.close()
+      notInstalledDialogRef.value?.close()
+    } finally {
+      isClosingSilently = false
+    }
+  },
 })
 </script>
 
 <template>
-  <IsNotMobileDialog ref="notMobileDialogRef" method="kakao" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="kakao" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="kakao" @close="notifyClose" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="kakao" @close="notifyClose" />
 </template>
