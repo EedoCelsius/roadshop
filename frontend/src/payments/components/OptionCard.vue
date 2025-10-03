@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
-
-import { useI18nStore } from '@/localization/store'
+import { onBeforeUnmount, ref, watch } from 'vue'
 import type { PaymentCategory } from '@/payments/types'
 
 interface Props {
@@ -20,10 +18,6 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   select: []
 }>()
-
-const i18nStore = useI18nStore()
-
-const selectCurrencyPrompt = computed(() => i18nStore.t('card.selectCurrencyPrompt'))
 
 const activeIconIndex = ref(0)
 
@@ -102,12 +96,6 @@ onBeforeUnmount(() => {
       </span>
     </div>
 
-    <p
-      v-if="props.isSelected && props.supportedCurrencies.length > 1"
-      class="text-xs text-roadshop-accent"
-    >
-      {{ selectCurrencyPrompt }}
-    </p>
   </article>
 </template>
 

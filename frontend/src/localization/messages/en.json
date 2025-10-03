@@ -1,70 +1,51 @@
 {
-  "sections": {
-    "krw": {
-      "title": "KRW payments"
-    },
-    "global": {
-      "title": "Global payments"
-    }
+  "category": {
+    "krw": "KRW payments",
+    "global": "Global payments"
   },
   "status": {
-    "empty": "No payment methods are available right now."
+    "empty": "No payment methods are available right now.",
+    "loading": {
+      "deepLink": "Opening the app so you can continue your payment…",
+      "methods": "Loading payment methods…"
+    },
+    "errors": {
+      "loadMethods": "We couldn't load the payment methods. Please try again."
+    }
   },
-  "card": {
-    "selectCurrencyPrompt": "Choose a currency to continue."
-  },
-  "loading": {
-    "deepLink": "Opening the app so you can continue your payment…",
-    "methods": "Loading payment methods…"
-  },
-  "errors": {
-    "loadMethods": "We couldn't load the payment methods. Please try again."
-  },
-  "popups": {
+  "dialogs": {
+    "close": "Close",
+    "confirm": "OK",
     "deepLink": {
       "titles": {
         "notMobile": "Open on your mobile device",
         "notInstalled": "Having trouble opening the app?"
       },
-      "confirms": {
-        "notMobile": "Got it",
-        "notInstalled": "OK"
-      },
-      "providers": {
-        "kakao": {
-          "notMobile": "The Kakao Transfer link only opens in the KakaoTalk mobile app. Please continue on your phone.",
-          "notInstalled": "If KakaoTalk didn't open, please make sure it's installed and try again.",
-          "qrHint": "Scan to open the KakaoTalk app"
-        },
-        "toss": {
-          "notMobile": "The Toss Transfer link only opens on mobile. Please continue on your phone.",
-          "notInstalled": "If Toss didn't open, please make sure it's installed and try again.",
-          "qrHint": "Scan to open the Toss app"
-        }
+      "description": {
+        "notMobile": "The {provider} transfer link only opens in the mobile app. Please continue on your phone.",
+        "notInstalled": "If {provider} didn't open, please make sure it's installed and try again.",
+        "qrHint": "Scan to open the {provider} app"
       }
+    },
+    "transferAccounts": {
+      "title": "Bank transfer details",
+      "description": "Send {amountWithCurrency} to one of the accounts below.",
+      "copyAll": "Copy all details",
+      "copyNumber": "Copy only account number",
+      "copyAllButton": "Copy transfer details",
+      "copiedAllButton": "Copied to clipboard",
+      "copiedNumber": "Account number copied"
     }
   },
   "currencySelector": {
     "title": "Choose a currency",
     "description": "Choose the currency to use for {method} payments."
   },
-  "dialog": {
-    "close": "Close"
-  },
   "tossInstruction": {
     "title": "Send with Toss",
     "description": "We've <strong>automatically copied</strong> the account details you need for Toss.",
     "launchCta": "Go to Toss",
     "reopen": "Reopen Toss"
-  },
-  "transferPopup": {
-    "title": "Bank transfer details",
-    "description": "Send {amountWithCurrency} to one of the accounts below.",
-    "copyAll": "Copy all details",
-    "copyNumber": "Copy only account number",
-    "copyAllButton": "Copy transfer details",
-    "copiedAllButton": "Copied to clipboard",
-    "copiedNumber": "Account number copied"
   },
   "payment": {
     "transfer": {

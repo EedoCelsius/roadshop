@@ -24,7 +24,7 @@ const i18nStore = useI18nStore()
 
 const title = computed(() => i18nStore.t('tossInstruction.title'))
 const description = computed(() => i18nStore.t('tossInstruction.description'))
-const closeLabel = computed(() => i18nStore.t('dialog.close'))
+const closeLabel = computed(() => i18nStore.t('dialogs.close'))
 const launchLabel = computed(() => i18nStore.t('tossInstruction.launchCta'))
 const reopenLabel = computed(() => i18nStore.t('tossInstruction.reopen'))
 const isCountingDown = computed(() => props.countdown > 0)

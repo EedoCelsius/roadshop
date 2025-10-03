@@ -17,7 +17,7 @@ const emit = defineEmits<{
 
 const i18nStore = useI18nStore()
 
-const closeLabel = computed(() => props.closeLabel ?? i18nStore.t('dialog.close'))
+const closeLabel = computed(() => props.closeLabel ?? i18nStore.t('dialogs.close'))
 
 const onClose = () => {
   emit('close')

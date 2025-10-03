@@ -52,20 +52,20 @@ const formattedAmountWithCurrency = computed(() => {
 
 const formattedAmountForCopy = computed(() => new Intl.NumberFormat('ko-KR').format(props.amount))
 
-const title = computed(() => i18nStore.t('transferPopup.title'))
+const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
   i18nStore
-    .t('transferPopup.description')
+    .t('dialogs.transferAccounts.description')
     .replace(
       '{amountWithCurrency}',
       `<strong class="font-semibold text-roadshop-primary">${formattedAmountWithCurrency.value}</strong>`,
     ),
 )
-const copyAllLabel = computed(() => i18nStore.t('transferPopup.copyAll'))
-const copyNumberLabel = computed(() => i18nStore.t('transferPopup.copyNumber'))
-const copiedNumberLabel = computed(() => i18nStore.t('transferPopup.copiedNumber'))
-const copyAllButtonLabel = computed(() => i18nStore.t('transferPopup.copyAllButton'))
-const copiedAllButtonLabel = computed(() => i18nStore.t('transferPopup.copiedAllButton'))
+const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copyAll'))
+const copyNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copyNumber'))
+const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copiedNumber'))
+const copyAllButtonLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copyAllButton'))
+const copiedAllButtonLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copiedAllButton'))
 
 const getIconForBank = (bank: string) => getFirmIcon(bank)
 

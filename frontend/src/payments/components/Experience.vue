@@ -28,8 +28,8 @@ const i18nStore = useI18nStore()
 const { methods, selectedMethod, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
 const {
-  isPopupVisible,
-  popupContent,
+  isDialogVisible,
+  dialogContent,
   isDeepLinkChecking,
   isTransferDialogVisible,
   transferAmount,
@@ -45,10 +45,14 @@ const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory 
 const { sections } = useLocalizedSections(categorizeMethod)
 
 const localizedSections = computed(() =>
-  sections.value.map((section) => ({
-    section,
-    title: i18nStore.t(`sections.${section.category.toLowerCase()}.title`),
-  })),
+  sections.value.map((section) => {
+    const categoryKey = section.category.toLowerCase()
+
+    return {
+      section,
+      title: i18nStore.t(`category.${categoryKey}`),
+    }
+  }),
 )
 
 const hasVisibleMethods = computed(() =>
@@ -61,17 +65,26 @@ const selectedMethodName = computed(() =>
 
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
 
-const isNotMobilePopup = computed(() => popupContent.value?.type === 'not-mobile')
-const popupQrValue = computed(() => popupContent.value?.deepLinkUrl ?? null)
-const popupQrHint = computed(() => {
-  if (!popupContent.value) {
+const isNotMobileDialog = computed(() => dialogContent.value?.type === 'not-mobile')
+const dialogQrValue = computed(() => dialogContent.value?.deepLinkUrl ?? null)
+const dialogQrHint = computed(() => {
+  if (!dialogContent.value) {
     return null
   }
 
-  const key = `popups.deepLink.providers.${popupContent.value.provider}.qrHint`
-  const translation = i18nStore.t(key)
+  const templateKey = 'dialogs.deepLink.description.qrHint'
+  const template = i18nStore.t(templateKey)
 
-  return translation === key ? null : translation
+  if (template === templateKey) {
+    return null
+  }
+
+  const providerLabel = i18nStore.t(
+    `payment.${dialogContent.value.provider}.name`,
+    dialogContent.value.provider,
+  )
+
+  return template.split('{provider}').join(providerLabel)
 })
 const deepLinkProviderIcons = computed(() =>
   methods.value.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {
@@ -82,8 +95,8 @@ const deepLinkProviderIcons = computed(() =>
     return map
   }, {}),
 )
-const popupQrIcon = computed(() =>
-  popupContent.value ? deepLinkProviderIcons.value[popupContent.value.provider] ?? null : null,
+const dialogQrIcon = computed(() =>
+  dialogContent.value ? deepLinkProviderIcons.value[dialogContent.value.provider] ?? null : null,
 )
 
 const onSelectMethod = (methodId: string) => {
@@ -98,8 +111,8 @@ const onCloseCurrencySelector = () => {
   paymentStore.closeCurrencySelector()
 }
 
-const onPopupConfirm = () => {
-  paymentInteractionStore.closePopup()
+const onDialogConfirm = () => {
+  paymentInteractionStore.closeDialog()
 }
 
 const onCloseTransferDialog = () => {
@@ -126,13 +139,13 @@ const onLaunchTossInstructionDialog = () => {
       class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
       role="alert"
     >
-      {{ i18nStore.t('errors.loadMethods') }}
+      {{ i18nStore.t('status.errors.loadMethods') }}
     </div>
     <div
       v-else-if="!hasVisibleMethods && areMethodsLoading"
       class="flex justify-center py-12"
     >
-      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('loading.methods') }}</span>
+      <span class="text-sm text-roadshop-primary/70">{{ i18nStore.t('status.loading.methods') }}</span>
     </div>
     <div
       v-else-if="!hasVisibleMethods"
@@ -151,31 +164,31 @@ const onLaunchTossInstructionDialog = () => {
     </template>
 
     <DialogCloseFull
-      v-if="popupContent && isNotMobilePopup"
-      :visible="isPopupVisible"
-      :title="popupContent.title"
-      :description="popupContent.message"
-      :close-label="popupContent.confirmLabel"
-      @close="onPopupConfirm"
+      v-if="dialogContent && isNotMobileDialog"
+      :visible="isDialogVisible"
+      :title="dialogContent.title"
+      :description="dialogContent.message"
+      :close-label="dialogContent.confirmLabel"
+      @close="onDialogConfirm"
     >
       <div
-        v-if="popupQrValue"
+        v-if="dialogQrValue"
         class="mt-6 flex flex-col items-center gap-3"
       >
-        <QrCodeDisplay :value="popupQrValue" :icon="popupQrIcon ?? undefined" />
-        <p v-if="popupQrHint" class="text-center text-xs text-slate-500">
-          {{ popupQrHint }}
+        <QrCodeDisplay :value="dialogQrValue" :icon="dialogQrIcon ?? undefined" />
+        <p v-if="dialogQrHint" class="text-center text-xs text-slate-500">
+          {{ dialogQrHint }}
           <i class="pi pi-camera"></i>
         </p>
       </div>
     </DialogCloseFull>
     <DialogCloseEnd
-      v-else-if="popupContent"
-      :visible="isPopupVisible"
-      :title="popupContent.title"
-      :description="popupContent.message"
-      :close-label="popupContent.confirmLabel"
-      @close="onPopupConfirm"
+      v-else-if="dialogContent"
+      :visible="isDialogVisible"
+      :title="dialogContent.title"
+      :description="dialogContent.message"
+      :close-label="dialogContent.confirmLabel"
+      @close="onDialogConfirm"
     />
     <CurrencySelectorDialog
       v-if="selectedMethod"
@@ -199,6 +212,9 @@ const onLaunchTossInstructionDialog = () => {
       @launch-now="onLaunchTossInstructionDialog"
       @reopen="onReopenTossInstructionDialog"
     />
-    <LoadingOverlay :visible="isDeepLinkChecking" :message="i18nStore.t('loading.deepLink')" />
+    <LoadingOverlay
+      :visible="isDeepLinkChecking"
+      :message="i18nStore.t('status.loading.deepLink')"
+    />
   </div>
 </template>
