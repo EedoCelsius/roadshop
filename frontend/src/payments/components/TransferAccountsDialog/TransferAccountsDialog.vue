@@ -27,31 +27,23 @@ const { locale } = storeToRefs(i18nStore)
 const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
   useTransferCopyState()
 
-const localeNumberFormats: Record<string, string> = {
-  en: 'en-US',
-  ko: 'ko-KR',
-  ja: 'ja-JP',
-  zh: 'zh-CN',
-}
-
-const numberFormatter = computed(() => new Intl.NumberFormat(localeNumberFormats[locale.value] ?? 'en-US'))
-const formattedAmount = computed(() => numberFormatter.value.format(props.amount))
-
-const formattedAmountForCopy = computed(() => new Intl.NumberFormat('ko-KR').format(props.amount))
-
-const formatAmountWithCurrency = (value: string) =>
-  i18nStore.t('dialogs.transferAccounts.amountWithCurrency').replace('{amount}', value)
-
-const amountWithCurrency = computed(() => formatAmountWithCurrency(formattedAmount.value))
-const amountWithCurrencyForCopy = computed(() => formatAmountWithCurrency(formattedAmountForCopy.value))
+const formattedAmount = computed(() =>
+  props.amount
+    .toLocaleString(locale.value || 'en', {
+      style: 'currency',
+      currency: 'KRW',
+      maximumFractionDigits: 0,
+    })
+    .replace(/\u00A0/g, ' '),
+)
 
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
   i18nStore
     .t('dialogs.transferAccounts.description')
     .replace(
-      '{amountWithCurrency}',
-      `<strong class="font-semibold text-roadshop-primary">${amountWithCurrency.value}</strong>`,
+      '{amount}',
+      `<strong class="font-semibold text-roadshop-primary">${formattedAmount.value}</strong>`,
     ),
 )
 const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.all'))
@@ -62,7 +54,7 @@ const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.c
 const getIconForBank = (bank: string) => getFirmIcon(bank)
 
 const copyTransferDetails = async (account: TransferAccount) => {
-  const amountText = amountWithCurrencyForCopy.value
+  const amountText = formattedAmount.value
   const payload = `${account.bank} ${account.number} ${account.holder} [${amountText}]`
   await handleCopyAll(account.number, payload)
 }
