@@ -19,9 +19,9 @@ const emit = defineEmits<{
 
 const i18nStore = useI18nStore()
 
-const title = computed(() => i18nStore.t('currencySelector.title'))
+const title = computed(() => i18nStore.t('dialogs.currencySelector.title'))
 const description = computed(() =>
-  i18nStore.t('currencySelector.description').replace('{method}', props.methodName),
+  i18nStore.t('dialogs.currencySelector.description').replace('{method}', props.methodName),
 )
 
 const onSelectCurrency = (currency: string) => {

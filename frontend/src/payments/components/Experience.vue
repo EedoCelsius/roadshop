@@ -60,7 +60,7 @@ const hasVisibleMethods = computed(() =>
 )
 
 const selectedMethodName = computed(() =>
-  selectedMethod.value ? i18nStore.t(`payment.${selectedMethod.value.id}.name`) : '',
+  selectedMethod.value ? i18nStore.t(`options.${selectedMethod.value.id}`) : '',
 )
 
 const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedCurrencies ?? [])
@@ -68,23 +68,33 @@ const selectedMethodCurrencies = computed(() => selectedMethod.value?.supportedC
 const isNotMobileDialog = computed(() => dialogContent.value?.type === 'not-mobile')
 const dialogQrValue = computed(() => dialogContent.value?.deepLinkUrl ?? null)
 const dialogQrHint = computed(() => {
-  if (!dialogContent.value) {
+  if (!dialogContent.value?.deepLinkUrl) {
     return null
   }
 
-  const templateKey = 'dialogs.deepLink.description.qrHint'
-  const template = i18nStore.t(templateKey)
+  const typeKey =
+    dialogContent.value.type === 'not-mobile'
+      ? 'dialogs.notMobile.qrHint'
+      : 'dialogs.notInstalled.qrHint'
 
-  if (template === templateKey) {
-    return null
+  const candidateKeys = [typeKey, 'dialogs.notInstalled.qrHint']
+
+  for (const key of candidateKeys) {
+    const template = i18nStore.t(key)
+
+    if (template === key) {
+      continue
+    }
+
+    const providerLabel = i18nStore.t(
+      `options.${dialogContent.value.provider}`,
+      dialogContent.value.provider,
+    )
+
+    return template.split('{provider}').join(providerLabel)
   }
 
-  const providerLabel = i18nStore.t(
-    `payment.${dialogContent.value.provider}.name`,
-    dialogContent.value.provider,
-  )
-
-  return template.split('{provider}').join(providerLabel)
+  return null
 })
 const deepLinkProviderIcons = computed(() =>
   methods.value.reduce<Partial<Record<DeepLinkProvider, PaymentIcon>>>((map, method) => {

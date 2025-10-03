@@ -3,6 +3,49 @@
     "krw": "韩元支付",
     "global": "全球支付"
   },
+  "options": {
+    "transfer": "银行转账",
+    "kakao": "Kakao 汇款",
+    "toss": "Toss 转账",
+    "alipay": "支付宝",
+    "card": "信用卡"
+  },
+  "dialogs": {
+    "close": "关闭",
+    "confirm": "好的",
+    "notMobile": {
+      "title": "仅限移动设备使用",
+      "description": "{provider} 链接只能在移动设备上打开。请在手机上重试。"
+    },
+    "notInstalled": {
+      "title": "应用没有打开吗？",
+      "description": "如果没有跳转到 {provider} 应用，请确认已安装后再试一次。",
+      "qrHint": "扫描二维码前往 {provider} 应用"
+    },
+    "transferAccounts": {
+      "title": "银行转账信息",
+      "description": "请将 {amountWithCurrency} 转入下方任一账户。",
+      "amountWithCurrency": "{amount} 韩元",
+      "copy": {
+        "all": "复制转账信息",
+        "accountNo": "仅复制账号"
+      },
+      "copied": {
+        "all": "已复制到剪贴板",
+        "accountNo": "仅复制了账号"
+      }
+    },
+    "currencySelector": {
+      "title": "选择货币",
+      "description": "请选择用于 {method} 付款的货币。"
+    },
+    "tossInstruction": {
+      "title": "使用 Toss 转账",
+      "description": "已将转账所需的账户信息<strong>自动复制</strong>好了。",
+      "launchCta": "前往 Toss",
+      "reopen": "重新打开 Toss"
+    }
+  },
   "status": {
     "empty": "目前没有可用的支付方式。",
     "loading": {
@@ -11,59 +54,6 @@
     },
     "errors": {
       "loadMethods": "无法加载支付方式，请稍后再试。"
-    }
-  },
-  "dialogs": {
-    "close": "关闭",
-    "confirm": "好的",
-    "deepLink": {
-      "titles": {
-        "notMobile": "仅限移动设备使用",
-        "notInstalled": "应用没有打开吗？"
-      },
-      "description": {
-        "notMobile": "{provider} 链接只能在移动设备上打开。请在手机上重试。",
-        "notInstalled": "如果没有跳转到 {provider}，请确认已安装后再试一次。",
-        "qrHint": "扫描二维码前往 {provider} 应用"
-      }
-    },
-    "transferAccounts": {
-      "title": "银行转账信息",
-      "description": "请将 {amountWithCurrency} 转入下方任一账户。",
-      "copyAll": "复制全部信息",
-      "copyNumber": "仅复制账号",
-      "copyAllButton": "复制转账信息",
-      "copiedAllButton": "已复制到剪贴板",
-      "copiedNumber": "仅复制了账号"
-    }
-  },
-  "currencySelector": {
-    "title": "选择货币",
-    "description": "请选择用于 {method} 付款的货币。"
-  },
-  "tossInstruction": {
-    "title": "使用 Toss 转账",
-    "description": "已将转账所需的账户信息<strong>自动复制</strong>好了。",
-    "launchCta": "前往 Toss",
-    "reopen": "重新打开 Toss"
-  },
-  "payment": {
-    "transfer": {
-      "name": "银行转账"
-    },
-    "kakao": {
-      "name": "Kakao 汇款",
-      "cta": "打开 Kakao 汇款"
-    },
-    "toss": {
-      "name": "Toss 转账",
-      "cta": "打开 Toss"
-    },
-    "alipay": {
-      "name": "支付宝"
-    },
-    "card": {
-      "name": "信用卡"
     }
   }
 }

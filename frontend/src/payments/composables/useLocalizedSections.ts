@@ -65,7 +65,7 @@ export const useLocalizedSections = (
           .map((method) => ({
             ...method,
             category,
-            name: i18nStore.t(`payment.${method.id}.name`),
+            name: i18nStore.t(`options.${method.id}`),
             isSelected: method.id === selectedMethodId.value,
           }))
           .filter((method) => method.name),

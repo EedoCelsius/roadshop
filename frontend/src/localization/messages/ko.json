@@ -3,6 +3,49 @@
     "krw": "KRW 결제",
     "global": "글로벌 결제"
   },
+  "options": {
+    "transfer": "계좌이체",
+    "kakao": "카카오송금",
+    "toss": "토스송금",
+    "alipay": "알리페이",
+    "card": "신용카드"
+  },
+  "dialogs": {
+    "close": "닫기",
+    "confirm": "확인",
+    "notMobile": {
+      "title": "모바일에서만 이용할 수 있어요",
+      "description": "{provider} 송금링크는 모바일에서만 열려요. 휴대폰에서 다시 시도해 주세요."
+    },
+    "notInstalled": {
+      "title": "앱이 실행되지 않았나요?",
+      "description": "{provider} 앱으로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
+      "qrHint": "스캔해서 {provider} 앱으로 이동합니다"
+    },
+    "transferAccounts": {
+      "title": "계좌이체 정보",
+      "description": "{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.",
+      "amountWithCurrency": "{amount}원",
+      "copy": {
+        "all": "이체 정보 복사",
+        "accountNo": "계좌번호만 복사"
+      },
+      "copied": {
+        "all": "클립보드에 복사됨",
+        "accountNo": "계좌번호만 복사했어요"
+      }
+    },
+    "currencySelector": {
+      "title": "통화를 선택하세요",
+      "description": "{method} 결제에 사용할 통화를 선택하세요."
+    },
+    "tossInstruction": {
+      "title": "토스로 송금하기",
+      "description": "송금에 필요한 계좌 정보를 <strong>자동으로 복사</strong>해 두었어요.",
+      "launchCta": "토스로 이동하기",
+      "reopen": "토스 다시열기"
+    }
+  },
   "status": {
     "empty": "현재 사용 가능한 결제 수단이 없습니다.",
     "loading": {
@@ -11,59 +54,6 @@
     },
     "errors": {
       "loadMethods": "결제 수단을 불러오지 못했어요. 다시 시도해 주세요."
-    }
-  },
-  "dialogs": {
-    "close": "닫기",
-    "confirm": "확인",
-    "deepLink": {
-      "titles": {
-        "notMobile": "모바일에서만 이용할 수 있어요",
-        "notInstalled": "앱이 실행되지 않았나요?"
-      },
-      "description": {
-        "notMobile": "{provider} 송금링크는 모바일에서만 열려요. 휴대폰에서 다시 시도해 주세요.",
-        "notInstalled": "{provider} 송금링크로 이동하지 않았다면 설치 여부를 확인한 후 다시 시도해 주세요.",
-        "qrHint": "스캔해서 {provider} 앱으로 이동합니다"
-      }
-    },
-    "transferAccounts": {
-      "title": "계좌이체 정보",
-      "description": "{amountWithCurrency} 금액을 아래 계좌 중 하나로 보내 주세요.",
-      "copyAll": "전체 정보 복사",
-      "copyNumber": "계좌번호만 복사",
-      "copyAllButton": "이체 정보 복사",
-      "copiedAllButton": "클립보드에 복사됨",
-      "copiedNumber": "계좌번호만 복사했어요"
-    }
-  },
-  "currencySelector": {
-    "title": "통화를 선택하세요",
-    "description": "{method} 결제에 사용할 통화를 선택하세요."
-  },
-  "tossInstruction": {
-    "title": "토스로 송금하기",
-    "description": "송금에 필요한 계좌 정보를 <strong>자동으로 복사</strong>해 두었어요.",
-    "launchCta": "토스로 이동하기",
-    "reopen": "토스 다시열기"
-  },
-  "payment": {
-    "transfer": {
-      "name": "계좌이체"
-    },
-    "kakao": {
-      "name": "카카오송금",
-      "cta": "카카오송금 열기"
-    },
-    "toss": {
-      "name": "토스송금",
-      "cta": "토스송금 열기"
-    },
-    "alipay": {
-      "name": "알리페이"
-    },
-    "card": {
-      "name": "신용카드"
     }
   }
 }

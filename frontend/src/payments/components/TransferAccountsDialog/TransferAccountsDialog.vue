@@ -37,20 +37,13 @@ const localeNumberFormats: Record<string, string> = {
 const numberFormatter = computed(() => new Intl.NumberFormat(localeNumberFormats[locale.value] ?? 'en-US'))
 const formattedAmount = computed(() => numberFormatter.value.format(props.amount))
 
-const formattedAmountWithCurrency = computed(() => {
-  switch (locale.value) {
-    case 'ko':
-      return `${formattedAmount.value}원`
-    case 'zh':
-      return `${formattedAmount.value} 韩元`
-    case 'ja':
-      return `${formattedAmount.value} KRW`
-    default:
-      return `${formattedAmount.value} KRW`
-  }
-})
-
 const formattedAmountForCopy = computed(() => new Intl.NumberFormat('ko-KR').format(props.amount))
+
+const formatAmountWithCurrency = (value: string) =>
+  i18nStore.t('dialogs.transferAccounts.amountWithCurrency').replace('{amount}', value)
+
+const amountWithCurrency = computed(() => formatAmountWithCurrency(formattedAmount.value))
+const amountWithCurrencyForCopy = computed(() => formatAmountWithCurrency(formattedAmountForCopy.value))
 
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
@@ -58,19 +51,18 @@ const descriptionHtml = computed(() =>
     .t('dialogs.transferAccounts.description')
     .replace(
       '{amountWithCurrency}',
-      `<strong class="font-semibold text-roadshop-primary">${formattedAmountWithCurrency.value}</strong>`,
+      `<strong class="font-semibold text-roadshop-primary">${amountWithCurrency.value}</strong>`,
     ),
 )
-const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copyAll'))
-const copyNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copyNumber'))
-const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copiedNumber'))
-const copyAllButtonLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copyAllButton'))
-const copiedAllButtonLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copiedAllButton'))
+const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.all'))
+const copyNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.accountNo'))
+const copiedAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copied.all'))
+const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copied.accountNo'))
 
 const getIconForBank = (bank: string) => getFirmIcon(bank)
 
 const copyTransferDetails = async (account: TransferAccount) => {
-  const amountText = `${formattedAmountForCopy.value}원`
+  const amountText = amountWithCurrencyForCopy.value
   const payload = `${account.bank} ${account.number} ${account.holder} [${amountText}]`
   await handleCopyAll(account.number, payload)
 }
@@ -166,7 +158,7 @@ watch(
             >
               <span class="flex items-center gap-2 sm:hidden">
                 <span class="font-semibold text-white">
-                  {{ isCopied(account.number, 'all') ? copiedAllButtonLabel : copyAllButtonLabel }}
+                  {{ isCopied(account.number, 'all') ? copiedAllLabel : copyAllLabel }}
                 </span>
                 <i
                   v-if="isCopied(account.number, 'all')"

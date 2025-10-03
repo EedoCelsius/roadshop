@@ -3,6 +3,49 @@
     "krw": "KRW payments",
     "global": "Global payments"
   },
+  "options": {
+    "transfer": "Bank Transfer",
+    "kakao": "Kakao Transfer",
+    "toss": "Toss Transfer",
+    "alipay": "Alipay",
+    "card": "Credit Card"
+  },
+  "dialogs": {
+    "close": "Close",
+    "confirm": "OK",
+    "notMobile": {
+      "title": "Open on your mobile device",
+      "description": "The {provider} transfer link only opens in the mobile app. Please continue on your phone."
+    },
+    "notInstalled": {
+      "title": "Having trouble opening the app?",
+      "description": "If the {provider} app didn't open, please make sure it's installed and try again.",
+      "qrHint": "Scan to open the {provider} app"
+    },
+    "transferAccounts": {
+      "title": "Bank transfer details",
+      "description": "Send {amountWithCurrency} to one of the accounts below.",
+      "amountWithCurrency": "{amount} KRW",
+      "copy": {
+        "all": "Copy transfer details",
+        "accountNo": "Copy only account number"
+      },
+      "copied": {
+        "all": "Copied to clipboard",
+        "accountNo": "Account number copied"
+      }
+    },
+    "currencySelector": {
+      "title": "Choose a currency",
+      "description": "Choose the currency to use for {method} payments."
+    },
+    "tossInstruction": {
+      "title": "Send with Toss",
+      "description": "We've <strong>automatically copied</strong> the account details you need for Toss.",
+      "launchCta": "Go to Toss",
+      "reopen": "Reopen Toss"
+    }
+  },
   "status": {
     "empty": "No payment methods are available right now.",
     "loading": {
@@ -11,59 +54,6 @@
     },
     "errors": {
       "loadMethods": "We couldn't load the payment methods. Please try again."
-    }
-  },
-  "dialogs": {
-    "close": "Close",
-    "confirm": "OK",
-    "deepLink": {
-      "titles": {
-        "notMobile": "Open on your mobile device",
-        "notInstalled": "Having trouble opening the app?"
-      },
-      "description": {
-        "notMobile": "The {provider} transfer link only opens in the mobile app. Please continue on your phone.",
-        "notInstalled": "If {provider} didn't open, please make sure it's installed and try again.",
-        "qrHint": "Scan to open the {provider} app"
-      }
-    },
-    "transferAccounts": {
-      "title": "Bank transfer details",
-      "description": "Send {amountWithCurrency} to one of the accounts below.",
-      "copyAll": "Copy all details",
-      "copyNumber": "Copy only account number",
-      "copyAllButton": "Copy transfer details",
-      "copiedAllButton": "Copied to clipboard",
-      "copiedNumber": "Account number copied"
-    }
-  },
-  "currencySelector": {
-    "title": "Choose a currency",
-    "description": "Choose the currency to use for {method} payments."
-  },
-  "tossInstruction": {
-    "title": "Send with Toss",
-    "description": "We've <strong>automatically copied</strong> the account details you need for Toss.",
-    "launchCta": "Go to Toss",
-    "reopen": "Reopen Toss"
-  },
-  "payment": {
-    "transfer": {
-      "name": "Bank Transfer"
-    },
-    "kakao": {
-      "name": "Kakao Transfer",
-      "cta": "Open Kakao Transfer"
-    },
-    "toss": {
-      "name": "Toss Transfer",
-      "cta": "Open Toss"
-    },
-    "alipay": {
-      "name": "Alipay"
-    },
-    "card": {
-      "name": "Credit Card"
     }
   }
 }
