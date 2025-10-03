@@ -9,6 +9,8 @@ import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
 import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
+const emit = defineEmits<{ (event: 'close'): void }>()
+
 const paymentInfoStore = usePaymentInfoStore()
 
 const isInstructionVisible = ref(false)
@@ -33,11 +35,26 @@ const closeInstructionDialog = () => {
   isInstructionVisible.value = false
   tossInstructionCountdown.value = 0
   tossDeepLinkUrl.value = null
+  emit('close')
 }
 
 const showInstructionDialog = async (seconds: number): Promise<boolean> => {
   isInstructionVisible.value = true
   return countdownManager.start(seconds)
+}
+
+const openInstructionDialog = async (): Promise<boolean> => {
+  const ready = await paymentInfoStore.ensureMethodInfo('toss')
+
+  if (!ready) {
+    return false
+  }
+
+  countdownManager.reset()
+  tossInstructionCountdown.value = 0
+  isInstructionVisible.value = true
+
+  return true
 }
 
 const runDeepLink = async (deepLink: string) => {
@@ -99,8 +116,13 @@ const onInstructionReopen = () => {
   void runDeepLink(tossDeepLinkUrl.value)
 }
 
+const onFallbackDialogClose = () => {
+  emit('close')
+}
+
 defineExpose({
   run,
+  openInstructionDialog,
 })
 </script>
 
@@ -113,6 +135,6 @@ defineExpose({
     @launch-now="onInstructionLaunchNow"
     @reopen="onInstructionReopen"
   />
-  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" />
-  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" />
+  <IsNotMobileDialog ref="notMobileDialogRef" method="toss" @close="onFallbackDialogClose" />
+  <IsNotInstalledDialog ref="notInstalledDialogRef" method="toss" @close="onFallbackDialogClose" />
 </template>
