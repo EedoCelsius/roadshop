@@ -4,8 +4,6 @@ import { computed, ref } from 'vue'
 import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
-const emit = defineEmits<{ close: [] }>()
-
 const paymentInfoStore = usePaymentInfoStore()
 const isDialogVisible = ref(false)
 
@@ -29,7 +27,6 @@ const closeDialog = () => {
 
 const onClose = () => {
   closeDialog()
-  emit('close')
 }
 
 defineExpose({
