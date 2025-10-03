@@ -19,10 +19,7 @@ const isVisible = ref(false)
 const methodLabel = computed(() => i18nStore.t(`options.${props.method}`, props.method))
 const title = computed(() => i18nStore.t('dialogs.notInstalled.title'))
 const confirmLabel = computed(() => i18nStore.t('dialogs.confirm'))
-const description = computed(() => {
-  const template = i18nStore.t('dialogs.notInstalled.description')
-  return template.includes('{method}') ? template.replace('{method}', methodLabel.value) : template
-})
+const description = computed(() => i18nStore.t('dialogs.notInstalled.description').replace('{method}', methodLabel.value))
 
 const close = () => {
   isVisible.value = false
