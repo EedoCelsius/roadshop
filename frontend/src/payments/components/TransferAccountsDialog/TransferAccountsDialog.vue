@@ -7,8 +7,7 @@ import type { TransferAccount } from '@/payments/services/paymentInfoService'
 import TooltipBubble from '@/shared/components/TooltipBubble.vue'
 import DialogCloseFull from '@/shared/components/DialogCloseFull.vue'
 import { getFirmIcon } from '@icons/firms'
-import { formatKrwAmount } from '@/payments/utils/formatKrwAmount'
-import { createTransferCopyPayload } from '@/payments/utils/createTransferCopyPayload'
+import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
 import { useTransferCopyState, type CopyAction } from './useTransferCopyState'
 
 interface Props {
@@ -29,7 +28,10 @@ const { locale } = storeToRefs(i18nStore)
 const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopyNumber, reset } =
   useTransferCopyState()
 
-const formattedAmount = computed(() => formatKrwAmount(props.amount, locale.value))
+const formatAmountForDisplay = (amount: number, locale: string | null) =>
+  `${amount.toLocaleString(locale || 'ko-KR')}원`
+
+const formattedAmount = computed(() => formatAmountForDisplay(props.amount, locale.value))
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
 const descriptionHtml = computed(() =>
   i18nStore
@@ -47,17 +49,16 @@ const copiedNumberLabel = computed(() => i18nStore.t('dialogs.transferAccounts.c
 const getIconForBank = (bank: string) => getFirmIcon(bank)
 
 const copyTransferDetails = async (account: TransferAccount) => {
-  const payload = createTransferCopyPayload(
-    {
-      bank: account.bank,
-      accountNumber: account.number,
-      holder: account.holder,
-    },
-    props.amount,
-    locale.value
+  await handleCopyAll(account.number, () =>
+    copyTransferInfo(
+      {
+        bank: account.bank,
+        accountNumber: account.number,
+        holder: account.holder,
+      },
+      props.amount,
+    ),
   )
-
-  await handleCopyAll(account.number, payload)
 }
 
 const copyAccountNumber = async (account: TransferAccount) => {
