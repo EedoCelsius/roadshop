@@ -11,16 +11,11 @@ export type TransferCopyPayload = {
   amountText: string
 }
 
-type TransferCopyOptions = {
-  locale?: string | null
-  amountText?: string
-}
-
 export const createTransferCopyPayload = (
   account: TransferCopyAccount,
   amount: number,
   options: TransferCopyOptions = {},
-): TransferCopyPayload => {
+): string => {
   const amountText =
     options.amountText ?? formatKrwAmount(amount, options.locale)
 
