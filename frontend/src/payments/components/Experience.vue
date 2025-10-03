@@ -86,12 +86,12 @@ const dialogQrHint = computed(() => {
       continue
     }
 
-    const providerLabel = i18nStore.t(
+    const methodLabel = i18nStore.t(
       `options.${dialogContent.value.provider}`,
       dialogContent.value.provider,
     )
 
-    return template.split('{method}').join(providerLabel)
+    return template.split('{method}').join(methodLabel)
   }
 
   return null
