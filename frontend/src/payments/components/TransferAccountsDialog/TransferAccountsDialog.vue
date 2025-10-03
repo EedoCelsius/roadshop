@@ -28,12 +28,12 @@ const { isCopied, isTooltipVisible, setHoveredControl, handleCopyAll, handleCopy
   useTransferCopyState()
   
 const title = computed(() => i18nStore.t('dialogs.transferAccounts.title'))
+const formattedAmount = computed(() => props.amount.toLocaleString(locale.value || 'ko-KR'))
+
 const descriptionHtml = computed(() =>
-  i18nStore.t('dialogs.transferAccounts.description')
-    .replace(
-      '{amount}',
-      `<strong class="font-semibold text-roadshop-primary">₩${props.amount.toLocaleString(locale.value || 'ko-KR')}</strong>`,
-    ),
+  i18nStore
+    .t('dialogs.transferAccounts.description')
+    .replace('{amount}', formattedAmount.value),
 )
 
 const copyAllLabel = computed(() => i18nStore.t('dialogs.transferAccounts.copy.all'))
