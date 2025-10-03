@@ -52,9 +52,7 @@ const onLaunchNow = () => {
     <div class="flex flex-col gap-4">
       <AccountInfoCard
         v-if="props.info"
-        :bank-name="props.info.bankName"
-        :account-no="props.info.accountNo"
-        :account-holder="props.info.accountHolder"
+        :account="props.info.account"
       />
     </div>
     <template #footer="{ onClose: closeDialog }">
