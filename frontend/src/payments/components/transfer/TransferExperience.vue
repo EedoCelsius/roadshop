@@ -4,8 +4,6 @@ import { computed, ref } from 'vue'
 import TransferAccountsDialog from '@/payments/components/TransferAccountsDialog/TransferAccountsDialog.vue'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
-const emit = defineEmits<{ (event: 'close'): void }>()
-
 const paymentInfoStore = usePaymentInfoStore()
 const isDialogVisible = ref(false)
 
@@ -25,7 +23,6 @@ const openDialog = async (): Promise<boolean> => {
 
 const closeDialog = () => {
   isDialogVisible.value = false
-  emit('close')
 }
 
 const onClose = () => {
@@ -34,8 +31,6 @@ const onClose = () => {
 
 defineExpose({
   run: openDialog,
-  openDialog,
-  closeDialog,
 })
 </script>
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
 
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
@@ -21,13 +20,9 @@ defineOptions({
   name: 'PaymentExperience',
 })
 
-type DialogRoute = 'kakao' | 'toss' | 'transfer'
-
 const paymentStore = usePaymentStore()
 const paymentInfoStore = usePaymentInfoStore()
 const i18nStore = useI18nStore()
-const router = useRouter()
-const route = useRoute()
 
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
@@ -35,86 +30,6 @@ const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoa
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
 const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
-
-const requestedDialog = computed<DialogRoute | null>(() => {
-  const dialogParam = route.params.dialog
-
-  if (Array.isArray(dialogParam)) {
-    return dialogParam[0] as DialogRoute
-  }
-
-  return (dialogParam as DialogRoute | undefined) ?? null
-})
-
-let lastOpenedDialog: DialogRoute | null = null
-
-const selectMethodForDialog = (dialog: DialogRoute) => {
-  if (paymentStore.selectedMethodId !== dialog) {
-    paymentStore.selectMethod(dialog)
-  }
-}
-
-const openDialogForRoute = async (dialog: DialogRoute | null): Promise<boolean> => {
-  if (!dialog) {
-    return false
-  }
-
-  selectMethodForDialog(dialog)
-
-  switch (dialog) {
-    case 'kakao':
-      return (await kakaoExperienceRef.value?.openNotMobileDialog()) ?? false
-    case 'toss':
-      return (await tossExperienceRef.value?.openInstructionDialog()) ?? false
-    case 'transfer':
-      return (await transferExperienceRef.value?.openDialog()) ?? false
-    default:
-      return false
-  }
-}
-
-const navigateHome = () => {
-  lastOpenedDialog = null
-
-  if (requestedDialog.value) {
-    void router.push('/')
-  }
-}
-
-watch(
-  requestedDialog,
-  async (dialog) => {
-    if (!dialog) {
-      lastOpenedDialog = null
-      return
-    }
-
-    if (lastOpenedDialog === dialog) {
-      return
-    }
-
-    const opened = await openDialogForRoute(dialog)
-
-    if (opened) {
-      lastOpenedDialog = dialog
-    }
-  },
-  { immediate: true },
-)
-
-watch(
-  methods,
-  () => {
-    const dialog = requestedDialog.value
-
-    if (!dialog) {
-      return
-    }
-
-    selectMethodForDialog(dialog)
-  },
-  { immediate: false },
-)
 
 const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
   method.supportedCurrencies.some((currency) => currency !== 'KRW') ? 'GLOBAL' : 'KRW'
@@ -243,9 +158,9 @@ const onCloseCurrencySelector = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
-    <TransferExperience ref="transferExperienceRef" @close="navigateHome" />
-    <TossExperience ref="tossExperienceRef" @close="navigateHome" />
-    <KakaoExperience ref="kakaoExperienceRef" @close="navigateHome" />
+    <TransferExperience ref="transferExperienceRef" />
+    <TossExperience ref="tossExperienceRef" />
+    <KakaoExperience ref="kakaoExperienceRef" />
     <LoadingOverlay
       :visible="isDeepLinkChecking"
       :message="i18nStore.t('status.loading.deepLink')"
