@@ -1,19 +1,11 @@
 import { copyText } from '@/shared/utils/clipboard'
-
-export type TransferCopyAccount = {
-  bank: string
-  accountNumber: string
-  holder: string
-}
-
-const formatAmountForCopy = (amount: number): string => `₩${amount.toLocaleString('ko-KR')}`
+import type { TransferAccount } from '@/payments/services/paymentInfoService'
 
 export const copyTransferInfo = async (
-  account: TransferCopyAccount,
+  account: TransferAccount,
   amount: number,
 ): Promise<boolean> => {
-  const amountText = formatAmountForCopy(amount)
-  const payload = `${account.bank} ${account.accountNumber} [${account.holder}] ${amountText}`
+  const payload = `${account.bank} ${account.accountNumber} [${account.holder}] ₩${amount.toLocaleString('ko-KR')}`
 
   return copyText(payload)
 }
