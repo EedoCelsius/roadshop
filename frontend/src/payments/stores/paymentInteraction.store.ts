@@ -128,7 +128,7 @@ export const usePaymentInteractionStore = defineStore('payment-interaction', () 
       return false
     }
 
-    const success = await copyTransferInfo(tossInfo.value, tossInfo.value.amount.krw)
+    const success = await copyTransferInfo(tossInfo.value.account, tossInfo.value.amount.krw)
     hasCopiedTossAccountInfo.value = success
 
     return success
