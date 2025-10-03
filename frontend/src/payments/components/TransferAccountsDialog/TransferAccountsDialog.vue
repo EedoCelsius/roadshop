@@ -54,9 +54,7 @@ const copyTransferDetails = async (account: TransferAccount) => {
       holder: account.holder,
     },
     props.amount,
-    {
-      amountText: formattedAmount.value,
-    },
+    locale.value
   )
 
   await handleCopyAll(account.number, payload)
