@@ -13,9 +13,6 @@
   "card": {
     "selectCurrencyPrompt": "続行するには通貨を選択してください。"
   },
-  "footer": {
-    "message": "© {year} 決済センター。どこからでもシームレスなお支払いを。"
-  },
   "loading": {
     "deepLink": "お支払いアプリを開いています…",
     "methods": "決済方法を読み込み中です…"

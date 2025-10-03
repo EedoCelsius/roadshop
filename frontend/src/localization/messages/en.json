@@ -13,9 +13,6 @@
   "card": {
     "selectCurrencyPrompt": "Choose a currency to continue."
   },
-  "footer": {
-    "message": "© {year} Payment Center. Seamless checkout anywhere."
-  },
   "loading": {
     "deepLink": "Opening the app so you can continue your payment…",
     "methods": "Loading payment methods…"
