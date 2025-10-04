@@ -9,6 +9,7 @@
       "bank": "KB국민",
       "number": "93800200352361",
       "holder": "강일준"
-    }
+    },
+    "deepLink": "supertoss://send?amount=10000&bank=KB%EA%B5%AD%EB%AF%BC&accountNo=93800200352361&origin=qr"
   }
 }

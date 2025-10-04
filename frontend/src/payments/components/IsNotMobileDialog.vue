@@ -6,11 +6,12 @@ import QrCodeDisplay from '@/shared/components/QrCodeDisplay.vue'
 import { useI18nStore } from '@/localization/store'
 import { usePaymentStore } from '@/payments/stores/payment.store'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
-import { resolveDeepLink } from '@/payments/services/deepLinkService'
-import type { DeepLinkProvider, PaymentIcon } from '@/payments/types'
+import type { PaymentIcon } from '@/payments/types'
+
+type DeepLinkCapableMethod = 'toss' | 'kakao'
 
 interface Props {
-  method: DeepLinkProvider
+  method: DeepLinkCapableMethod
 }
 
 const props = defineProps<Props>()
@@ -24,8 +25,7 @@ const paymentInfoStore = usePaymentInfoStore()
 const isVisible = ref(false)
 const qrValue = computed(() => {
   try {
-    const info = paymentInfoStore.getDeepLinkInfo(props.method)
-    return resolveDeepLink(props.method, info)
+    return paymentInfoStore.getMethodDeepLink(props.method)
   } catch (error) {
     console.error(error)
     return null

@@ -1,5 +1,3 @@
-import type { DeepLinkProvider } from '@/payments/types'
-
 export type TransferAccount = {
   bank: string
   number: string
@@ -18,11 +16,13 @@ export type TransferPaymentInfo = {
 export type TossPaymentInfo = {
   amount: AmountKRW
   account: TransferAccount
+  deepLink: string
 }
 
 export type KakaoPaymentInfo = {
   amount: AmountKRW
   personalCode: string
+  deepLink: string
 }
 
 export type MethodUrlInfo = {
@@ -32,7 +32,6 @@ export type MethodUrlInfo = {
 export type AvailablePaymentMethod = {
   id: string
   supportedCurrencies: string[]
-  deepLinkProvider?: DeepLinkProvider
 }
 
 export type PaymentMethodDetail =
