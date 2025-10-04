@@ -1,7 +1,6 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { DeepLinkProvider } from '@/payments/types'
 import {
   fetchPaymentMethodDetail,
   type KakaoPaymentInfo,
@@ -109,13 +108,15 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     return firstUrl ?? null
   }
 
-  const getDeepLinkInfo = (provider: DeepLinkProvider): TossPaymentInfo | KakaoPaymentInfo | null => {
-    if (provider === 'toss') {
-      return tossInfo.value
+  const getMethodDeepLink = (methodId: 'toss' | 'kakao'): string | null => {
+    const detail = getDetail(methodId)
+
+    if (!detail) {
+      return null
     }
 
-    if (provider === 'kakao') {
-      return kakaoInfo.value
+    if (detail.type === 'toss' || detail.type === 'kakao') {
+      return detail.data.deepLink
     }
 
     return null
@@ -132,7 +133,7 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     kakaoInfo,
     ensureMethodInfo,
     fetchMethodInfo,
-    getDeepLinkInfo,
+    getMethodDeepLink,
     getMethodInfo,
     getMethodUrl,
     isMethodLoading,

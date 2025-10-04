@@ -6,7 +6,7 @@ import IsNotMobileDialog from '@/payments/components/IsNotMobileDialog.vue'
 import TossInstructionDialog from '@/payments/components/TossInstructionDialog.vue'
 import { createCountdownManager } from '@/payments/stores/utils/createCountdownManager'
 import { copyTransferInfo } from '@/payments/utils/copyTransferInfo'
-import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkService'
+import { launchDeepLink } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
 const paymentInfoStore = usePaymentInfoStore()
@@ -64,8 +64,14 @@ const run = async (): Promise<boolean> => {
     return false
   }
 
+  const deepLink = info.deepLink
+
+  if (!deepLink) {
+    console.error('Missing toss deep link in payload')
+    return false
+  }
+
   try {
-    const deepLink = resolveDeepLink('toss', info)
     tossDeepLinkUrl.value = deepLink
 
     await copyTransferInfo(info.account, info.amount.krw)

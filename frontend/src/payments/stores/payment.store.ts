@@ -25,7 +25,6 @@ export const usePaymentStore = defineStore('payment', () => {
     return {
       id: entry.id,
       icons,
-      deepLinkProvider: entry.deepLinkProvider,
       supportedCurrencies: entry.supportedCurrencies,
     }
   }

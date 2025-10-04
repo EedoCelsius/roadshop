@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import IsNotInstalledDialog from '@/payments/components/IsNotInstalledDialog.vue'
 import IsNotMobileDialog from '@/payments/components/IsNotMobileDialog.vue'
-import { resolveDeepLink, launchDeepLink } from '@/payments/services/deepLinkService'
+import { launchDeepLink } from '@/payments/services/deepLinkService'
 import { usePaymentInfoStore } from '@/payments/stores/paymentInfo.store'
 
 const paymentInfoStore = usePaymentInfoStore()
 
 const notMobileDialogRef = ref<InstanceType<typeof IsNotMobileDialog> | null>(null)
 const notInstalledDialogRef = ref<InstanceType<typeof IsNotInstalledDialog> | null>(null)
+
+const kakaoInfo = computed(() => paymentInfoStore.kakaoInfo)
 
 const emit = defineEmits<{ close: [] }>()
 
@@ -20,16 +22,21 @@ const run = async (): Promise<boolean> => {
     return false
   }
 
-  const info = paymentInfoStore.getDeepLinkInfo('kakao')
+  const info = kakaoInfo.value
 
   if (!info) {
     console.error('Missing kakao payment info payload')
     return false
   }
 
-  try {
-    const deepLink = resolveDeepLink('kakao', info)
+  const deepLink = info.deepLink
 
+  if (!deepLink) {
+    console.error('Missing kakao deep link in payload')
+    return false
+  }
+
+  try {
     await launchDeepLink(deepLink, {
       timeoutMs: 1500,
       onNotInstalled: () => notInstalledDialogRef.value?.open(),

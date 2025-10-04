@@ -6,13 +6,11 @@
     },
     {
       "id": "toss",
-      "supportedCurrencies": ["KRW"],
-      "deepLinkProvider": "toss"
+      "supportedCurrencies": ["KRW"]
     },
     {
       "id": "kakao",
-      "supportedCurrencies": ["KRW"],
-      "deepLinkProvider": "kakao"
+      "supportedCurrencies": ["KRW"]
     },
     {
       "id": "alipay",
