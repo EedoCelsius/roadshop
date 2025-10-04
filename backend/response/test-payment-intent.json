@@ -1,0 +1,6 @@
+{
+  "isMock": true,
+  "message": "Stripe backend is not active. This is a mock response used on GitHub Pages.",
+  "publishableKey": "pk_test_mocked_publishable_key",
+  "clientSecret": null
+}

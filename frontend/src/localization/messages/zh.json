@@ -38,6 +38,17 @@
       "title": "选择货币",
       "description": "请选择用于 {method} 付款的货币。"
     },
+    "cardPayment": {
+      "title": "使用银行卡支付",
+      "description": "通过 Stripe 安全完成 {currency} 支付。",
+      "loading": "正在准备安全的银行卡表单…",
+      "testModeNotice": "请使用 Stripe 测试卡（例如 4242 4242 4242 4242）进行模拟支付。",
+      "mockNotice": "Stripe 后端未运行。在 GitHub Pages 上将显示模拟响应。",
+      "missingCurrency": "继续银行卡支付前，请先选择币种。",
+      "submit": "确认支付",
+      "success": "支付已确认，Stripe 可能会要求额外验证。",
+      "error": "无法确认支付，请稍后重试。"
+    },
     "tossInstruction": {
       "title": "使用 Toss 转账",
       "description": "已将转账所需的账户信息<strong class=\"text-brand-accent\">自动复制</strong>好了。",

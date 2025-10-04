@@ -38,6 +38,17 @@
       "title": "Choose a currency",
       "description": "Choose the currency to use for {method} payments."
     },
+    "cardPayment": {
+      "title": "Pay with card",
+      "description": "Complete your {currency} payment securely using Stripe.",
+      "loading": "Preparing the secure card form…",
+      "testModeNotice": "Use Stripe test cards such as 4242 4242 4242 4242 to simulate a payment.",
+      "mockNotice": "Stripe backend is not running. This mock response is shown for GitHub Pages.",
+      "missingCurrency": "Select a currency before continuing with a card payment.",
+      "submit": "Confirm payment",
+      "success": "Payment confirmed. Stripe may ask for additional authentication.",
+      "error": "We couldn't confirm your payment. Please try again."
+    },
     "tossInstruction": {
       "title": "Send with Toss",
       "description": "We've <strong class=\"text-brand-accent\">automatically copied</strong> the account details you need for Toss.",

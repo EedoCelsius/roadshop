@@ -38,6 +38,17 @@
       "title": "通貨を選択してください",
       "description": "{method} 決済に使用する通貨を選択してください。"
     },
+    "cardPayment": {
+      "title": "カードで支払う",
+      "description": "Stripe を利用して {currency} の支払いを安全に完了しましょう。",
+      "loading": "安全なカード入力フォームを準備しています…",
+      "testModeNotice": "テストでは 4242 4242 4242 4242 などの Stripe テストカードをご利用ください。",
+      "mockNotice": "Stripe バックエンドが起動していません。GitHub Pages ではモック応答を表示します。",
+      "missingCurrency": "カード決済を続ける前に通貨を選択してください。",
+      "submit": "支払いを確定",
+      "success": "支払いが確認されました。追加の認証が求められる場合があります。",
+      "error": "支払いを確定できませんでした。もう一度お試しください。"
+    },
     "tossInstruction": {
       "title": "Tossで送金",
       "description": "送金に必要な口座情報を<strong class=\"text-brand-accent\">自動でコピー</strong>しました。",

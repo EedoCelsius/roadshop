@@ -8,6 +8,7 @@ import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog
 import Section from '@/payments/components/Section.vue'
 import KakaoExperience from '@/payments/components/kakao/KakaoExperience.vue'
 import TossExperience from '@/payments/components/toss/TossExperience.vue'
+import CardExperience from '@/payments/components/card/CardExperience.vue'
 import TransferExperience from '@/payments/components/transfer/TransferExperience.vue'
 import { useLocalizedSections } from '@/payments/composables/useLocalizedSections'
 import { usePaymentStore } from '@/payments/stores/payment.store'
@@ -32,6 +33,7 @@ const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoa
 
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
+const cardExperienceRef = ref<InstanceType<typeof CardExperience> | null>(null)
 const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
 
 const categorizeMethod = (method: PaymentMethodWithCurrencies): PaymentCategory =>
@@ -92,6 +94,9 @@ const openMethodUrl = async (method: PaymentMethodWithCurrencies, currency: stri
 
 const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currency: string | null) => {
   switch (method.id) {
+    case 'card':
+      await cardExperienceRef.value?.run(currency)
+      break
     case 'transfer':
       await transferExperienceRef.value?.run()
       break
@@ -224,6 +229,7 @@ const onExperienceClose = () => {
       @select="onCurrencySelect"
       @close="onCloseCurrencySelector"
     />
+    <CardExperience ref="cardExperienceRef" @close="onExperienceClose" />
     <TransferExperience ref="transferExperienceRef" @close="onExperienceClose" />
     <TossExperience ref="tossExperienceRef" @close="onExperienceClose" />
     <KakaoExperience ref="kakaoExperienceRef" @close="onExperienceClose" />

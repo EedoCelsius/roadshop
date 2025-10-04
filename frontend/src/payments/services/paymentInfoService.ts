@@ -47,15 +47,16 @@ const DEFAULT_API_BASE_URL =
 const normalizeBaseUrl = (value: string): string => value.replace(/\/+$/, '')
 const normalizePath = (value: string): string => value.replace(/^\/+/, '')
 
-const getApiBaseUrl = (): string => {
+export const getPaymentsApiBaseUrl = (): string => {
   const envUrl = import.meta.env?.VITE_PAYMENTS_API_BASE_URL as string | undefined
   return normalizeBaseUrl(envUrl && envUrl.length ? envUrl : DEFAULT_API_BASE_URL)
 }
 
-const buildApiUrl = (path: string): string => `${getApiBaseUrl()}/${normalizePath(path)}`
+export const buildPaymentsApiUrl = (path: string): string =>
+  `${getPaymentsApiBaseUrl()}/${normalizePath(path)}`
 
 const requestJson = async <T>(path: string): Promise<T> => {
-  const response = await fetch(buildApiUrl(path))
+  const response = await fetch(buildPaymentsApiUrl(path))
 
   if (!response.ok) {
     throw new Error(`Failed to load ${path}: ${response.status}`)
