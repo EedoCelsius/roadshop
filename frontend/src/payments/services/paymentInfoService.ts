@@ -1,5 +1,12 @@
 import type { DeepLinkProvider } from '@/payments/types'
 
+export type StripePaymentInfo = {
+  publishableKey: string
+  clientSecret: string
+  returnUrl?: string
+  appearance?: Record<string, unknown>
+}
+
 export type TransferAccount = {
   bank: string
   number: string
@@ -40,9 +47,10 @@ export type PaymentMethodDetail =
   | { type: 'toss'; data: TossPaymentInfo }
   | { type: 'kakao'; data: KakaoPaymentInfo }
   | { type: 'url'; data: MethodUrlInfo }
+  | { type: 'stripe'; data: StripePaymentInfo }
 
 const DEFAULT_API_BASE_URL =
-  'https://raw.githubusercontent.com/EedoCelsius/roadshop/refs/heads/main/backend/response'
+  'https://raw.githubusercontent.com/EedoCelsius/eedocelsius.github.io/refs/heads/main/backend/response'
 
 const normalizeBaseUrl = (value: string): string => value.replace(/\/+$/, '')
 const normalizePath = (value: string): string => value.replace(/^\/+/, '')
@@ -73,6 +81,7 @@ type PaymentMethodDetailResponse =
   | { id: string; type: 'toss'; payload: TossPaymentInfo }
   | { id: string; type: 'kakao'; payload: KakaoPaymentInfo }
   | { id: string; type: 'url'; payload: MethodUrlInfo }
+  | { id: string; type: 'stripe'; payload: StripePaymentInfo }
 
 export const fetchAvailablePaymentMethods = async (): Promise<AvailablePaymentMethod[]> => {
   const data = await requestJson<AvailableMethodResponse>('payment-methods.json')
@@ -89,6 +98,8 @@ const normalizeDetail = (detail: PaymentMethodDetailResponse): PaymentMethodDeta
       return { type: 'kakao', data: detail.payload }
     case 'url':
       return { type: 'url', data: detail.payload }
+    case 'stripe':
+      return { type: 'stripe', data: detail.payload }
     default:
       throw new Error(`Unsupported payment detail type: ${(detail as { type?: string }).type ?? 'unknown'}`)
   }

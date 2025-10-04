@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import LoadingOverlay from '@/shared/components/LoadingOverlay.vue'
 import CurrencySelectorDialog from '@/payments/components/CurrencySelectorDialog.vue'
 import Section from '@/payments/components/Section.vue'
+import StripeCardExperience from '@/payments/components/card/StripeCardExperience.vue'
 import KakaoExperience from '@/payments/components/kakao/KakaoExperience.vue'
 import TossExperience from '@/payments/components/toss/TossExperience.vue'
 import TransferExperience from '@/payments/components/transfer/TransferExperience.vue'
@@ -30,6 +31,7 @@ const route = useRoute()
 const { methods, selectedMethod, selectedCurrency, isCurrencySelectorOpen, isLoading: areMethodsLoading, error: methodsError } =
   storeToRefs(paymentStore)
 
+const cardExperienceRef = ref<InstanceType<typeof StripeCardExperience> | null>(null)
 const tossExperienceRef = ref<InstanceType<typeof TossExperience> | null>(null)
 const kakaoExperienceRef = ref<InstanceType<typeof KakaoExperience> | null>(null)
 const transferExperienceRef = ref<InstanceType<typeof TransferExperience> | null>(null)
@@ -94,6 +96,9 @@ const runWorkflowForMethod = async (method: PaymentMethodWithCurrencies, currenc
   switch (method.id) {
     case 'transfer':
       await transferExperienceRef.value?.run()
+      break
+    case 'card':
+      await cardExperienceRef.value?.run()
       break
     case 'toss':
       await tossExperienceRef.value?.run()
@@ -225,6 +230,7 @@ const onExperienceClose = () => {
       @close="onCloseCurrencySelector"
     />
     <TransferExperience ref="transferExperienceRef" @close="onExperienceClose" />
+    <StripeCardExperience ref="cardExperienceRef" @close="onExperienceClose" />
     <TossExperience ref="tossExperienceRef" @close="onExperienceClose" />
     <KakaoExperience ref="kakaoExperienceRef" @close="onExperienceClose" />
     <LoadingOverlay

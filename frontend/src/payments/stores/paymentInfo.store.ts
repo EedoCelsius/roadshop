@@ -7,6 +7,7 @@ import {
   type KakaoPaymentInfo,
   type MethodUrlInfo,
   type PaymentMethodDetail,
+  type StripePaymentInfo,
   type TossPaymentInfo,
   type TransferPaymentInfo,
 } from '@/payments/services/paymentInfoService'
@@ -87,6 +88,11 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     return detail && detail.type === 'kakao' ? detail.data : null
   })
 
+  const stripeCardInfo = computed<StripePaymentInfo | null>(() => {
+    const detail = details.value.card
+    return detail && detail.type === 'stripe' ? detail.data : null
+  })
+
   const getMethodInfo = (methodId: string): MethodUrlInfo | null => {
     const detail = getDetail(methodId)
     return detail && detail.type === 'url' ? detail.data : null
@@ -130,6 +136,7 @@ export const usePaymentInfoStore = defineStore('payment-info', () => {
     transferInfo,
     tossInfo,
     kakaoInfo,
+    stripeCardInfo,
     ensureMethodInfo,
     fetchMethodInfo,
     getDeepLinkInfo,

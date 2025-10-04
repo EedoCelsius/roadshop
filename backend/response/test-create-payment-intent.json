@@ -1,0 +1,7 @@
+{
+  "amount": 2000,
+  "currency": "usd",
+  "clientSecret": "pi_test_placeholder_secret_PLACEHOLDER",
+  "publishableKey": "pk_test_PLACEHOLDER",
+  "description": "Example response for POST /api/payments/create-intent"
+}

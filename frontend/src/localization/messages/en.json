@@ -43,6 +43,19 @@
       "description": "We've <strong class=\"text-brand-accent\">automatically copied</strong> the account details you need for Toss.",
       "launchCta": "Go to Toss",
       "reopen": "Reopen Toss"
+    },
+    "stripeCard": {
+      "title": "Pay with card",
+      "description": "Enter your card details below to complete the payment securely with Stripe.",
+      "testNotice": "This is a demo environment. Use the Stripe test card <strong>4242 4242 4242 4242</strong>, any future expiry date, and any CVC.",
+      "setupHint": "Update the backend or local test response with a valid Stripe publishable key and client secret to load the card form.",
+      "submit": "Confirm payment",
+      "processing": "Processing…",
+      "success": "Payment confirmed! This demo will not charge your card.",
+      "errors": {
+        "load": "We couldn't load the card form. Please try again later.",
+        "generic": "Something went wrong while confirming the payment. Please try again."
+      }
     }
   },
   "status": {

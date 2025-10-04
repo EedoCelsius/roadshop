@@ -43,6 +43,19 @@
       "description": "送金に必要な口座情報を<strong class=\"text-brand-accent\">自動でコピー</strong>しました。",
       "launchCta": "Tossへ移動",
       "reopen": "Tossをもう一度開く"
+    },
+    "stripeCard": {
+      "title": "カードで支払う",
+      "description": "Stripeを利用して安全に支払いを完了するため、カード情報を入力してください。",
+      "testNotice": "こちらはデモ環境です。Stripeテストカード <strong>4242 4242 4242 4242</strong>、未来の日付の有効期限、お好みのCVCをご利用ください。",
+      "setupHint": "バックエンドまたはテスト用レスポンスに有効なStripe公開キーとクライアントシークレットを設定すると、カードフォームが表示されます。",
+      "submit": "支払いを確定する",
+      "processing": "処理中…",
+      "success": "支払いが確認されました！このデモでは実際に課金されません。",
+      "errors": {
+        "load": "カードフォームを読み込めませんでした。時間をおいて再度お試しください。",
+        "generic": "支払いの確定中に問題が発生しました。もう一度お試しください。"
+      }
     }
   },
   "status": {

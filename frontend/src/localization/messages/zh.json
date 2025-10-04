@@ -43,6 +43,19 @@
       "description": "已将转账所需的账户信息<strong class=\"text-brand-accent\">自动复制</strong>好了。",
       "launchCta": "前往 Toss",
       "reopen": "重新打开 Toss"
+    },
+    "stripeCard": {
+      "title": "使用银行卡支付",
+      "description": "请输入银行卡信息，通过 Stripe 安全地完成支付。",
+      "testNotice": "当前为演示环境。请使用 Stripe 测试卡 <strong>4242 4242 4242 4242</strong>，任意未来有效期和任意 CVC。",
+      "setupHint": "请在后端或测试响应中配置有效的 Stripe 公钥和客户端密钥，以加载银行卡表单。",
+      "submit": "确认支付",
+      "processing": "处理中…",
+      "success": "支付已确认！此演示不会产生真实扣款。",
+      "errors": {
+        "load": "未能加载银行卡表单，请稍后重试。",
+        "generic": "确认支付时出现问题，请重试。"
+      }
     }
   },
   "status": {

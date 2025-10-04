@@ -43,6 +43,19 @@
       "description": "송금에 필요한 계좌 정보를 <strong class=\"text-brand-accent\">자동으로 복사</strong>해 두었어요.",
       "launchCta": "토스로 이동하기",
       "reopen": "토스 다시열기"
+    },
+    "stripeCard": {
+      "title": "카드로 결제하기",
+      "description": "아래에 카드 정보를 입력하고 Stripe를 통해 안전하게 결제하세요.",
+      "testNotice": "이 환경은 데모입니다. Stripe 테스트 카드 <strong>4242 4242 4242 4242</strong>와 유효한 미래 만료일, 임의의 CVC를 사용해 보세요.",
+      "setupHint": "백엔드나 테스트 응답에서 Stripe 공개 키와 클라이언트 시크릿을 올바르게 설정하면 카드 폼이 표시됩니다.",
+      "submit": "결제 확인",
+      "processing": "처리 중…",
+      "success": "결제가 확인되었습니다! 이 데모에서는 실제로 결제가 이루어지지 않습니다.",
+      "errors": {
+        "load": "카드 입력 폼을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.",
+        "generic": "결제 확인 중 문제가 발생했습니다. 다시 시도해 주세요."
+      }
     }
   },
   "status": {

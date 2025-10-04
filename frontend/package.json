@@ -16,6 +16,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^4.10.0",
     "pinia": "^3.0.3",
     "primeicons": "^7.0.0",
     "qrcode": "^1.5.4",

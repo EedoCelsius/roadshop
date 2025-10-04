@@ -1,13 +1,16 @@
 {
   "id": "card",
-  "type": "url",
+  "type": "stripe",
   "payload": {
-    "url": {
-      "KRW": "https://buy.stripe.com/eVq28qh1xh0688u6Xw18c00",
-      "USD": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01",
-      "EUR": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01",
-      "CNY": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01",
-      "JPY": "https://buy.stripe.com/5kQbJ1aF9fqvh2MaiEgIo01"
+    "publishableKey": "pk_test_PLACEHOLDER",
+    "clientSecret": "pi_test_placeholder_secret_PLACEHOLDER",
+    "returnUrl": "https://eedocelsius.github.io/checkout/complete",
+    "appearance": {
+      "theme": "flat",
+      "variables": {
+        "colorPrimary": "#4338CA",
+        "borderRadius": "12px"
+      }
     }
   }
 }
