@@ -200,12 +200,26 @@ watch(
   { immediate: true },
 )
 
-const onSelectMethod = (methodId: string) => {
+const onSelectMethod = async (methodId: string) => {
   paymentStore.selectMethod(methodId)
 
   const method = paymentStore.getMethodById(methodId)
 
-  if (!method || isCurrencySelectorOpen.value) {
+  if (!method) {
+    return
+  }
+
+  if (dialogRouteMethods.has(methodId)) {
+    if (currentRouteMethod.value !== methodId) {
+      await router.replace({ name: 'payment-method', params: { method: methodId } })
+      return
+    }
+
+    void handleRouteDialog()
+    return
+  }
+
+  if (isCurrencySelectorOpen.value) {
     return
   }
 
